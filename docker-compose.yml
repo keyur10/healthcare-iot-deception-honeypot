@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  cowrie:
+    image: cowrie/cowrie:latest
+    container_name: cowrie-honeypot
+    restart: unless-stopped
+
+    ports:
+      - "2222:2222"
+      - "2223:2223"
+
+    volumes:
+      - ./cowrie-data:/cowrie/cowrie-git/var
+
+    environment:
+      - COWRIE_HOSTNAME=Hospital-ICU-Monitor
