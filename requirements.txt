@@ -1,0 +1,15 @@
+flask
+pandas
+requests
+pymongo
+python-dotenv
+geoip2
+plotly
+dash
+elasticsearch
+python-telegram-bot
+scapy
+watchdog
+pyyaml
+colorama
+rich
