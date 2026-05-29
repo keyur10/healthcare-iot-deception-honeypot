@@ -1,0 +1,7 @@
+================================================
+Hospital ICU Monitoring System
+Authorized Medical Personnel Only
+Device ID: ICU-2026-001
+Firmware Version: 2.3.1
+Status: ACTIVE
+================================================
