@@ -3,3 +3,6 @@ plotly
 dash
 geoip2
 matplotlib
+folium
+pandas
+requests
