@@ -1,0 +1,2 @@
+class ElasticsearchConnector:
+    pass

@@ -1,0 +1,2 @@
+class RansomwareDetector:
+    pass

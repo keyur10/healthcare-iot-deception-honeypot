@@ -1,0 +1,2 @@
+class NetworkMonitor:
+    pass

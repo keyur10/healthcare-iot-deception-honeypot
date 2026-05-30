@@ -1,0 +1,2 @@
+class ThreatIntelligence:
+    pass

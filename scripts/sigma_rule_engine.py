@@ -1,0 +1,2 @@
+class SigmaRuleEngine:
+    pass

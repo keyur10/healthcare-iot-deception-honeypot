@@ -1,0 +1,2 @@
+class YaraScanner:
+    pass

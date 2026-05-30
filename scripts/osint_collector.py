@@ -1,0 +1,2 @@
+class OSINTCollector:
+    pass
