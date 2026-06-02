@@ -1,0 +1,69 @@
+import json
+import os
+
+USERS_FILE = "data/users.json"
+
+
+def load_users():
+
+    if not os.path.exists(USERS_FILE):
+        return []
+
+    with open(USERS_FILE, "r") as file:
+        return json.load(file)
+
+
+def save_users(users):
+
+    with open(USERS_FILE, "w") as file:
+        json.dump(users, file, indent=4)
+
+
+def add_user(username, password, role):
+
+    users = load_users()
+
+    users.append({
+        "username": username,
+        "password": password,
+        "role": role
+    })
+
+    save_users(users)
+
+
+def delete_user(username):
+
+    users = load_users()
+
+    users = [
+        user
+        for user in users
+        if user["username"] != username
+    ]
+
+    save_users(users)
+
+
+def get_user(username):
+
+    users = load_users()
+
+    for user in users:
+
+        if user["username"] == username:
+            return user
+
+    return None
+
+
+def update_password(username, new_password):
+
+    users = load_users()
+
+    for user in users:
+
+        if user["username"] == username:
+            user["password"] = new_password
+
+    save_users(users)
