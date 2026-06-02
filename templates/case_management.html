@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Asset Inventory{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+```
+<div class="dashboard-panel">
+
+    <h2>Asset Inventory</h2>
+
+    <p class="text-muted">
+        Managed infrastructure and monitored devices.
+    </p>
+
+    <div class="table-responsive">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>Hostname</th>
+                    <th>IP Address</th>
+                    <th>Operating System</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for asset in assets %}
+
+                <tr>
+
+                    <td>{{ asset.hostname }}</td>
+                    <td>{{ asset.ip }}</td>
+                    <td>{{ asset.os }}</td>
+                    <td>{{ asset.status }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

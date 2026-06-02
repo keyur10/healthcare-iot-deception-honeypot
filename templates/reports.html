@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+Settings
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-panel">
+
+    <h4>Settings</h4>
+
+    <h5>Account</h5>
+
+    <input type="text"
+           class="cyber-input"
+           placeholder="Username">
+
+    <br><br>
+
+    <input type="password"
+           class="cyber-input"
+           placeholder="New Password">
+
+    <br><br>
+
+    <h5>Authentication</h5>
+
+    <label>
+        <input type="checkbox">
+        Enable OTP
+    </label>
+
+    <br>
+
+    <label>
+        <input type="checkbox">
+        Enable Two Factor Authentication
+    </label>
+
+    <br><br>
+
+    <button class="btn-cyber">
+        Save Settings
+    </button>
+
+</div>
+
+{% endblock %}

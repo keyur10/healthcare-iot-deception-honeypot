@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+Attack Statistics
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="stat-card p-4">
+            <h6>Total Attacks</h6>
+            <h2>{{ total_attacks }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="stat-card p-4">
+            <h6>Unique IPs</h6>
+            <h2>{{ unique_ips }}</h2>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

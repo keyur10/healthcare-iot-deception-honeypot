@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+User Management
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-panel">
+
+    <h4>User Management</h4>
+
+    <button class="btn btn-success">
+        Add User
+    </button>
+
+    <br><br>
+
+    <table class="table">
+
+        <thead>
+
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>analyst1</td>
+                <td>Analyst</td>
+                <td>Active</td>
+                <td>
+                    Edit | Delete
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

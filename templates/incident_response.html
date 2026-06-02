@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Incident Response{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+```
+<div class="dashboard-panel">
+
+    <h2>Incident Response Center</h2>
+
+    <p class="text-muted">
+        Active incidents requiring investigation.
+    </p>
+
+    <div class="row g-3">
+
+        <div class="col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="card-body text-center">
+
+                    <h6>Open Incidents</h6>
+
+                    <h2>{{ incidents.open }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="card-body text-center">
+
+                    <h6>Critical</h6>
+
+                    <h2 class="text-danger">
+                        {{ incidents.critical }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="card-body text-center">
+
+                    <h6>Investigating</h6>
+
+                    <h2 class="text-warning">
+                        {{ incidents.investigating }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="card-body text-center">
+
+                    <h6>Resolved</h6>
+
+                    <h2 class="text-success">
+                        {{ incidents.resolved }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="table-responsive mt-4">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Incident</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for incident in incident_list %}
+
+                <tr>
+
+                    <td>{{ incident.id }}</td>
+                    <td>{{ incident.name }}</td>
+                    <td>{{ incident.severity }}</td>
+                    <td>{{ incident.status }}</td>
+                    <td>{{ incident.owner }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

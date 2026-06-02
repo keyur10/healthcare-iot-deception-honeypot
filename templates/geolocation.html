@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+Malware Analysis
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-panel">
+
+    <h4>Malware Analysis</h4>
+
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>MD5</th>
+                <th>SHA256</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for file in files %}
+
+            <tr>
+                <td>{{ file.name }}</td>
+                <td>{{ file.md5 }}</td>
+                <td>{{ file.sha256 }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

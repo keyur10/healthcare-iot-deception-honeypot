@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Threat Hunting{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+```
+<div class="dashboard-panel">
+
+    <h2>Threat Hunting Console</h2>
+
+    <p class="text-muted">
+        Search suspicious indicators and attacker activity.
+    </p>
+
+    <form method="GET">
+
+        <div class="row">
+
+            <div class="col-md-10">
+
+                <input
+                    type="text"
+                    name="query"
+                    class="form-control"
+                    placeholder="IP, Hash, Domain, Username">
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button class="btn btn-primary w-100">
+                    Hunt
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+    <hr>
+
+    <div class="table-responsive">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+                    <th>Indicator</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Last Seen</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for result in results %}
+
+                <tr>
+
+                    <td>{{ result.value }}</td>
+                    <td>{{ result.type }}</td>
+                    <td>{{ result.status }}</td>
+                    <td>{{ result.last_seen }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

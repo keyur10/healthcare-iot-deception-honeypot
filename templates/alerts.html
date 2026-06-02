@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}
+System Status
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-panel">
+
+    <h4>System Status</h4>
+
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <div class="stat-card">
+
+                <h5>Cowrie Honeypot</h5>
+
+                <span class="badge-success">
+                    Online
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="stat-card">
+
+                <h5>Dashboard</h5>
+
+                <span class="badge-success">
+                    Running
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="stat-card">
+
+                <h5>Threat Engine</h5>
+
+                <span class="badge-success">
+                    Active
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
