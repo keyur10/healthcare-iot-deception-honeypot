@@ -1,124 +1,231 @@
 {% extends "base.html" %}
 
 {% block title %}
-Dashboard
+SOC Dashboard
 {% endblock %}
 
 {% block content %}
 
+<div class="container-fluid py-4">
+
+```
+<!-- Header -->
+
+<div class="row align-items-center mb-4">
+
+    <div class="col-lg-8">
+
+        <h2 class="fw-bold">
+            Security Operations Center
+        </h2>
+
+        <p class="text-muted mb-0">
+            Real-Time Cowrie Honeypot Monitoring Dashboard
+        </p>
+
+    </div>
+
+    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+
+        <span class="badge bg-success p-2 me-2">
+
+            <i class="fas fa-circle"></i>
+
+            ACTIVE
+
+        </span>
+
+        {% if session.get("user") %}
+
+        <span class="badge bg-primary p-2">
+
+            <i class="fas fa-user-shield"></i>
+
+            {{ session.get("user") }}
+
+        </span>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<!-- KPI CARDS -->
+
 <div class="row g-3 mb-4">
 
-    <div class="col-xl-2 col-md-4 col-sm-6">
+    <div class="col-xl-3 col-md-6">
+
         <div class="card stat-card">
+
             <div class="card-body text-center">
+
+                <i class="fas fa-shield-virus fa-2x mb-2 text-danger"></i>
+
                 <h6>Total Attacks</h6>
-                <h2 id="total-attacks">{{ total_attacks }}</h2>
+
+                <h2 id="total-attacks">
+                    {{ total_attacks }}
+                </h2>
+
             </div>
+
         </div>
+
     </div>
 
-    <div class="col-xl-2 col-md-4 col-sm-6">
+    <div class="col-xl-3 col-md-6">
+
         <div class="card stat-card">
+
             <div class="card-body text-center">
+
+                <i class="fas fa-network-wired fa-2x mb-2 text-info"></i>
+
                 <h6>Unique IPs</h6>
-                <h2 id="unique-ips">{{ unique_ips }}</h2>
+
+                <h2 id="unique-ips">
+                    {{ unique_ips }}
+                </h2>
+
             </div>
+
         </div>
+
     </div>
 
-    <div class="col-xl-2 col-md-4 col-sm-6">
+    <div class="col-xl-3 col-md-6">
+
         <div class="card stat-card">
+
             <div class="card-body text-center">
+
+                <i class="fas fa-triangle-exclamation fa-2x mb-2 text-warning"></i>
+
                 <h6>Threat Level</h6>
-                <h2>Medium</h2>
+
+                <h2
+                    id="threat-level"
+                    class="
+                    {% if threat_level == 'CRITICAL' %}
+                    text-danger
+                    {% elif threat_level == 'HIGH' %}
+                    text-warning
+                    {% elif threat_level == 'MEDIUM' %}
+                    text-info
+                    {% else %}
+                    text-success
+                    {% endif %}
+                    ">
+
+                    {{ threat_level }}
+
+                </h2>
+
             </div>
+
         </div>
+
     </div>
 
-    <div class="col-xl-2 col-md-4 col-sm-6">
-        <div class="card stat-card">
-            <div class="card-body text-center">
-                <h6>Status</h6>
-                <h2>ACTIVE</h2>
-            </div>
-        </div>
-    </div>
+    <div class="col-xl-3 col-md-6">
 
-    <div class="col-xl-2 col-md-4 col-sm-6">
         <div class="card stat-card">
+
             <div class="card-body text-center">
+
+                <i class="fas fa-server fa-2x mb-2 text-success"></i>
+
                 <h6>Honeypot</h6>
-                <h2>Cowrie</h2>
-            </div>
-        </div>
-    </div>
 
-    <div class="col-xl-2 col-md-4 col-sm-6">
-        <div class="card stat-card">
-            <div class="card-body text-center">
-                <h6>MITRE Hits</h6>
-                <h2>{{ mitre|length if mitre else 0 }}</h2>
+                <h2>
+                    Cowrie
+                </h2>
+
             </div>
+
         </div>
+
     </div>
 
 </div>
 
-<div class="row">
+<!-- CHART + STATUS -->
 
-    <div class="col-lg-8 mb-4">
+<div class="row mb-4">
+
+    <div class="col-lg-8">
 
         <div class="dashboard-panel">
 
-            <h4>Attack Trends</h4>
+            <h4>
+                Attack Trends
+            </h4>
 
             <div class="chart-container">
+
                 <canvas id="attackChart"></canvas>
+
             </div>
 
         </div>
 
     </div>
 
-    <div class="col-lg-4 mb-4">
+    <div class="col-lg-4">
 
         <div class="dashboard-panel">
 
-            <h4>Country Statistics</h4>
+            <h4>
+                Dashboard Status
+            </h4>
 
-            <table class="table table-hover">
+            <div class="mt-4">
 
-                <thead>
-                    <tr>
-                        <th>Country</th>
-                        <th>Attacks</th>
-                    </tr>
-                </thead>
+                <p>
 
-                <tbody>
+                    <strong>Status:</strong>
 
-                    {% if country_stats %}
+                    <span class="badge bg-success">
+                        ONLINE
+                    </span>
 
-                        {% for country in country_stats %}
-                        <tr>
-                            <td>{{ country.country }}</td>
-                            <td>{{ country.count }}</td>
-                        </tr>
-                        {% endfor %}
+                </p>
 
-                    {% else %}
+                <p>
 
-                        <tr>
-                            <td colspan="2">
-                                No country statistics available
-                            </td>
-                        </tr>
+                    <strong>Sensor:</strong>
 
-                    {% endif %}
+                    Cowrie SSH/Telnet Honeypot
 
-                </tbody>
+                </p>
 
-            </table>
+                <p>
+
+                    <strong>Threat Level:</strong>
+
+                    {{ threat_level }}
+
+                </p>
+
+                <p>
+
+                    <strong>Total Events:</strong>
+
+                    {{ total_attacks }}
+
+                </p>
+
+                <p>
+
+                    <strong>Unique Sources:</strong>
+
+                    {{ unique_ips }}
+
+                </p>
+
+            </div>
 
         </div>
 
@@ -126,159 +233,113 @@ Dashboard
 
 </div>
 
-<div class="row">
+<!-- COUNTRY STATS -->
 
-    <div class="col-lg-6 mb-4">
+<div class="row mb-4">
 
-        <div class="dashboard-panel">
-
-            <h4>MITRE ATT&CK Techniques</h4>
-
-            <table class="table table-striped">
-
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Technique</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    {% if mitre %}
-
-                        {% for item in mitre %}
-                        <tr>
-                            <td>{{ item.id }}</td>
-                            <td>{{ item.name }}</td>
-                        </tr>
-                        {% endfor %}
-
-                    {% else %}
-
-                        <tr>
-                            <td colspan="2">
-                                No MITRE techniques detected
-                            </td>
-                        </tr>
-
-                    {% endif %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-    <div class="col-lg-6 mb-4">
+    <div class="col-lg-6">
 
         <div class="dashboard-panel">
 
-            <h4>IOC Intelligence</h4>
+            <h4>
+                Country Statistics
+            </h4>
 
-            {% if iocs and iocs.ips %}
+            <div class="table-responsive">
 
-                <ul class="list-group">
-
-                    {% for ip in iocs.ips %}
-                    <li class="list-group-item">
-                        {{ ip }}
-                    </li>
-                    {% endfor %}
-
-                </ul>
-
-            {% else %}
-
-                <p>No IOC data available.</p>
-
-            {% endif %}
-
-        </div>
-
-    </div>
-
-</div>
-
-<div class="row">
-
-    <div class="col-lg-6 mb-4">
-
-        <div class="dashboard-panel">
-
-            <h4>VirusTotal Results</h4>
-
-            {% if virustotal %}
-
-                <table class="table">
+                <table class="table table-hover">
 
                     <thead>
+
                         <tr>
-                            <th>Hash</th>
-                            <th>Detection</th>
+
+                            <th>Country</th>
+
+                            <th>Attacks</th>
+
                         </tr>
+
                     </thead>
 
                     <tbody>
 
-                        {% for item in virustotal %}
-                        <tr>
-                            <td>{{ item.hash }}</td>
-                            <td>{{ item.score }}</td>
-                        </tr>
-                        {% endfor %}
+                        {% if country_stats %}
+
+                            {% for country in country_stats %}
+
+                            <tr>
+
+                                <td>{{ country.country }}</td>
+
+                                <td>{{ country.count }}</td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+
+                                <td colspan="2">
+
+                                    No country statistics available
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
 
                     </tbody>
 
                 </table>
 
-            {% else %}
-
-                <p>No VirusTotal data available.</p>
-
-            {% endif %}
+            </div>
 
         </div>
 
     </div>
 
-    <div class="col-lg-6 mb-4">
+    <div class="col-lg-6">
 
         <div class="dashboard-panel">
 
-            <h4>Shodan Intelligence</h4>
+            <h4>
+                Summary
+            </h4>
 
-            {% if shodan %}
+            <ul class="list-group">
 
-                <table class="table">
+                <li class="list-group-item">
 
-                    <thead>
-                        <tr>
-                            <th>IP</th>
-                            <th>Open Ports</th>
-                        </tr>
-                    </thead>
+                    Total Attacks:
+                    <strong>{{ total_attacks }}</strong>
 
-                    <tbody>
+                </li>
 
-                        {% for item in shodan %}
-                        <tr>
-                            <td>{{ item.ip }}</td>
-                            <td>{{ item.ports }}</td>
-                        </tr>
-                        {% endfor %}
+                <li class="list-group-item">
 
-                    </tbody>
+                    Unique IPs:
+                    <strong>{{ unique_ips }}</strong>
 
-                </table>
+                </li>
 
-            {% else %}
+                <li class="list-group-item">
 
-                <p>No Shodan intelligence available.</p>
+                    Threat Level:
+                    <strong>{{ threat_level }}</strong>
 
-            {% endif %}
+                </li>
+
+                <li class="list-group-item">
+
+                    Honeypot:
+                    <strong>Cowrie</strong>
+
+                </li>
+
+            </ul>
 
         </div>
 
@@ -286,13 +347,17 @@ Dashboard
 
 </div>
 
-<div class="row">
+<!-- LIVE FEED -->
 
-    <div class="col-12 mb-4">
+<div class="row mb-4">
+
+    <div class="col-12">
 
         <div class="dashboard-panel">
 
-            <h4>Real-Time Attack Feed</h4>
+            <h4>
+                Real-Time Attack Feed
+            </h4>
 
             <div id="attack-feed">
 
@@ -303,10 +368,16 @@ Dashboard
                     <div class="feed-item">
 
                         <div class="feed-time">
+
                             {{ attack.timestamp }}
+
                         </div>
 
-                        <strong>{{ attack.ip }}</strong>
+                        <strong>
+
+                            {{ attack.ip }}
+
+                        </strong>
 
                         <br>
 
@@ -324,7 +395,9 @@ Dashboard
 
                 {% else %}
 
-                    <p>No recent attacks.</p>
+                    <p>
+                        No attacks detected.
+                    </p>
 
                 {% endif %}
 
@@ -336,41 +409,86 @@ Dashboard
 
 </div>
 
+<!-- ATTACK TABLE -->
+
 <div class="row">
 
     <div class="col-12">
 
         <div class="dashboard-panel">
 
-            <h4>Recent Attack Attempts</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h4 class="mb-0">
+
+                    Recent Attack Attempts
+
+                </h4>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="form-control"
+                    style="max-width:300px;"
+                    placeholder="Search IP, Username...">
+
+            </div>
 
             <div class="table-responsive">
 
-                <table class="table table-striped table-hover">
+                <table
+                    id="attackTable"
+                    class="table table-striped table-hover">
 
-                    <thead class="table-dark">
+                    <thead>
 
                         <tr>
+
                             <th>IP Address</th>
+
                             <th>Username</th>
+
                             <th>Password</th>
+
                             <th>Timestamp</th>
+
                         </tr>
 
                     </thead>
 
                     <tbody>
 
-                        {% for attack in recent_attacks %}
+                        {% if recent_attacks %}
 
-                        <tr>
-                            <td>{{ attack.ip }}</td>
-                            <td>{{ attack.username }}</td>
-                            <td>{{ attack.password }}</td>
-                            <td>{{ attack.timestamp }}</td>
-                        </tr>
+                            {% for attack in recent_attacks %}
 
-                        {% endfor %}
+                            <tr>
+
+                                <td>{{ attack.ip }}</td>
+
+                                <td>{{ attack.username }}</td>
+
+                                <td>{{ attack.password }}</td>
+
+                                <td>{{ attack.timestamp }}</td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+
+                                <td colspan="4">
+
+                                    No attack attempts available
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
 
                     </tbody>
 
@@ -383,5 +501,40 @@ Dashboard
     </div>
 
 </div>
+```
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+document
+.getElementById("searchInput")
+?.addEventListener("keyup", function () {
+
+    const value =
+        this.value.toLowerCase();
+
+    document
+        .querySelectorAll(
+            "#attackTable tbody tr"
+        )
+        .forEach(row => {
+
+            row.style.display =
+                row.innerText
+                    .toLowerCase()
+                    .includes(value)
+                        ? ""
+                        : "none";
+
+        });
+
+});
+
+</script>
 
 {% endblock %}
