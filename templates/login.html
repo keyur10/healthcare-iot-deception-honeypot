@@ -8,165 +8,118 @@ SOC Login
 
 <div class="glitch-form-wrapper">
 
-    <!-- Matrix Background -->
+```
+<!-- MATRIX BACKGROUND -->
 
-    <canvas id="matrix"></canvas>
+<canvas id="matrix"></canvas>
 
-    <!-- Left Status Panel -->
+<!-- SYSTEM STATUS -->
 
-    <div class="cyber-panel system-panel">
+<div class="cyber-panel system-panel">
 
-        <h5>// SYSTEM STATUS</h5>
+    <h5>// SYSTEM STATUS</h5>
 
-        <p>
-            NETWORK:
-            <span class="text-success">
-                SECURE
-            </span>
-        </p>
+    <p>
+        NETWORK:
+        <span class="text-success">
+            SECURE
+        </span>
+    </p>
 
-        <p>
-            THREATS:
-            <span class="text-warning">
-                MONITORING
-            </span>
-        </p>
+    <p>
+        THREATS:
+        <span class="text-warning">
+            MONITORING
+        </span>
+    </p>
 
-        <p>
-            SENSOR:
-            <span class="text-info">
-                COWRIE
-            </span>
-        </p>
+    <p>
+        SENSOR:
+        <span class="text-info">
+            COWRIE
+        </span>
+    </p>
 
-        <p>
-            STATUS:
-            <span class="text-success">
-                ACTIVE
-            </span>
-        </p>
+    <p>
+        STATUS:
+        <span class="text-success">
+            ACTIVE
+        </span>
+    </p>
 
-    </div>
+    <p>
+        USERS:
+        <span class="text-info">
+            {{ active_sessions|default(0) }}
+        </span>
+    </p>
 
-    <!-- Threat Alert -->
+    <p>
+        VERSION:
+        <span class="text-success">
+            SOC v2.0
+        </span>
+    </p>
 
-    <div class="cyber-panel threat-panel">
+</div>
 
-        <h5>THREAT ALERT</h5>
+<!-- THREAT ALERT -->
 
-        <p>
-            Multiple SSH brute-force attempts detected
-        </p>
+<div class="cyber-panel threat-panel">
 
-        <p class="text-danger">
-            Monitoring hostile activity
-        </p>
+    <h5>THREAT ALERT</h5>
 
-    </div>
+    <p>
+        Multiple SSH brute-force attempts detected
+    </p>
 
-    <!-- Login Window -->
+    <p class="text-danger">
+        Threat Level: HIGH
+    </p>
 
-    <form
-        id="draggable-login"
-        method="POST"
-        action="{{ url_for('login') }}"
-        class="glitch-card">
+    <p class="text-warning">
+        Active Monitoring Enabled
+    </p>
 
-        <div class="card-header">
+</div>
 
-            <div class="card-title">
+<!-- LOGIN WINDOW -->
 
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="30"
-                    height="30"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor">
+<form
+    id="draggable-login"
+    method="POST"
+    action="{{ url_for('login') }}"
+    class="glitch-card">
 
-                    <path d="M12 2L4 5v6c0 5 3.5 9.74 8 11c4.5-1.26 8-6 8-11V5l-8-3z"/>
+    <div class="card-header">
 
-                    <path d="M9 12l2 2l4-4"/>
+        <div class="card-title">
 
-                </svg>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="30"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor">
 
-                <div>
+                <path d="M12 2L4 5v6c0 5 3.5 9.74 8 11c4.5-1.26 8-6 8-11V5l-8-3z"/>
 
-                    <span>SOC_LOGIN</span>
+                <path d="M9 12l2 2l4-4"/>
 
-                    <small class="d-block text-muted">
+            </svg>
 
-                        Security Operations Center
+            <div>
 
-                    </small>
+                <span>
 
-                </div>
+                    SOC_LOGIN
 
-            </div>
+                </span>
 
-            <div class="card-dots">
+                <small class="d-block text-muted">
 
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </div>
-
-        </div>
-
-        <div class="card-body">
-
-            <div class="form-group">
-
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    autocomplete="username"
-                    required>
-
-                <label
-                    for="username"
-                    class="form-label">
-
-                    USERNAME
-
-                </label>
-
-            </div>
-
-            <div class="form-group">
-
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    autocomplete="current-password"
-                    required>
-
-                <label
-                    for="password"
-                    class="form-label">
-
-                    ACCESS_KEY
-
-                </label>
-
-            </div>
-
-            <button
-                type="submit"
-                class="submit-btn">
-
-                INITIATE_CONNECTION
-
-            </button>
-
-            <div class="login-footer mt-4 text-center">
-
-                <small>
-
-                    AUTHORIZED PERSONNEL ONLY
+                    Security Operations Center
 
                 </small>
 
@@ -174,95 +127,326 @@ SOC Login
 
         </div>
 
-    </form>
+        <div class="card-dots">
 
-    <!-- Live Feed -->
-
-    <div class="cyber-panel live-panel">
-
-        <h5>LIVE FEED</h5>
-
-        <div class="terminal-feed">
-
-            <div>> SSH LOGIN FAILED</div>
-
-            <div>> ROOT ACCESS ATTEMPT</div>
-
-            <div>> INVALID CREDENTIALS</div>
-
-            <div>> CONNECTION CLOSED</div>
-
-            <div>> ATTACK DETECTED</div>
+            <span></span>
+            <span></span>
+            <span></span>
 
         </div>
 
     </div>
 
-    <!-- Geo Intelligence -->
+    <div class="card-body">
 
-    <div class="cyber-panel geo-panel">
+        <!-- FLASH MESSAGES -->
 
-        <h5>GEO INTELLIGENCE</h5>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
 
-        <p>Country: Unknown</p>
+            {% for category, message in messages %}
 
-        <p>City: Unknown</p>
+            <div class="alert alert-{{ category }}">
 
-        <p>ASN: N/A</p>
+                {{ message }}
 
-        <p>ISP: N/A</p>
+            </div>
+
+            {% endfor %}
+
+        {% endif %}
+        {% endwith %}
+
+        <!-- USERNAME -->
+
+        <div class="form-group">
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                autocomplete="username"
+                required>
+
+            <label
+                for="username"
+                class="form-label">
+
+                USERNAME
+
+            </label>
+
+        </div>
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="current-password"
+                required>
+
+            <label
+                for="password"
+                class="form-label">
+
+                ACCESS KEY
+
+            </label>
+
+        </div>
+
+        <!-- MFA -->
+
+        <div class="form-group">
+
+            <input
+                type="text"
+                id="otp"
+                name="otp">
+
+            <label
+                for="otp"
+                class="form-label">
+
+                MFA CODE
+
+            </label>
+
+        </div>
+
+        <!-- REMEMBER SESSION -->
+
+        <div class="form-check mb-3">
+
+            <input
+                type="checkbox"
+                id="remember"
+                name="remember"
+                class="form-check-input">
+
+            <label
+                class="form-check-label"
+                for="remember">
+
+                Remember Session
+
+            </label>
+
+        </div>
+
+        <!-- LOGIN BUTTON -->
+
+        <button
+            type="submit"
+            class="submit-btn">
+
+            INITIATE CONNECTION
+
+        </button>
+
+        <!-- LOGIN INFO -->
+
+        <div class="text-center mt-3">
+
+            <small>
+
+                Last Login:
+                {{ last_login|default("Unknown") }}
+
+            </small>
+
+        </div>
+
+        <div class="text-center">
+
+            <small>
+
+                Active Sessions:
+                {{ active_sessions|default(0) }}
+
+            </small>
+
+        </div>
+
+        <div class="text-center mt-2">
+
+            <a href="#">
+
+                Forgot Password?
+
+            </a>
+
+        </div>
+
+        <div class="login-footer mt-4 text-center">
+
+            <small>
+
+                AUTHORIZED PERSONNEL ONLY
+
+            </small>
+
+        </div>
+
+        <div class="text-center mt-2">
+
+            <small class="text-danger">
+
+                UNAUTHORIZED ACCESS IS MONITORED, RECORDED AND AUDITED
+
+            </small>
+
+        </div>
 
     </div>
 
-    <!-- System Monitor -->
+</form>
 
-    <div class="cyber-panel monitor-panel">
+<!-- LIVE FEED -->
 
-        <h5>SYSTEM MONITOR</h5>
+<div class="cyber-panel live-panel">
 
-        <div class="metric">
+    <h5>LIVE FEED</h5>
 
-            CPU
+    <div class="terminal-feed">
 
-            <div class="progress">
+        <div>> SSH LOGIN FAILED</div>
+        <div>> ROOT ACCESS ATTEMPT</div>
+        <div>> INVALID CREDENTIALS</div>
+        <div>> CONNECTION CLOSED</div>
+        <div>> ATTACK DETECTED</div>
+        <div>> BOTNET ACTIVITY IDENTIFIED</div>
+        <div>> THREAT SCORE INCREASED</div>
+        <div>> IOC GENERATED</div>
 
-                <div class="progress-bar bg-info"
-                     style="width:32%">
-                </div>
+    </div>
 
-            </div>
+</div>
 
-        </div>
+<!-- GEO INTELLIGENCE -->
 
-        <div class="metric">
+<div class="cyber-panel geo-panel">
 
-            Memory
+    <h5>GEO INTELLIGENCE</h5>
 
-            <div class="progress">
+    <p>Country: Unknown</p>
 
-                <div class="progress-bar bg-success"
-                     style="width:45%">
-                </div>
+    <p>City: Unknown</p>
 
-            </div>
+    <p>ASN: N/A</p>
 
-        </div>
+    <p>ISP: N/A</p>
 
-        <div class="metric">
+    <p>Risk Score: Medium</p>
 
-            Network
+</div>
 
-            <div class="progress">
+<!-- SYSTEM MONITOR -->
 
-                <div class="progress-bar bg-warning"
-                     style="width:68%">
-                </div>
+<div class="cyber-panel monitor-panel">
+
+    <h5>SYSTEM MONITOR</h5>
+
+    <div class="metric">
+
+        CPU
+
+        <div class="progress">
+
+            <div
+                class="progress-bar bg-info"
+                style="width:32%">
 
             </div>
 
         </div>
 
     </div>
+
+    <div class="metric">
+
+        MEMORY
+
+        <div class="progress">
+
+            <div
+                class="progress-bar bg-success"
+                style="width:45%">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="metric">
+
+        NETWORK
+
+        <div class="progress">
+
+            <div
+                class="progress-bar bg-warning"
+                style="width:68%">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="metric">
+
+        STORAGE
+
+        <div class="progress">
+
+            <div
+                class="progress-bar bg-danger"
+                style="width:54%">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SECURITY BANNER -->
+
+<div class="cyber-panel security-banner">
+
+    <h5>
+
+        SECURITY NOTICE
+
+    </h5>
+
+    <p>
+
+        This system is restricted to authorized personnel.
+
+    </p>
+
+    <p>
+
+        All login attempts are logged and audited.
+
+    </p>
+
+    <p>
+
+        MFA Authentication Recommended.
+
+    </p>
+
+</div>
+```
 
 </div>
 

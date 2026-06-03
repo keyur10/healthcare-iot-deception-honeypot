@@ -1,9 +1,11 @@
 from pathlib import Path
 from collections import Counter
-from functools import wraps
+from datetime import timedelta, datetime
+
 import json
 import logging
 import os
+import uuid
 
 from flask import (
     Flask,
@@ -14,7 +16,27 @@ from flask import (
     url_for,
     session,
     flash,
-    abort,
+)
+
+from core.auth import (
+    current_user,
+    current_role,
+    is_authenticated,
+    login_required,
+)
+
+from core.storage import (
+    ensure_data_files,
+    load_users,
+)
+
+from core.audit import (
+    log_event,
+)
+
+from core.permissions import (
+    permission_required,
+    has_permission,
 )
 
 # ==================================================
@@ -22,13 +44,27 @@ from flask import (
 # ==================================================
 
 app = Flask(__name__)
+from core.permissions import (
+    permission_required,
+    has_permission,
+)
+
+app.jinja_env.globals[
+    "has_permission"
+] = has_permission
 
 app.config["SECRET_KEY"] = os.getenv(
     "SECRET_KEY",
     "soc-dashboard-secret"
 )
 
-BASE_DIR = Path(__file__).resolve().parent
+app.config[
+    "PERMANENT_SESSION_LIFETIME"
+] = timedelta(hours=4)
+
+BASE_DIR = Path(
+    __file__
+).resolve().parent
 
 LOG_FILE = (
     BASE_DIR /
@@ -37,22 +73,15 @@ LOG_FILE = (
 )
 
 # ==================================================
-# TEST USERS (NO DATABASE YET)
+# DEFAULTS
 # ==================================================
 
-USERS = {
-    "admin": {
-        "password": "admin123",
-        "role": "admin",
-    },
-    "analyst": {
-        "password": "analyst123",
-        "role": "analyst",
-    },
-    "viewer": {
-        "password": "viewer123",
-        "role": "viewer",
-    },
+DEFAULT_STATS = {
+    "total_attacks": 0,
+    "unique_ips": 0,
+    "recent_attacks": [],
+    "country_stats": [],
+    "threat_level": "LOW",
 }
 
 # ==================================================
@@ -61,72 +90,56 @@ USERS = {
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s",
+    format=(
+        "%(asctime)s | "
+        "%(levelname)s | "
+        "%(message)s"
+    ),
 )
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(
+    __name__
+)
 
 # ==================================================
-# AUTH HELPERS
+# CONTEXT PROCESSORS
 # ==================================================
 
-def is_authenticated():
+@app.context_processor
+def inject_globals():
 
-    return bool(
-        session.get("user")
+    return {
+
+        "current_user":
+            current_user(),
+
+        "current_role":
+            current_role(),
+
+        "has_permission":
+            has_permission,
+
+        "year":
+            datetime.now().year,
+
+        "active_alerts":
+            0,
+    }
+
+# ==================================================
+# HELPERS
+# ==================================================
+
+def render_soc_page(
+    template_name: str,
+    **kwargs
+):
+
+    return render_template(
+        template_name,
+        **kwargs
     )
 
-
-def login_required(func):
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-
-        if not is_authenticated():
-
-            return redirect(
-                url_for("login")
-            )
-
-        return func(
-            *args,
-            **kwargs
-        )
-
-    return wrapper
-
-
-def role_required(*roles):
-
-    def decorator(func):
-
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-
-            if not is_authenticated():
-
-                return redirect(
-                    url_for("login")
-                )
-
-            if (
-                session.get("role")
-                not in roles
-            ):
-                abort(403)
-
-            return func(
-                *args,
-                **kwargs
-            )
-
-        return wrapper
-
-    return decorator
-
-# ==================================================
-# DASHBOARD HELPERS
-# ==================================================
 
 def calculate_threat_level(
     total_attacks: int
@@ -144,7 +157,45 @@ def calculate_threat_level(
     return "LOW"
 
 
-def get_attack_data() -> dict:
+def parse_attack_record(
+    data: dict
+) -> dict:
+
+    return {
+
+        "ip":
+            data.get(
+                "src_ip",
+                "Unknown"
+            ),
+
+        "username":
+            data.get(
+                "username",
+                "N/A"
+            ),
+
+        "password":
+            data.get(
+                "password",
+                "N/A"
+            ),
+
+        "timestamp":
+            data.get(
+                "timestamp",
+                "N/A"
+            ),
+
+        "country":
+            data.get(
+                "country",
+                "Unknown"
+            ),
+    }
+
+
+def get_attack_data():
 
     attacks = []
 
@@ -154,20 +205,18 @@ def get_attack_data() -> dict:
 
     if not LOG_FILE.exists():
 
-        return {
-            "total_attacks": 0,
-            "unique_ips": 0,
-            "recent_attacks": [],
-            "country_stats": [],
-            "threat_level": "LOW",
-        }
+        logger.warning(
+            "Missing Cowrie log file"
+        )
+
+        return DEFAULT_STATS.copy()
 
     try:
 
         with open(
             LOG_FILE,
             "r",
-            encoding="utf-8",
+            encoding="utf-8"
         ) as file:
 
             for line in file:
@@ -179,70 +228,103 @@ def get_attack_data() -> dict:
 
                 try:
 
-                    data = json.loads(line)
-
-                    ip = data.get(
-                        "src_ip",
-                        "Unknown"
+                    data = json.loads(
+                        line
                     )
-
-                    attack = {
-                        "ip": ip,
-                        "username": data.get(
-                            "username",
-                            "N/A",
-                        ),
-                        "password": data.get(
-                            "password",
-                            "N/A",
-                        ),
-                        "timestamp": data.get(
-                            "timestamp",
-                            "N/A",
-                        ),
-                    }
-
-                    attacks.append(
-                        attack
-                    )
-
-                    unique_ips.add(ip)
-
-                    country = data.get(
-                        "country",
-                        "Unknown"
-                    )
-
-                    country_counter[
-                        country
-                    ] += 1
 
                 except json.JSONDecodeError:
+
                     continue
 
-    except Exception as error:
+                attack = (
+                    parse_attack_record(
+                        data
+                    )
+                )
 
-        logger.error(error)
+                attacks.append(
+                    attack
+                )
 
-    total_attacks = len(attacks)
+                unique_ips.add(
+                    attack["ip"]
+                )
 
-    country_stats = [
-        {
-            "country": country,
-            "count": count,
-        }
-        for country, count in
-        country_counter.most_common(10)
-    ]
+                country_counter[
+                    attack["country"]
+                ] += 1
+
+    except Exception:
+
+        logger.exception(
+            "Failed reading logs"
+        )
+
+        return DEFAULT_STATS.copy()
+
+    total_attacks = len(
+        attacks
+    )
 
     return {
-        "total_attacks": total_attacks,
-        "unique_ips": len(unique_ips),
-        "recent_attacks": attacks[-20:][::-1],
-        "country_stats": country_stats,
+
+        "total_attacks":
+            total_attacks,
+
+        "unique_ips":
+            len(unique_ips),
+
+        "recent_attacks":
+            attacks[-20:][::-1],
+
+        "country_stats":
+            [
+                {
+                    "country": country,
+                    "count": count,
+                }
+                for country, count
+                in country_counter.most_common(
+                    10
+                )
+            ],
+
         "threat_level":
             calculate_threat_level(
                 total_attacks
+            ),
+    }
+
+
+def build_error_context(
+    code: str,
+    title: str,
+    message: str,
+    description: str
+):
+
+    return {
+
+        "error_code":
+            code,
+
+        "error_title":
+            title,
+
+        "error_message":
+            message,
+
+        "error_description":
+            description,
+
+        "error_id":
+            str(
+                uuid.uuid4()
+            )[:8],
+
+        "error_timestamp":
+            datetime.now().strftime(
+                "%Y-%m-%d %H:%M:%S"
             ),
     }
 
@@ -253,14 +335,23 @@ def get_attack_data() -> dict:
 @app.route("/")
 def home():
 
-    if is_authenticated():
+    stats = get_attack_data()
 
-        return redirect(
-            url_for("dashboard")
-        )
-
-    return redirect(
-        url_for("login")
+    return render_template(
+        "home.html",
+        total_attacks=stats[
+            "total_attacks"
+        ],
+        unique_ips=stats[
+            "unique_ips"
+        ],
+        active_alerts=0,
+        threat_level=stats[
+            "threat_level"
+        ],
+        recent_attacks=stats[
+            "recent_attacks"
+        ],
     )
 
 # ==================================================
@@ -269,14 +360,19 @@ def home():
 
 @app.route(
     "/login",
-    methods=["GET", "POST"],
+    methods=[
+        "GET",
+        "POST",
+    ]
 )
 def login():
 
     if is_authenticated():
 
         return redirect(
-            url_for("dashboard")
+            url_for(
+                "dashboard"
+            )
         )
 
     if request.method == "POST":
@@ -295,27 +391,49 @@ def login():
             ).strip()
         )
 
-        user = USERS.get(
+        users = load_users()
+
+        user = users.get(
             username
         )
 
         if (
             user
-            and user["password"]
-            == password
+            and user.get(
+                "active",
+                True
+            )
+            and user.get(
+                "password"
+            ) == password
         ):
 
-            session["user"] = (
-                username
-            )
+            session.clear()
 
-            session["role"] = (
-                user["role"]
+            session[
+                "user"
+            ] = username
+
+            session[
+                "role"
+            ] = user[
+                "role"
+            ]
+
+            session.permanent = True
+
+            log_event(
+                actor=username,
+                action="LOGIN_SUCCESS",
+                details={
+                    "role":
+                        user["role"]
+                }
             )
 
             flash(
                 "Login successful",
-                "success",
+                "success"
             )
 
             return redirect(
@@ -324,13 +442,20 @@ def login():
                 )
             )
 
+        log_event(
+            actor=username,
+            action="LOGIN_FAILED"
+        )
+
         flash(
             "Invalid credentials",
-            "danger",
+            "danger"
         )
 
     return render_template(
-        "login.html"
+        "login.html",
+        last_login="Unknown",
+        active_sessions=0
     )
 
 
@@ -338,19 +463,26 @@ def login():
 @login_required
 def logout():
 
+    log_event(
+        actor=current_user(),
+        action="LOGOUT"
+    )
+
     session.clear()
 
     flash(
-        "Logged out",
-        "info",
+        "Logged out successfully",
+        "info"
     )
 
     return redirect(
-        url_for("login")
+        url_for(
+            "login"
+        )
     )
 
 # ==================================================
-# MAIN PAGES
+# DASHBOARD
 # ==================================================
 
 @app.route("/dashboard")
@@ -376,15 +508,37 @@ def dashboard():
         threat_level=stats[
             "threat_level"
         ],
+        role=current_role(),
     )
 
+# ==================================================
+# INFORMATION
+# ==================================================
 
 @app.route("/about")
 @login_required
 def about():
 
-    return render_template(
+    return render_soc_page(
         "about.html"
+    )
+
+
+@app.route("/help")
+@login_required
+def help():
+
+    return render_soc_page(
+        "help.html"
+    )
+
+
+@app.route("/contact")
+@login_required
+def contact():
+
+    return render_soc_page(
+        "contact.html"
     )
 
 # ==================================================
@@ -394,44 +548,92 @@ def about():
 @app.route("/alerts")
 @login_required
 def alerts():
-    return render_template("alerts.html")
+
+    return render_soc_page(
+        "alerts.html"
+    )
 
 
 @app.route("/attack-logs")
 @login_required
 def attack_logs():
-    return render_template("attack_logs.html")
+
+    stats = get_attack_data()
+
+    return render_template(
+        "attack_logs.html",
+        attacks=stats[
+            "recent_attacks"
+        ]
+    )
 
 
 @app.route("/attack-statistics")
 @login_required
 def attack_statistics():
+
+    stats = get_attack_data()
+
     return render_template(
-        "attack_statistics.html"
+        "attack_statistics.html",
+        total_attacks=stats[
+            "total_attacks"
+        ],
+        unique_ips=stats[
+            "unique_ips"
+        ],
+        country_stats=stats[
+            "country_stats"
+        ],
     )
 
 
 @app.route("/attack-timeline")
 @login_required
 def attack_timeline():
+
+    stats = get_attack_data()
+
     return render_template(
-        "attack_timeline.html"
+        "attack_timeline.html",
+        attacks=stats[
+            "recent_attacks"
+        ]
     )
 
 
 @app.route("/geolocation")
 @login_required
 def geolocation():
+
+    stats = get_attack_data()
+
     return render_template(
-        "geolocation.html"
+        "geolocation.html",
+        country_stats=stats[
+            "country_stats"
+        ]
     )
 
 
 @app.route("/reports")
 @login_required
 def reports():
-    return render_template(
+
+    return render_soc_page(
         "reports.html"
+    )
+
+
+@app.route("/status")
+@login_required
+def status():
+
+    stats = get_attack_data()
+
+    return render_template(
+        "status.html",
+        stats=stats
     )
 
 # ==================================================
@@ -439,79 +641,89 @@ def reports():
 # ==================================================
 
 @app.route("/ioc-extraction")
-@role_required(
-    "admin",
-    "analyst"
+@permission_required(
+    "ioc_extraction"
 )
 def ioc_extraction():
+
     return render_template(
-        "ioc_extraction.html"
+        "ioc_extraction.html",
+        iocs=[]
     )
 
 
 @app.route("/malware-analysis")
-@role_required(
-    "admin",
-    "analyst"
+@permission_required(
+    "malware_analysis"
 )
 def malware_analysis():
+
     return render_template(
-        "malware_analysis.html"
+        "malware_analysis.html",
+        files=[]
     )
 
 
 @app.route("/mitre-mapping")
-@role_required(
-    "admin",
-    "analyst"
+@permission_required(
+    "mitre_mapping"
 )
 def mitre_mapping():
+
     return render_template(
-        "mitre_mapping.html"
+        "mitre_mapping.html",
+        mitre_mappings=[],
+        mitre_stats={}
     )
 
 
 @app.route("/threat-classification")
-@role_required(
-    "admin",
-    "analyst"
+@permission_required(
+    "threat_classification"
 )
 def threat_classification():
+
     return render_template(
-        "threat_classification.html"
+        "threat_classification.html",
+        threats=[],
+        threat_stats={}
     )
 
 
 @app.route("/threat-hunting")
-@role_required(
-    "admin",
-    "analyst"
+@permission_required(
+    "threat_hunting"
 )
 def threat_hunting():
+
     return render_template(
-        "threat_hunting.html"
+        "threat_hunting.html",
+        results=[]
     )
 
 
 @app.route("/case-management")
-@role_required(
-    "admin",
-    "analyst"
+@permission_required(
+    "case_management"
 )
 def case_management():
+
     return render_template(
-        "case_management.html"
+        "case_management.html",
+        cases=[]
     )
 
 
 @app.route("/incident-response")
-@role_required(
-    "admin",
-    "analyst"
+@permission_required(
+    "incident_response"
 )
 def incident_response():
+
     return render_template(
-        "incident_response.html"
+        "incident_response.html",
+        incidents={},
+        incident_list=[]
     )
 
 # ==================================================
@@ -521,7 +733,8 @@ def incident_response():
 @app.route("/ip-intelligence")
 @login_required
 def ip_intelligence():
-    return render_template(
+
+    return render_soc_page(
         "ip_intelligence.html"
     )
 
@@ -529,35 +742,60 @@ def ip_intelligence():
 @app.route("/asset-inventory")
 @login_required
 def asset_inventory():
+
     return render_template(
-        "asset_inventory.html"
+        "asset_inventory.html",
+        assets=[]
     )
 
 # ==================================================
-# ADMIN ONLY
+# ADMIN MODULES
 # ==================================================
 
 @app.route("/settings")
-@role_required("admin")
+@permission_required(
+    "settings"
+)
 def settings():
-    return render_template(
+
+    return render_soc_page(
         "settings.html"
     )
 
 
-@app.route("/user-management")
-@role_required("admin")
+@app.route(
+    "/user-management",
+    methods=["GET", "POST"]
+)
+@permission_required("user_management")
 def user_management():
+
+    if request.method == "POST":
+        # create/update user
+
+        flash(
+            "User saved",
+            "success"
+        )
+
+    users = load_users()
+
     return render_template(
-        "user_management.html"
+        "user_management.html",
+        users=users
     )
 
 
 @app.route("/audit-logs")
-@role_required("admin")
+@permission_required(
+    "audit_logs"
+)
 def audit_logs():
+
     return render_template(
-        "audit_logs.html"
+        "audit_logs.html",
+        audit_logs=[],
+        audit_stats={}
     )
 
 # ==================================================
@@ -582,9 +820,9 @@ def api_recent():
     return jsonify(
         {
             "recent_attacks":
-            stats[
-                "recent_attacks"
-            ]
+                stats[
+                    "recent_attacks"
+                ]
         }
     )
 
@@ -594,29 +832,111 @@ def api_health():
 
     return jsonify(
         {
-            "status": "healthy",
-            "service": "soc-platform",
+            "status":
+                "healthy",
+            "service":
+                "soc-dashboard",
+            "version":
+                "2.0"
         }
     )
 
 # ==================================================
-# STATUS
+# DEBUG ROUTES
 # ==================================================
 
-@app.route("/status")
+@app.route("/debug-session")
 @login_required
-def status():
+def debug_session():
 
-    stats = get_attack_data()
+    return jsonify(
+        {
+            "user":
+                session.get(
+                    "user"
+                ),
 
-    return render_template(
-        "status.html",
-        stats=stats,
+            "role":
+                session.get(
+                    "role"
+                ),
+
+            "session":
+                dict(
+                    session
+                ),
+        }
+    )
+
+
+@app.route("/debug-role")
+@login_required
+def debug_role():
+
+    return jsonify(
+        {
+            "user":
+                session.get(
+                    "user"
+                ),
+
+            "role":
+                session.get(
+                    "role"
+                ),
+        }
+    )
+
+
+@app.route("/debug-permissions")
+@login_required
+def debug_permissions():
+
+    from core.storage import (
+        load_permissions
+    )
+
+    return jsonify(
+        load_permissions()
+    )
+
+
+@app.route("/routes")
+def routes():
+
+    return jsonify(
+        {
+            "routes":
+                sorted(
+                    [
+                        str(rule)
+                        for rule in
+                        app.url_map.iter_rules()
+                    ]
+                )
+        }
     )
 
 # ==================================================
 # ERROR HANDLERS
 # ==================================================
+
+@app.errorhandler(401)
+def unauthorized(error):
+
+    return (
+        render_template(
+            "error.html",
+            **build_error_context(
+                "401",
+                "Unauthorized",
+                "LOGIN REQUIRED",
+                "Authentication required."
+            )
+        ),
+        401,
+    )
+
 
 @app.errorhandler(403)
 def forbidden(error):
@@ -624,10 +944,12 @@ def forbidden(error):
     return (
         render_template(
             "error.html",
-            error_code="403",
-            error_title="Forbidden",
-            error_message="ACCESS DENIED",
-            error_description="Permission denied.",
+            **build_error_context(
+                "403",
+                "Forbidden",
+                "ACCESS DENIED",
+                "Permission denied."
+            )
         ),
         403,
     )
@@ -639,10 +961,12 @@ def not_found(error):
     return (
         render_template(
             "error.html",
-            error_code="404",
-            error_title="Page Not Found",
-            error_message="NOT FOUND",
-            error_description="Page does not exist.",
+            **build_error_context(
+                "404",
+                "Page Not Found",
+                "NOT FOUND",
+                "The requested page does not exist."
+            )
         ),
         404,
     )
@@ -651,22 +975,48 @@ def not_found(error):
 @app.errorhandler(500)
 def server_error(error):
 
+    logger.exception(
+        "Unhandled server error"
+    )
+
     return (
         render_template(
             "error.html",
-            error_code="500",
-            error_title="Server Error",
-            error_message="SERVER ERROR",
-            error_description="Unexpected application error.",
+            **build_error_context(
+                "500",
+                "Server Error",
+                "SERVER ERROR",
+                "Unexpected application error."
+            )
         ),
         500,
     )
+
+# ==================================================
+# STARTUP
+# ==================================================
+
+def startup():
+
+    ensure_data_files()
+
+    logger.info(
+        "SOC Dashboard Started"
+    )
+
+    logger.info(
+        "Cowrie Log File: %s",
+        LOG_FILE
+    )
+
 
 # ==================================================
 # MAIN
 # ==================================================
 
 if __name__ == "__main__":
+
+    startup()
 
     app.run(
         host="0.0.0.0",

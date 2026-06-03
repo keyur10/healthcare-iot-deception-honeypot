@@ -1425,3 +1425,11 @@ body::before {
         width:95%;
     }
 }
+.auto-dismiss-alert {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.auto-dismiss-alert:not(.show) {
+    opacity: 0;
+    transform: translateY(-10px);
+}

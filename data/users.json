@@ -1,5 +1,7 @@
 {
-    "admin":[
-        "all"
-    ]
+    "admin": {
+        "password": "admin123",
+        "role": "admin",
+        "active": true
+    }
 }

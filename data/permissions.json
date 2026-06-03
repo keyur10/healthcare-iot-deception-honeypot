@@ -1,5 +1,55 @@
 {
-    "refresh_interval":30,
-    "email_alerts":true,
-    "telegram_alerts":false
+    "admin": {
+        "*": true,
+        "dashboard": true,
+        "alerts": true,
+        "attack_logs": true,
+        "attack_statistics": true,
+        "attack_timeline": true,
+        "geolocation": true,
+        "reports": true,
+        "ip_intelligence": true,
+        "asset_inventory": true,
+        "ioc_extraction": true,
+        "malware_analysis": true,
+        "mitre_mapping": true,
+        "threat_classification": true,
+        "threat_hunting": true,
+        "case_management": true,
+        "incident_response": true,
+        "settings": true,
+        "user_management": true,
+        "audit_logs": true
+    },
+
+    "analyst": {
+        "dashboard": true,
+        "alerts": true,
+        "attack_logs": true,
+        "attack_statistics": true,
+        "attack_timeline": true,
+        "geolocation": true,
+        "reports": true,
+        "ip_intelligence": true,
+        "asset_inventory": true,
+        "ioc_extraction": true,
+        "malware_analysis": true,
+        "mitre_mapping": true,
+        "threat_classification": true,
+        "threat_hunting": true,
+        "case_management": true,
+        "incident_response": true
+    },
+
+    "viewer": {
+        "dashboard": true,
+        "alerts": true,
+        "attack_logs": true,
+        "attack_statistics": true,
+        "attack_timeline": true,
+        "geolocation": true,
+        "reports": true,
+        "ip_intelligence": true,
+        "asset_inventory": true
+    }
 }

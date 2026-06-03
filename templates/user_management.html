@@ -1,38 +1,263 @@
 {% extends "base.html" %}
 
 {% block title %}
-Audit Logs
+User Management
 {% endblock %}
 
 {% block content %}
 
 <div class="dashboard-panel">
 
-    <h4>Audit Logs</h4>
+```
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-    <table class="table">
+    <h2>
 
-        <thead>
+        <i class="fas fa-users-cog"></i>
 
-            <tr>
-                <th>Timestamp</th>
-                <th>User</th>
-                <th>Action</th>
-            </tr>
+        User Management
 
-        </thead>
+    </h2>
 
-        <tbody>
+    <button
+        class="btn btn-success">
 
-            <tr>
-                <td>2026-06-02</td>
-                <td>admin</td>
-                <td>Created User</td>
-            </tr>
+        <i class="fas fa-user-plus"></i>
 
-        </tbody>
+        Create User
 
-    </table>
+    </button>
+
+</div>
+
+<!-- CREATE USER -->
+
+<div class="dashboard-panel mb-4">
+
+    <h4>
+
+        Create New User
+
+    </h4>
+
+    <form method="POST">
+
+        <div class="row">
+
+            <div class="col-md-4">
+
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Username">
+
+            </div>
+
+            <div class="col-md-4">
+
+                <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Password">
+
+            </div>
+
+            <div class="col-md-4">
+
+                <select
+                    class="form-select">
+
+                    <option>
+                        Viewer
+                    </option>
+
+                    <option>
+                        Analyst
+                    </option>
+
+                    <option>
+                        Admin
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="mt-3">
+
+            <button
+                class="btn btn-primary">
+
+                Create User
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<!-- USER TABLE -->
+
+<div class="dashboard-panel">
+
+    <h4>
+
+        Existing Users
+
+    </h4>
+
+    <div class="table-responsive">
+
+        <table class="table table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for user in users %}
+
+                <tr>
+
+                    <td>
+
+                        {{ user.username }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-info">
+
+                            {{ user.role }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        {% if user.active %}
+
+                        <span class="badge bg-success">
+
+                            Active
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge bg-danger">
+
+                            Disabled
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {{ user.last_login|default("Never") }}
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-sm btn-warning">
+
+                            Reset Password
+
+                        </button>
+
+                        <button
+                            class="btn btn-sm btn-info">
+
+                            Permissions
+
+                        </button>
+
+                        <button
+                            class="btn btn-sm btn-secondary">
+
+                            Disable
+
+                        </button>
+
+                        <button
+                            class="btn btn-sm btn-danger">
+
+                            Delete
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- FUTURE FEATURES -->
+
+<div class="dashboard-panel mt-4">
+
+    <h4>
+
+        Future Features
+
+    </h4>
+
+    <ul>
+
+        <li>Bulk User Import</li>
+
+        <li>Bulk User Export</li>
+
+        <li>LDAP Integration</li>
+
+        <li>Active Directory Integration</li>
+
+        <li>2FA Management</li>
+
+        <li>Role Templates</li>
+
+        <li>Permission Groups</li>
+
+        <li>User Activity Tracking</li>
+
+        <li>Password Expiry Policies</li>
+
+        <li>Account Lockout Rules</li>
+
+    </ul>
+
+</div>
+```
 
 </div>
 

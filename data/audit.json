@@ -1,0 +1,110 @@
+[
+    {
+        "timestamp": "2026-06-03T07:55:58.239648",
+        "actor": "system",
+        "action": "TEST_EVENT",
+        "target": "",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-06-03T07:56:21.299301",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-03T07:56:25.733531",
+        "actor": "admin",
+        "action": "LOGOUT",
+        "target": "",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-06-03T08:07:10.668121",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-03T08:38:15.840256",
+        "actor": "system",
+        "action": "TEST_EVENT",
+        "target": "",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-06-03T08:55:53.142529",
+        "actor": "admin",
+        "action": "LOGOUT",
+        "target": "",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-06-03T08:55:57.634423",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-03T10:12:07.909210",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-03T10:18:08.815377",
+        "actor": "admin",
+        "action": "LOGOUT",
+        "target": "",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-06-03T10:18:25.039593",
+        "actor": "kevin",
+        "action": "LOGIN_FAILED",
+        "target": "",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-06-03T10:18:31.213920",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-03T10:19:08.153013",
+        "actor": "admin",
+        "action": "LOGOUT",
+        "target": "",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-06-03T10:19:14.771830",
+        "actor": "kevin",
+        "action": "LOGIN_FAILED",
+        "target": "",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-06-03T10:19:20.264881",
+        "actor": "kevin",
+        "action": "LOGIN_FAILED",
+        "target": "",
+        "details": {}
+    }
+]

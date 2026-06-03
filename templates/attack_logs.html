@@ -1,27 +1,255 @@
 {% extends "base.html" %}
 
 {% block title %}
-Attack Statistics
+Attack Logs
 {% endblock %}
 
 {% block content %}
 
-<div class="row">
+<div class="container-fluid py-4">
 
-    <div class="col-md-4">
-        <div class="stat-card p-4">
-            <h6>Total Attacks</h6>
-            <h2>{{ total_attacks }}</h2>
-        </div>
+```
+<div class="dashboard-panel">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>
+
+            <i class="fas fa-list"></i>
+
+            Attack Logs
+
+        </h2>
+
+        <button class="btn btn-primary">
+
+            Export Logs
+
+        </button>
+
     </div>
 
-    <div class="col-md-4">
-        <div class="stat-card p-4">
-            <h6>Unique IPs</h6>
-            <h2>{{ unique_ips }}</h2>
+    <p class="text-muted">
+
+        Real-time attack activity collected from the Cowrie honeypot.
+
+    </p>
+
+    <!-- SEARCH -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-8">
+
+            <input
+                type="text"
+                id="searchInput"
+                class="form-control"
+                placeholder="Search IP, Username, Password">
+
         </div>
+
+        <div class="col-md-4">
+
+            <button
+                class="btn btn-primary w-100">
+
+                Search
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- LOG TABLE -->
+
+    <div class="table-responsive">
+
+        <table
+            id="attackTable"
+            class="table table-striped table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>IP Address</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Timestamp</th>
+                    <th>Country</th>
+                    <th>Type</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for attack in recent_attacks %}
+
+                <tr>
+
+                    <td>
+
+                        {{ attack.ip }}
+
+                    </td>
+
+                    <td>
+
+                        {{ attack.username }}
+
+                    </td>
+
+                    <td>
+
+                        {{ attack.password }}
+
+                    </td>
+
+                    <td>
+
+                        {{ attack.timestamp }}
+
+                    </td>
+
+                    <td>
+
+                        {{ attack.country|default('Unknown') }}
+
+                    </td>
+
+                    <td>
+
+                        Brute Force
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- LIVE FEED -->
+
+    <div class="dashboard-panel mt-4">
+
+        <h4>
+
+            Recent Activity Feed
+
+        </h4>
+
+        <div id="attack-feed">
+
+            {% for attack in recent_attacks[:10] %}
+
+            <div class="feed-item">
+
+                <strong>
+
+                    {{ attack.ip }}
+
+                </strong>
+
+                attempted login using
+
+                {{ attack.username }}
+
+                /
+
+                {{ attack.password }}
+
+                <br>
+
+                <small>
+
+                    {{ attack.timestamp }}
+
+                </small>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <!-- FUTURE FEATURES -->
+
+    <div class="dashboard-panel mt-4">
+
+        <h4>
+
+            Future Features
+
+        </h4>
+
+        <ul>
+
+            <li>Real-Time Streaming Logs</li>
+
+            <li>GeoIP Correlation</li>
+
+            <li>MITRE ATT&CK Mapping</li>
+
+            <li>IOC Correlation</li>
+
+            <li>Alert Generation</li>
+
+            <li>Threat Classification</li>
+
+            <li>Export CSV</li>
+
+            <li>Export Excel</li>
+
+            <li>Export PDF</li>
+
+            <li>Advanced Search Filters</li>
+
+        </ul>
+
     </div>
 
 </div>
+```
+
+</div>
+
+<script>
+
+document
+.getElementById("searchInput")
+?.addEventListener("keyup", function() {
+
+    let value =
+        this.value.toLowerCase();
+
+    document
+        .querySelectorAll(
+            "#attackTable tbody tr"
+        )
+        .forEach(row => {
+
+            row.style.display =
+                row.innerText
+                    .toLowerCase()
+                    .includes(value)
+                        ? ""
+                        : "none";
+
+        });
+
+});
+
+</script>
 
 {% endblock %}

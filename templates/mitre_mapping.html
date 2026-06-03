@@ -6,28 +6,381 @@ MITRE ATT&CK Mapping
 
 {% block content %}
 
+<div class="container-fluid py-4">
+
+```
 <div class="dashboard-panel">
 
-    <h4>MITRE ATT&CK Mapping</h4>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <table class="table">
+        <h2>
 
-        <tr>
-            <th>Technique</th>
-            <th>ID</th>
-        </tr>
+            <i class="fas fa-crosshairs"></i>
 
-        <tr>
-            <td>Brute Force</td>
-            <td>T1110</td>
-        </tr>
+            MITRE ATT&CK Mapping
 
-        <tr>
-            <td>Valid Accounts</td>
-            <td>T1078</td>
-        </tr>
+        </h2>
 
-    </table>
+        <button class="btn btn-success">
+
+            Export Mapping Report
+
+        </button>
+
+    </div>
+
+    <p class="text-muted">
+
+        Correlate detected attacks with MITRE ATT&CK tactics and techniques.
+
+    </p>
+
+    <!-- SUMMARY -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="card-body text-center">
+
+                    <h6>
+
+                        Techniques Detected
+
+                    </h6>
+
+                    <h2>
+
+                        {{ mitre_stats.techniques|default(0) }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="card-body text-center">
+
+                    <h6>
+
+                        Tactics Covered
+
+                    </h6>
+
+                    <h2>
+
+                        {{ mitre_stats.tactics|default(0) }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="card-body text-center">
+
+                    <h6>
+
+                        Active Threats
+
+                    </h6>
+
+                    <h2 class="text-danger">
+
+                        {{ mitre_stats.threats|default(0) }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="card-body text-center">
+
+                    <h6>
+
+                        Coverage
+
+                    </h6>
+
+                    <h2 class="text-success">
+
+                        {{ mitre_stats.coverage|default('0%') }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="dashboard-panel mb-4">
+
+        <h4>
+
+            Search MITRE Techniques
+
+        </h4>
+
+        <div class="row">
+
+            <div class="col-md-10">
+
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Technique ID, Technique Name, Tactic">
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button class="btn btn-primary w-100">
+
+                    Search
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MAPPING TABLE -->
+
+    <div class="table-responsive">
+
+        <table class="table table-striped table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>Technique ID</th>
+                    <th>Technique</th>
+                    <th>Tactic</th>
+                    <th>Severity</th>
+                    <th>Attack Count</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in mitre_mappings %}
+
+                <tr>
+
+                    <td>
+
+                        {{ item.id }}
+
+                    </td>
+
+                    <td>
+
+                        {{ item.technique }}
+
+                    </td>
+
+                    <td>
+
+                        {{ item.tactic }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-danger">
+
+                            {{ item.severity }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        {{ item.count }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-success">
+
+                            Detected
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- COMMON TECHNIQUES -->
+
+    <div class="dashboard-panel mt-4">
+
+        <h4>
+
+            Common Techniques Observed
+
+        </h4>
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Technique</th>
+                    <th>Tactic</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>T1110</td>
+                    <td>Brute Force</td>
+                    <td>Credential Access</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>T1078</td>
+                    <td>Valid Accounts</td>
+                    <td>Persistence</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>T1595</td>
+                    <td>Active Scanning</td>
+                    <td>Reconnaissance</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>T1583</td>
+                    <td>Acquire Infrastructure</td>
+                    <td>Resource Development</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- IOC CORRELATION -->
+
+    <div class="dashboard-panel mt-4">
+
+        <h4>
+
+            IOC Correlation
+
+        </h4>
+
+        <ul>
+
+            <li>Mapped IP Addresses</li>
+
+            <li>Mapped Domains</li>
+
+            <li>Mapped Hashes</li>
+
+            <li>Mapped Malware Samples</li>
+
+            <li>Mapped Threat Hunts</li>
+
+        </ul>
+
+    </div>
+
+    <!-- FUTURE FEATURES -->
+
+    <div class="dashboard-panel mt-4">
+
+        <h4>
+
+            Future Integrations
+
+        </h4>
+
+        <ul>
+
+            <li>Automatic ATT&CK Mapping</li>
+
+            <li>MITRE Navigator Export</li>
+
+            <li>Threat Intelligence Correlation</li>
+
+            <li>ATT&CK Heat Maps</li>
+
+            <li>Campaign Tracking</li>
+
+            <li>APT Attribution</li>
+
+            <li>SOAR Integration</li>
+
+            <li>SIEM Integration</li>
+
+            <li>PDF Reports</li>
+
+            <li>Executive MITRE Dashboards</li>
+
+        </ul>
+
+    </div>
+
+</div>
+```
 
 </div>
 

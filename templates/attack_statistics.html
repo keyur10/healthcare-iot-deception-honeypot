@@ -6,21 +6,282 @@ Attack Statistics
 
 {% block content %}
 
-<div class="row">
+<div class="container-fluid py-4">
 
-    <div class="col-md-4">
-        <div class="stat-card p-4">
-            <h6>Total Attacks</h6>
-            <h2>{{ total_attacks }}</h2>
-        </div>
+```
+<div class="dashboard-panel">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>
+
+            <i class="fas fa-chart-bar"></i>
+
+            Attack Statistics
+
+        </h2>
+
+        <button class="btn btn-primary">
+
+            Export Statistics
+
+        </button>
+
     </div>
 
-    <div class="col-md-4">
-        <div class="stat-card p-4">
-            <h6>Unique IPs</h6>
-            <h2>{{ unique_ips }}</h2>
+    <!-- KPI CARDS -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-lg-3">
+
+            <div class="stat-card p-4 text-center">
+
+                <h6>Total Attacks</h6>
+
+                <h2>{{ total_attacks }}</h2>
+
+            </div>
+
         </div>
+
+        <div class="col-lg-3">
+
+            <div class="stat-card p-4 text-center">
+
+                <h6>Unique IPs</h6>
+
+                <h2>{{ unique_ips }}</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stat-card p-4 text-center">
+
+                <h6>Threat Level</h6>
+
+                <h2>{{ threat_level }}</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="stat-card p-4 text-center">
+
+                <h6>Today's Attacks</h6>
+
+                <h2>{{ todays_attacks|default(0) }}</h2>
+
+            </div>
+
+        </div>
+
     </div>
+
+    <!-- ATTACK TYPES -->
+
+    <div class="row">
+
+        <div class="col-lg-6">
+
+            <div class="dashboard-panel">
+
+                <h4>
+
+                    Attack Types
+
+                </h4>
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Type</th>
+                            <th>Count</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Brute Force</td>
+                            <td>{{ brute_force|default(0) }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Credential Stuffing</td>
+                            <td>{{ credential_stuffing|default(0) }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Reconnaissance</td>
+                            <td>{{ reconnaissance|default(0) }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Bot Activity</td>
+                            <td>{{ bot_activity|default(0) }}</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="dashboard-panel">
+
+                <h4>
+
+                    Top Countries
+
+                </h4>
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Country</th>
+                            <th>Attacks</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for country in country_stats %}
+
+                        <tr>
+
+                            <td>{{ country.country }}</td>
+
+                            <td>{{ country.count }}</td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOP ATTACKERS -->
+
+    <div class="dashboard-panel mt-4">
+
+        <h4>
+
+            Top Attacking IPs
+
+        </h4>
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>IP Address</th>
+                    <th>Attempts</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for ip in top_attackers|default([]) %}
+
+                <tr>
+
+                    <td>{{ ip.address }}</td>
+
+                    <td>{{ ip.count }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- TREND CHART -->
+
+    <div class="dashboard-panel mt-4">
+
+        <h4>
+
+            Attack Trend
+
+        </h4>
+
+        <canvas id="attackChart"></canvas>
+
+    </div>
+
+    <!-- FUTURE FEATURES -->
+
+    <div class="dashboard-panel mt-4">
+
+        <h4>
+
+            Future Analytics
+
+        </h4>
+
+        <ul>
+
+            <li>Real-Time Attack Trends</li>
+
+            <li>MITRE ATT&CK Statistics</li>
+
+            <li>IOC Correlation Metrics</li>
+
+            <li>Malware Trend Analysis</li>
+
+            <li>Threat Hunting Metrics</li>
+
+            <li>Monthly Reports</li>
+
+            <li>PDF Export</li>
+
+            <li>Excel Export</li>
+
+            <li>CSV Export</li>
+
+            <li>Executive Dashboards</li>
+
+        </ul>
+
+    </div>
+
+</div>
+```
 
 </div>
 
