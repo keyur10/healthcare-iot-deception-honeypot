@@ -1,46 +1,89 @@
-// static/js/dashboard.js
-
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
         initializeDashboard();
 
-        startAutoRefresh();
-
     }
 );
+
+/* ==================================================
+   DASHBOARD INIT
+================================================== */
+
+let refreshInterval = null;
 
 function initializeDashboard() {
 
     console.log(
-        "SOC Dashboard Initialized"
+        "Hybrid SOC Dashboard Initialized"
     );
-
-}
-
-function startAutoRefresh() {
 
     updateDashboard();
 
-    setInterval(
-        updateDashboard,
-        10000
-    );
+    startAutoRefresh();
 
 }
+
+/* ==================================================
+   AUTO REFRESH
+================================================== */
+
+function startAutoRefresh() {
+
+    if (refreshInterval) {
+
+        clearInterval(
+            refreshInterval
+        );
+
+    }
+
+    refreshInterval =
+        setInterval(
+            updateDashboard,
+            10000
+        );
+
+}
+
+/* ==================================================
+   FETCH DASHBOARD DATA
+================================================== */
 
 async function updateDashboard() {
 
     try {
 
-        const response =
-            await fetch(
-                "/api/stats"
+        const controller =
+            new AbortController();
+
+        const timeout =
+            setTimeout(
+                () =>
+                    controller.abort(),
+                5000
             );
 
+        const response =
+            await fetch(
+                "/api/stats",
+                {
+                    signal:
+                        controller.signal
+                }
+            );
+
+        clearTimeout(
+            timeout
+        );
+
         if (!response.ok) {
-            return;
+
+            throw new Error(
+                "API Error"
+            );
+
         }
 
         const data =
@@ -54,12 +97,14 @@ async function updateDashboard() {
 
         updateAttackTable(data);
 
+        updateLastRefresh();
+
     }
 
     catch (error) {
 
         console.error(
-            "Refresh failed:",
+            "Dashboard refresh failed:",
             error
         );
 
@@ -67,87 +112,163 @@ async function updateDashboard() {
 
 }
 
-function updateCounters(data) {
+/* ==================================================
+   COUNTERS
+================================================== */
 
-    const totalAttacks =
-        document.getElementById(
-            "total-attacks"
-        );
+function animateCounter(
+    element,
+    target
+) {
 
-    const uniqueIps =
-        document.getElementById(
-            "unique-ips"
-        );
+    if (!element) {
+        return;
+    }
 
-    if (totalAttacks) {
+    const start =
+        Number(
+            element.textContent
+        ) || 0;
 
-        totalAttacks.textContent =
-            data.total_attacks ?? 0;
+    const duration = 1000;
+
+    const startTime =
+        performance.now();
+
+    function update(
+        currentTime
+    ) {
+
+        const progress =
+            Math.min(
+                (
+                    currentTime -
+                    startTime
+                ) /
+                duration,
+                1
+            );
+
+        const value =
+            Math.floor(
+                start +
+                (
+                    target -
+                    start
+                ) *
+                progress
+            );
+
+        element.textContent =
+            value;
+
+        if (
+            progress < 1
+        ) {
+
+            requestAnimationFrame(
+                update
+            );
+
+        }
 
     }
 
-    if (uniqueIps) {
-
-        uniqueIps.textContent =
-            data.unique_ips ?? 0;
-
-    }
+    requestAnimationFrame(
+        update
+    );
 
 }
 
-function updateThreatLevel(data) {
+function updateCounters(
+    data
+) {
 
-    const threatElement =
+    animateCounter(
+        document.getElementById(
+            "total-attacks"
+        ),
+        data.total_attacks || 0
+    );
+
+    animateCounter(
+        document.getElementById(
+            "unique-ips"
+        ),
+        data.unique_ips || 0
+    );
+
+}
+
+/* ==================================================
+   THREAT LEVEL
+================================================== */
+
+function updateThreatLevel(
+    data
+) {
+
+    const element =
         document.getElementById(
             "threat-level"
         );
 
-    if (!threatElement) {
+    if (!element) {
         return;
     }
 
-    threatElement.textContent =
-        data.threat_level ?? "LOW";
+    element.textContent =
+        data.threat_level ||
+        "LOW";
 
-    threatElement.className = "";
+    element.className =
+        "threat-badge";
 
-    switch (data.threat_level) {
+    switch (
+        data.threat_level
+    ) {
 
         case "CRITICAL":
 
-            threatElement.classList.add(
-                "text-danger"
+            element.classList.add(
+                "bg-danger"
             );
 
             break;
 
         case "HIGH":
 
-            threatElement.classList.add(
-                "text-warning"
+            element.classList.add(
+                "bg-warning"
             );
 
             break;
 
         case "MEDIUM":
 
-            threatElement.classList.add(
-                "text-info"
+            element.classList.add(
+                "bg-info"
             );
 
             break;
 
         default:
 
-            threatElement.classList.add(
-                "text-success"
+            element.classList.add(
+                "bg-success"
             );
 
     }
 
 }
 
-function updateAttackFeed(data) {
+/* ==================================================
+   ATTACK FEED
+================================================== */
+
+function updateAttackFeed(
+    data
+) {
 
     const feed =
         document.getElementById(
@@ -159,45 +280,60 @@ function updateAttackFeed(data) {
     }
 
     const attacks =
-        data.recent_attacks || [];
+        data.recent_attacks ||
+        [];
 
     feed.innerHTML = "";
 
-    attacks.forEach(attack => {
+    attacks.forEach(
+        attack => {
 
-        feed.insertAdjacentHTML(
-            "beforeend",
+            const item =
+                document.createElement(
+                    "div"
+                );
 
-            `
-            <div class="feed-item">
+            item.className =
+                "feed-item";
 
+            item.innerHTML = `
                 <div class="feed-time">
                     ${attack.timestamp}
                 </div>
 
-                <strong>
+                <div class="fw-bold text-info">
                     ${attack.ip}
-                </strong>
+                </div>
+
+                <small>
+                    Username:
+                    ${attack.username}
+                </small>
 
                 <br>
 
-                Username:
-                ${attack.username}
+                <small>
+                    Password:
+                    ${attack.password}
+                </small>
+            `;
 
-                <br>
+            feed.appendChild(
+                item
+            );
 
-                Password:
-                ${attack.password}
-
-            </div>
-            `
-        );
-
-    });
+        }
+    );
 
 }
 
-function updateAttackTable(data) {
+/* ==================================================
+   ATTACK TABLE
+================================================== */
+
+function updateAttackTable(
+    data
+) {
 
     const tbody =
         document.querySelector(
@@ -208,39 +344,81 @@ function updateAttackTable(data) {
         return;
     }
 
-    const attacks =
-        data.recent_attacks || [];
-
     tbody.innerHTML = "";
 
-    attacks.forEach(attack => {
+    (
+        data.recent_attacks ||
+        []
+    ).forEach(
+        attack => {
 
-        tbody.insertAdjacentHTML(
-            "beforeend",
+            const row =
+                document.createElement(
+                    "tr"
+                );
 
-            `
-            <tr>
+            row.innerHTML = `
+                <td>${attack.ip}</td>
+                <td>${attack.username}</td>
+                <td>${attack.password}</td>
+                <td>${attack.timestamp}</td>
+            `;
 
-                <td>
-                    ${attack.ip}
-                </td>
+            tbody.appendChild(
+                row
+            );
 
-                <td>
-                    ${attack.username}
-                </td>
-
-                <td>
-                    ${attack.password}
-                </td>
-
-                <td>
-                    ${attack.timestamp}
-                </td>
-
-            </tr>
-            `
-        );
-
-    });
+        }
+    );
 
 }
+
+/* ==================================================
+   LAST REFRESH
+================================================== */
+
+function updateLastRefresh() {
+
+    const element =
+        document.getElementById(
+            "last-refresh"
+        );
+
+    if (!element) {
+        return;
+    }
+
+    element.textContent =
+        new Date()
+        .toLocaleTimeString();
+
+}
+
+/* ==================================================
+   PAGE VISIBILITY
+================================================== */
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if (
+            document.hidden
+        ) {
+
+            clearInterval(
+                refreshInterval
+            );
+
+        }
+
+        else {
+
+            startAutoRefresh();
+
+            updateDashboard();
+
+        }
+
+    }
+);

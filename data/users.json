@@ -2,6 +2,18 @@
     "admin": {
         "password": "admin123",
         "role": "admin",
-        "active": true
+        "mfa": false
+    },
+
+    "analyst1": {
+        "password": "analyst123",
+        "role": "analyst",
+        "mfa": true
+    },
+
+    "user1": {
+        "password": "user123",
+        "role": "user",
+        "mfa": true
     }
 }

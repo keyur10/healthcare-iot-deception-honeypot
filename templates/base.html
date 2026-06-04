@@ -7,8 +7,8 @@
     <meta charset="UTF-8">
 
     <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+        name="theme-color"
+        content="#060b13, initial-scale=1.0">
 
     <title>
 
@@ -36,8 +36,6 @@
 
 <body>
 
-    <!-- LOADER -->
-
     <div id="loading-overlay">
 
         <div id="page">
@@ -51,7 +49,7 @@
 
                 <div class="loading-text">
 
-                    Loading SOC Dashboard...
+                    Loading SOC Dashboard
 
                 </div>
 
@@ -64,8 +62,6 @@
     <div class="wrapper">
 
         {% if session.get("user") %}
-
-        <!-- SIDEBAR -->
 
         <aside class="sidebar">
 
@@ -88,338 +84,146 @@
             <ul class="sidebar-menu">
 
                 <li>
-
-                    <a
-                        href="{{ url_for('dashboard') }}"
-                        class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
-
+                    <a href="{{ url_for('dashboard') }}">
                         <i class="fas fa-chart-line"></i>
-
                         Dashboard
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('alerts') }}">
-
                         <i class="fas fa-bell"></i>
-
                         Alerts
-
-                        <span class="badge bg-danger ms-2">
-
-                            {{ active_alerts|default(0) }}
-
-                        </span>
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('attack_logs') }}">
-
                         <i class="fas fa-terminal"></i>
-
                         Attack Logs
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('attack_statistics') }}">
-
                         <i class="fas fa-chart-bar"></i>
-
                         Statistics
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('attack_timeline') }}">
-
                         <i class="fas fa-clock"></i>
-
                         Timeline
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('geolocation') }}">
-
                         <i class="fas fa-globe"></i>
-
                         Geolocation
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('ip_intelligence') }}">
-
                         <i class="fas fa-network-wired"></i>
-
                         IP Intelligence
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('asset_inventory') }}">
-
                         <i class="fas fa-server"></i>
-
                         Asset Inventory
-
                     </a>
-
                 </li>
 
                 {% if has_permission("ioc_extraction") %}
-
                 <li>
-
                     <a href="{{ url_for('ioc_extraction') }}">
-
                         <i class="fas fa-fingerprint"></i>
-
                         IOC Extraction
-
                     </a>
-
                 </li>
-
                 {% endif %}
 
                 {% if has_permission("malware_analysis") %}
-
                 <li>
-
                     <a href="{{ url_for('malware_analysis') }}">
-
                         <i class="fas fa-bug"></i>
-
                         Malware Analysis
-
                     </a>
-
                 </li>
-
                 {% endif %}
 
                 {% if has_permission("mitre_mapping") %}
-
                 <li>
-
                     <a href="{{ url_for('mitre_mapping') }}">
-
                         <i class="fas fa-crosshairs"></i>
-
                         MITRE Mapping
-
                     </a>
-
                 </li>
-
                 {% endif %}
 
                 {% if has_permission("threat_classification") %}
-
                 <li>
-
                     <a href="{{ url_for('threat_classification') }}">
-
                         <i class="fas fa-shield-virus"></i>
-
                         Threat Classification
-
                     </a>
-
                 </li>
-
                 {% endif %}
 
                 {% if has_permission("threat_hunting") %}
-
                 <li>
-
                     <a href="{{ url_for('threat_hunting') }}">
-
                         <i class="fas fa-search"></i>
-
                         Threat Hunting
-
                     </a>
-
                 </li>
-
-                {% endif %}
-
-                {% if has_permission("case_management") %}
-
-                <li>
-
-                    <a href="{{ url_for('case_management') }}">
-
-                        <i class="fas fa-folder-open"></i>
-
-                        Case Management
-
-                    </a>
-
-                </li>
-
-                {% endif %}
-
-                {% if has_permission("incident_response") %}
-
-                <li>
-
-                    <a href="{{ url_for('incident_response') }}">
-
-                        <i class="fas fa-fire-extinguisher"></i>
-
-                        Incident Response
-
-                    </a>
-
-                </li>
-
                 {% endif %}
 
                 <li>
-
                     <a href="{{ url_for('reports') }}">
-
                         <i class="fas fa-file-alt"></i>
-
                         Reports
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('status') }}">
-
                         <i class="fas fa-heartbeat"></i>
-
                         Status
-
                     </a>
-
-                </li>
-                {% if has_permission("user_management") %}
-
-                <li>
-
-                    <a href="{{ url_for('user_management') }}">
-
-                        <i class="fas fa-users-cog"></i>
-
-                        User Management
-
-                    </a>
-
                 </li>
 
-                {% endif %}
-
-                {% if has_permission("audit_logs") %}
-
                 <li>
-
-                    <a href="{{ url_for('audit_logs') }}">
-
-                        <i class="fas fa-clipboard-list"></i>
-
-                        Audit Logs
-
-                    </a>
-
-                </li>
-
-                {% endif %}
-
-                {% if has_permission("settings") %}
-
-                <li>
-
-                    <a href="{{ url_for('settings') }}">
-
-                        <i class="fas fa-cogs"></i>
-
-                        Settings
-
-                    </a>
-
-                </li>
-
-                {% endif %}
-
-                <li>
-
                     <a href="{{ url_for('help') }}">
-
                         <i class="fas fa-question-circle"></i>
-
                         Help
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('contact') }}">
-
                         <i class="fas fa-headset"></i>
-
                         Contact
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('about') }}">
-
                         <i class="fas fa-circle-info"></i>
-
                         About
-
                     </a>
-
                 </li>
 
                 <li>
-
                     <a href="{{ url_for('logout') }}">
-
                         <i class="fas fa-sign-out-alt"></i>
-
                         Logout
-
                     </a>
-
                 </li>
 
             </ul>
@@ -428,9 +232,29 @@
 
         {% endif %}
 
-        <!-- MAIN CONTENT -->
-
         <main class="main-content">
+{% if request.endpoint not in [
+    'home',
+    'dashboard',
+    'login',
+    'logout'
+] %}
+
+<div class="page-toolbar">
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="soc-back-btn">
+
+        <i class="fas fa-chevron-left"></i>
+
+        Dashboard
+
+    </a>
+
+</div>
+
+{% endif %}
 
             {% if session.get("user") %}
 
@@ -452,17 +276,15 @@
 
                     </span>
 
-                    <div class="d-flex align-items-center gap-2">
+                    <div class="d-flex align-items-center gap-3">
 
-                        <span
-                            class="badge bg-success">
+                        <span class="badge bg-success">
 
                             Cowrie Online
 
                         </span>
 
-                        <span
-                            class="badge bg-info">
+                        <span class="badge bg-info">
 
                             Threat Engine Active
 
@@ -473,18 +295,17 @@
                             class="text-info">
 
                         </span>
-
-                        <div class="dropdown">
+                                            <div class="dropdown">
 
                             <button
-                                class="btn btn-outline-light dropdown-toggle"
+                                class="btn cyber-user-btn dropdown-toggle"
                                 data-bs-toggle="dropdown">
 
                                 <i class="fas fa-user-shield"></i>
 
                                 {{ session.get("user") }}
 
-                                <span class="badge bg-info ms-2">
+                                <span class="role-badge">
 
                                     {{ session.get("role")|upper }}
 
@@ -495,57 +316,33 @@
                             <ul class="dropdown-menu dropdown-menu-end">
 
                                 <li>
-
-                                    <a
-                                        class="dropdown-item"
-                                        href="{{ url_for('dashboard') }}">
-
-                                        Dashboard
-
+                                    <a class="dropdown-item"
+                                       href="{{ url_for('settings') }}">
+                                        <i class="fas fa-cog me-2"></i>
+                                        Settings
                                     </a>
-
                                 </li>
 
                                 <li>
-
-                                    <a
-                                        class="dropdown-item"
-                                        href="{{ url_for('about') }}">
-
-                                        About
-
-                                    </a>
-
-                                </li>
-
-                                <li>
-
                                     <button
                                         class="dropdown-item"
                                         onclick="toggleTheme()">
-
+                                        <i class="fas fa-moon me-2"></i>
                                         Toggle Theme
-
                                     </button>
-
                                 </li>
 
                                 <li>
-
                                     <hr class="dropdown-divider">
-
                                 </li>
 
                                 <li>
-
                                     <a
-                                        class="dropdown-item"
+                                        class="dropdown-item text-danger"
                                         href="{{ url_for('logout') }}">
-
+                                        <i class="fas fa-sign-out-alt me-2"></i>
                                         Logout
-
                                     </a>
-
                                 </li>
 
                             </ul>
@@ -560,15 +357,14 @@
 
             {% endif %}
 
-            <!-- FLASH MESSAGES -->
-
             {% with messages = get_flashed_messages(with_categories=true) %}
 
                 {% if messages %}
 
                     {% for category, message in messages %}
 
-                    <div class="alert alert-{{ category }} alert-dismissible fade show auto-dismiss-alert">
+                    <div
+                        class="alert alert-{{ category }} alert-dismissible fade show auto-dismiss-alert">
 
                         {{ message }}
 
@@ -576,7 +372,6 @@
                             type="button"
                             class="btn-close"
                             data-bs-dismiss="alert">
-
                         </button>
 
                     </div>
@@ -587,12 +382,8 @@
 
             {% endwith %}
 
-            <!-- PAGE CONTENT -->
-
             {% block content %}
             {% endblock %}
-
-            <!-- FOOTER -->
 
             <footer class="footer text-center mt-5">
 
@@ -600,18 +391,9 @@
 
                 <small>
 
-                    Healthcare IoT Deception Honeypot Network
-
-                    |
-
-                    Cowrie Honeypot
-
-                    |
-
-                    SOC Dashboard v2.0
-
-                    |
-
+                    Healthcare IoT Deception Honeypot Network |
+                    Cowrie Honeypot |
+                    SOC Dashboard v2.0 |
                     {{ session.get("user", "Guest") }}
 
                 </small>
@@ -622,8 +404,6 @@
 
     </div>
 
-    <!-- JS -->
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -632,76 +412,42 @@
 
     <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 
-    <script src="{{ url_for('static', filename='js/realtime.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/session.js') }}"></script>
 
     <script>
 
-    document.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener(
+        "load",
+        () => {
 
-        document
-            .querySelectorAll(".auto-dismiss-alert")
-            .forEach(alert => {
-
-                setTimeout(() => {
-
-                    alert.classList.remove("show");
-
-                    setTimeout(() => {
-
-                        alert.remove();
-
-                    }, 300);
-
-                }, 3000);
-
-            });
-
-    });
-
-    </script>
-
-    <script>
-
-    window.addEventListener("load", () => {
-
-        const loader =
-            document.getElementById(
-                "loading-overlay"
-            );
-
-        if (loader) {
-
-            setTimeout(() => {
-
-                loader.classList.add(
-                    "hidden"
+            const loader =
+                document.getElementById(
+                    "loading-overlay"
                 );
 
-            }, 800);
+            if (loader) {
+
+                setTimeout(
+                    () => {
+
+                        loader.classList.add(
+                            "hidden"
+                        );
+
+                    },
+                    800
+                );
+
+            }
 
         }
-
-    });
-
-    </script>
-
-    <script>
-
-    setInterval(() => {
-
-        const clock =
-            document.getElementById(
-                "soc-clock"
-            );
-
-        if (clock) {
-
-            clock.innerText =
-                new Date().toLocaleString();
-
-        }
-
-    }, 1000);
+    );
 
     </script>
 
@@ -714,6 +460,50 @@
         );
 
     }
+
+    </script>
+
+    <script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            document
+                .querySelectorAll(
+                    ".auto-dismiss-alert"
+                )
+                .forEach(alert => {
+
+                    setTimeout(
+                        () => {
+
+                            alert.style.transition =
+                                "all .5s ease";
+
+                            alert.style.opacity =
+                                "0";
+
+                            alert.style.transform =
+                                "translateY(-10px)";
+
+                            setTimeout(
+                                () => {
+
+                                    alert.remove();
+
+                                },
+                                500
+                            );
+
+                        },
+                        2000
+                    );
+
+                });
+
+        }
+    );
 
     </script>
 

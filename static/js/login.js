@@ -1,46 +1,74 @@
 document.addEventListener("DOMContentLoaded", () => {
+
     initializeMatrix();
+
     initializeDraggableLogin();
+
     initializeThreatAlerts();
+
     initializeSystemMonitor();
+
     initializeTerminalFeed();
+
+    initializeClock();
+
+    initializeGeoIntel();
+    
+    initializeRoleMfa();
 });
 
-/* ==========================================
+/* ==================================================
    MATRIX RAIN
-========================================== */
+================================================== */
 
 function initializeMatrix() {
-    const canvas = document.getElementById("matrix");
+
+    const canvas =
+        document.getElementById(
+            "matrix"
+        );
 
     if (!canvas) {
         return;
     }
 
-    const ctx = canvas.getContext("2d");
-
-    resizeCanvas();
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
 
     const characters =
         "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&@";
 
     const fontSize = 14;
 
-    let columns =
-        Math.floor(canvas.width / fontSize);
-
-    let drops =
-        Array(columns).fill(1);
+    let columns;
+    let drops;
 
     function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+
+        canvas.width =
+            window.innerWidth;
+
+        canvas.height =
+            window.innerHeight;
+
+        columns =
+            Math.floor(
+                canvas.width /
+                fontSize
+            );
+
+        drops =
+            Array(columns)
+            .fill(1);
+
     }
 
     function drawMatrix() {
 
         ctx.fillStyle =
-            "rgba(11,18,32,0.08)";
+            "rgba(5,11,20,0.08)";
 
         ctx.fillRect(
             0,
@@ -49,7 +77,8 @@ function initializeMatrix() {
             canvas.height
         );
 
-        ctx.fillStyle = "#00e5ff";
+        ctx.fillStyle =
+            "#00e5ff";
 
         ctx.font =
             `${fontSize}px Consolas`;
@@ -71,48 +100,52 @@ function initializeMatrix() {
             ctx.fillText(
                 char,
                 i * fontSize,
-                drops[i] * fontSize
+                drops[i] *
+                fontSize
             );
 
             if (
-                drops[i] * fontSize >
+                drops[i] *
+                    fontSize >
                 canvas.height &&
-                Math.random() > 0.975
+                Math.random() >
+                    0.975
             ) {
+
                 drops[i] = 0;
+
             }
 
             drops[i]++;
+
         }
+
     }
 
-    setInterval(
-        drawMatrix,
-        35
-    );
+    function animate() {
+
+        drawMatrix();
+
+        requestAnimationFrame(
+            animate
+        );
+
+    }
+
+    resizeCanvas();
+
+    animate();
 
     window.addEventListener(
         "resize",
-        () => {
-
-            resizeCanvas();
-
-            columns =
-                Math.floor(
-                    canvas.width /
-                    fontSize
-                );
-
-            drops =
-                Array(columns).fill(1);
-
-        }
+        resizeCanvas
     );
+
 }
 
-/* ==========================================
+/* ==================================================
    DRAGGABLE LOGIN
-========================================== */
+================================================== */
 
 function initializeDraggableLogin() {
 
@@ -126,8 +159,12 @@ function initializeDraggableLogin() {
     }
 
     let dragging = false;
+
     let offsetX = 0;
     let offsetY = 0;
+
+    card.style.cursor =
+        "grab";
 
     card.addEventListener(
         "mousedown",
@@ -145,6 +182,7 @@ function initializeDraggableLogin() {
 
             card.style.cursor =
                 "grabbing";
+
         }
     );
 
@@ -159,15 +197,34 @@ function initializeDraggableLogin() {
             card.style.position =
                 "absolute";
 
+            const left =
+                Math.max(
+                    0,
+                    Math.min(
+                        window.innerWidth -
+                        card.offsetWidth,
+                        event.clientX -
+                        offsetX
+                    )
+                );
+
+            const top =
+                Math.max(
+                    0,
+                    Math.min(
+                        window.innerHeight -
+                        card.offsetHeight,
+                        event.clientY -
+                        offsetY
+                    )
+                );
+
             card.style.left =
-                event.clientX -
-                offsetX +
-                "px";
+                `${left}px`;
 
             card.style.top =
-                event.clientY -
-                offsetY +
-                "px";
+                `${top}px`;
+
         }
     );
 
@@ -179,19 +236,21 @@ function initializeDraggableLogin() {
 
             card.style.cursor =
                 "grab";
+
         }
     );
+
 }
 
-/* ==========================================
+/* ==================================================
    THREAT ALERTS
-========================================== */
+================================================== */
 
 function initializeThreatAlerts() {
 
     const panel =
         document.querySelector(
-            ".threat-panel"
+            ".threat-panel p"
         );
 
     if (!panel) {
@@ -199,22 +258,32 @@ function initializeThreatAlerts() {
     }
 
     const alerts = [
-        "SSH BRUTE FORCE DETECTED",
-        "TELNET SCAN IDENTIFIED",
-        "BOTNET ACTIVITY OBSERVED",
-        "UNAUTHORIZED LOGIN ATTEMPT",
-        "HIGH RISK SOURCE IP",
-        "SUSPICIOUS CREDENTIAL SPRAY",
-        "REMOTE ACCESS ATTEMPT",
-        "MALICIOUS SESSION CREATED"
-    ];
 
-    const paragraph =
-        panel.querySelector("p");
+        "SSH BRUTE FORCE DETECTED",
+
+        "TELNET SCAN IDENTIFIED",
+
+        "BOTNET ACTIVITY OBSERVED",
+
+        "UNAUTHORIZED LOGIN ATTEMPT",
+
+        "HIGH RISK SOURCE IP",
+
+        "SUSPICIOUS CREDENTIAL SPRAY",
+
+        "REMOTE ACCESS ATTEMPT",
+
+        "MALICIOUS SESSION CREATED",
+
+        "IOT DEVICE COMPROMISE",
+
+        "THREAT LEVEL ELEVATED"
+
+    ];
 
     setInterval(() => {
 
-        const randomAlert =
+        panel.textContent =
             alerts[
                 Math.floor(
                     Math.random() *
@@ -222,17 +291,13 @@ function initializeThreatAlerts() {
                 )
             ];
 
-        if (paragraph) {
-            paragraph.textContent =
-                randomAlert;
-        }
-
     }, 5000);
+
 }
 
-/* ==========================================
+/* ==================================================
    TERMINAL FEED
-========================================== */
+================================================== */
 
 function initializeTerminalFeed() {
 
@@ -246,26 +311,37 @@ function initializeTerminalFeed() {
     }
 
     const logs = [
+
         "> SSH LOGIN FAILED",
+
         "> ROOT ACCESS ATTEMPT",
+
         "> BOTNET CONNECTION",
+
         "> SESSION OPENED",
+
         "> INVALID PASSWORD",
+
         "> ATTACK DETECTED",
+
         "> CREDENTIAL HARVESTING",
+
         "> CONNECTION CLOSED",
+
         "> PORT SCAN IDENTIFIED",
+
         "> MALICIOUS PAYLOAD BLOCKED"
+
     ];
 
     setInterval(() => {
 
-        const entry =
+        const line =
             document.createElement(
                 "div"
             );
 
-        entry.textContent =
+        const text =
             logs[
                 Math.floor(
                     Math.random() *
@@ -273,22 +349,31 @@ function initializeTerminalFeed() {
                 )
             ];
 
-        terminal.prepend(entry);
+        line.textContent =
+            text;
+
+        terminal.prepend(
+            line
+        );
 
         while (
-            terminal.children.length > 8
+            terminal.children
+                .length > 8
         ) {
+
             terminal.removeChild(
                 terminal.lastChild
             );
+
         }
 
-    }, 3000);
+    }, 2500);
+
 }
 
-/* ==========================================
+/* ==================================================
    SYSTEM MONITOR
-========================================== */
+================================================== */
 
 function initializeSystemMonitor() {
 
@@ -311,9 +396,241 @@ function initializeSystemMonitor() {
                 ) + 10;
 
             bar.style.width =
-                value + "%";
+                `${value}%`;
 
         });
 
     }, 2500);
+
+}
+
+/* ==================================================
+   LIVE CLOCK
+================================================== */
+
+function initializeClock() {
+
+    const clock =
+        document.getElementById(
+            "soc-live-clock"
+        );
+
+    if (!clock) {
+        return;
+    }
+
+    setInterval(() => {
+
+        clock.textContent =
+            new Date()
+            .toLocaleString();
+
+    }, 1000);
+
+}
+
+/* ==================================================
+   GEO INTELLIGENCE
+================================================== */
+
+function initializeGeoIntel() {
+
+    const geo =
+        document.getElementById(
+            "geo-country"
+        );
+
+    if (!geo) {
+        return;
+    }
+
+    const countries = [
+
+        "United States",
+        "Russia",
+        "China",
+        "Iran",
+        "Germany",
+        "India",
+        "Brazil",
+        "Unknown"
+
+    ];
+
+    setInterval(() => {
+
+        geo.textContent =
+            countries[
+                Math.floor(
+                    Math.random() *
+                    countries.length
+                )
+            ];
+
+    }, 4000);
+
+}
+/* ==================================================
+   ROLE MFA CHECK
+================================================== */
+
+function initializeRoleMfa() {
+
+    const usernameInput =
+        document.getElementById(
+            "username"
+        );
+
+    const mfaGroup =
+        document.getElementById(
+            "mfa-group"
+        );
+
+    if (
+        !usernameInput ||
+        !mfaGroup
+    ) {
+
+        return;
+
+    }
+
+    usernameInput.addEventListener(
+        "blur",
+        async () => {
+
+            const username =
+                usernameInput.value.trim();
+
+            if (!username) {
+
+                mfaGroup.style.display =
+                    "none";
+
+                return;
+
+            }
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/user-role/${username}`
+                    );
+
+                const data =
+                    await response.json();
+
+                if (
+                    data.role === "admin"
+                ) {
+
+                    mfaGroup.style.display =
+                        "none";
+
+                }
+
+                else if (
+                    data.role === "analyst" ||
+                    data.role === "user"
+                ) {
+
+                    mfaGroup.style.display =
+                        "block";
+
+                }
+
+                else {
+
+                    mfaGroup.style.display =
+                        "none";
+
+                }
+
+            }
+
+            catch {
+
+                mfaGroup.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+}
+const usernameInput =
+    document.getElementById(
+        "username"
+    );
+
+const mfaGroup =
+    document.getElementById(
+        "mfa-group"
+    );
+
+if (
+    usernameInput &&
+    mfaGroup
+) {
+
+    mfaGroup.style.display =
+        "none";
+
+    usernameInput.addEventListener(
+        "blur",
+        async () => {
+
+            const username =
+                usernameInput.value.trim();
+
+            if (!username) {
+
+                mfaGroup.style.display =
+                    "none";
+
+                return;
+
+            }
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/user-role/${username}`
+                    );
+
+                const data =
+                    await response.json();
+
+                if (
+                    data.role &&
+                    data.role.toLowerCase() !== "admin"
+                ) {
+
+                    mfaGroup.style.display =
+                        "block";
+
+                }
+
+                else {
+
+                    mfaGroup.style.display =
+                        "none";
+
+                }
+
+            }
+
+            catch {
+
+                mfaGroup.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
 }

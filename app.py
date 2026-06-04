@@ -6,7 +6,6 @@ import json
 import logging
 import os
 import uuid
-
 from flask import (
     Flask,
     jsonify,
@@ -44,6 +43,16 @@ from core.permissions import (
 # ==================================================
 
 app = Flask(__name__)
+
+app.config["SECRET_KEY"] = os.getenv(
+    "SECRET_KEY",
+    "soc-dashboard-secret"
+)
+
+app.config[
+    "PERMANENT_SESSION_LIFETIME"
+] = timedelta(minutes=5)
+
 from core.permissions import (
     permission_required,
     has_permission,
@@ -60,7 +69,7 @@ app.config["SECRET_KEY"] = os.getenv(
 
 app.config[
     "PERMANENT_SESSION_LIFETIME"
-] = timedelta(hours=4)
+] = timedelta(minutes=5)
 
 BASE_DIR = Path(
     __file__
@@ -375,6 +384,8 @@ def login():
             )
         )
 
+    users = load_users()
+
     if request.method == "POST":
 
         username = (
@@ -391,96 +402,163 @@ def login():
             ).strip()
         )
 
-        users = load_users()
+        mfa_code = (
+            request.form.get(
+                "mfa_code",
+                ""
+            ).strip()
+        )
 
         user = users.get(
             username
         )
 
-        if (
-            user
-            and user.get(
-                "active",
-                True
+        if not user:
+
+            return render_template(
+                "login.html",
+                error="User not found",
+                last_login="Unknown",
+                active_sessions=0,
+                mfa_users=[
+                    name
+                    for name, data
+                    in users.items()
+                    if data.get(
+                        "mfa",
+                        False
+                    )
+                ]
             )
-            and user.get(
-                "password"
-            ) == password
+
+        if not user.get(
+            "active",
+            True
         ):
 
-            session.clear()
+            return render_template(
+                "login.html",
+                error="Account disabled",
+                last_login="Unknown",
+                active_sessions=0,
+                mfa_users=[
+                    name
+                    for name, data
+                    in users.items()
+                    if data.get(
+                        "mfa",
+                        False
+                    )
+                ]
+            )
 
-            session[
-                "user"
-            ] = username
-
-            session[
-                "role"
-            ] = user[
-                "role"
-            ]
-
-            session.permanent = True
+        if user.get(
+            "password"
+        ) != password:
 
             log_event(
                 actor=username,
-                action="LOGIN_SUCCESS",
-                details={
-                    "role":
-                        user["role"]
-                }
+                action="LOGIN_FAILED"
             )
 
-            flash(
-                "Login successful",
-                "success"
+            return render_template(
+                "login.html",
+                error="Invalid credentials",
+                last_login="Unknown",
+                active_sessions=0,
+                mfa_users=[
+                    name
+                    for name, data
+                    in users.items()
+                    if data.get(
+                        "mfa",
+                        False
+                    )
+                ]
             )
 
-            return redirect(
-                url_for(
-                    "dashboard"
+        if user.get(
+            "mfa",
+            False
+        ):
+
+            if mfa_code != "123456":
+
+                log_event(
+                    actor=username,
+                    action="MFA_FAILED"
                 )
-            )
+
+                return render_template(
+                    "login.html",
+                    error="Invalid MFA Code",
+                    last_login="Unknown",
+                    active_sessions=0,
+                    mfa_users=[
+                        name
+                        for name, data
+                        in users.items()
+                        if data.get(
+                            "mfa",
+                            False
+                        )
+                    ]
+                )
+
+        session.clear()
+
+        session[
+            "user"
+        ] = username
+
+        session[
+            "role"
+        ] = user[
+            "role"
+        ]
+
+        session.permanent = True
 
         log_event(
             actor=username,
-            action="LOGIN_FAILED"
+            action="LOGIN_SUCCESS",
+            details={
+                "role":
+                    user[
+                        "role"
+                    ]
+            }
         )
 
-        flash(
-            "Invalid credentials",
-            "danger"
+        return redirect(
+            url_for(
+                "dashboard"
+            )
         )
 
     return render_template(
         "login.html",
+        error=None,
         last_login="Unknown",
-        active_sessions=0
+        active_sessions=0,
+        mfa_users=[
+            name
+            for name, data
+            in users.items()
+            if data.get(
+                "mfa",
+                False
+            )
+        ]
     )
-
-
 @app.route("/logout")
-@login_required
 def logout():
-
-    log_event(
-        actor=current_user(),
-        action="LOGOUT"
-    )
 
     session.clear()
 
-    flash(
-        "Logged out successfully",
-        "info"
-    )
-
     return redirect(
-        url_for(
-            "login"
-        )
+        url_for("login")
     )
-
 # ==================================================
 # DASHBOARD
 # ==================================================
@@ -537,8 +615,8 @@ def help():
 @login_required
 def contact():
 
-    return render_soc_page(
-        "contact.html"
+    return redirect(
+        url_for("dashboard")
     )
 
 # ==================================================
@@ -549,24 +627,65 @@ def contact():
 @login_required
 def alerts():
 
-    return render_soc_page(
-        "alerts.html"
-    )
+    alert_stats = {
+        "critical": 2,
+        "high": 5,
+        "medium": 12,
+        "low": 18
+    }
 
+    alerts = [
+        {
+            "id": "ALT-001",
+            "title": "SSH Brute Force Detected",
+            "severity": "High",
+            "source": "Cowrie",
+            "status": "Open",
+            "owner": "SOC Analyst",
+            "timestamp": "2026-06-04 03:45"
+        },
+        {
+            "id": "ALT-002",
+            "title": "Telnet Scan Detected",
+            "severity": "Medium",
+            "source": "Cowrie",
+            "status": "Investigating",
+            "owner": "SOC Analyst",
+            "timestamp": "2026-06-04 03:47"
+        }
+    ]
+
+    alert_timeline = [
+        {
+            "timestamp": "03:45",
+            "message": "SSH Brute Force Alert Generated"
+        },
+        {
+            "timestamp": "03:47",
+            "message": "Telnet Scan Alert Generated"
+        }
+    ]
+
+    return render_template(
+        "alerts.html",
+        alert_stats=alert_stats,
+        alerts=alerts,
+        alert_timeline=alert_timeline
+    )
 
 @app.route("/attack-logs")
 @login_required
 def attack_logs():
 
-    stats = get_attack_data()
+    data = get_attack_data()
 
     return render_template(
         "attack_logs.html",
-        attacks=stats[
-            "recent_attacks"
-        ]
+        recent_attacks=data.get(
+            "recent_attacks",
+            []
+        )
     )
-
 
 @app.route("/attack-statistics")
 @login_required
@@ -640,27 +759,105 @@ def status():
 # ANALYST + ADMIN
 # ==================================================
 
-@app.route("/ioc-extraction")
-@permission_required(
-    "ioc_extraction"
-)
+@app.route("/ioc-extraction", methods=["GET", "POST"])
+@login_required
 def ioc_extraction():
+
+    ioc_summary = {
+        "ips": 2,
+        "domains": 2,
+        "urls": 1,
+        "hashes": 1
+    }
+
+    iocs = [
+        {
+            "type": "IP",
+            "value": "185.44.22.10"
+        },
+        {
+            "type": "Domain",
+            "value": "malicious-site.com"
+        },
+        {
+            "type": "URL",
+            "value": "http://bad-site.com/payload"
+        },
+        {
+            "type": "Hash",
+            "value": "44d88612fea8a8f36de82e1278abb02f"
+        }
+    ]
+
+    ips = [
+        "185.44.22.10",
+        "91.22.15.90"
+    ]
+
+    domains = [
+        "malicious-site.com",
+        "evil-domain.net"
+    ]
 
     return render_template(
         "ioc_extraction.html",
-        iocs=[]
+        ioc_summary=ioc_summary,
+        iocs=iocs,
+        ips=ips,
+        domains=domains
     )
 
-
-@app.route("/malware-analysis")
-@permission_required(
-    "malware_analysis"
-)
+@app.route("/malware-analysis", methods=["GET", "POST"])
+@login_required
 def malware_analysis():
+
+    analysis = {
+        "md5":
+            "44d88612fea8a8f36de82e1278abb02f",
+
+        "sha1":
+            "3395856ce81f2b7382dee72602f798b642f14140",
+
+        "sha256":
+            "275a021bbfb6488ad9f6f6c0c1f3f4b7c4e4b9e0",
+
+        "filename":
+            "suspicious.exe",
+
+        "size":
+            "2.4 MB",
+
+        "filetype":
+            "PE32 Executable",
+
+        "score":
+            87,
+
+        "iocs": [
+            "185.44.22.10",
+            "malicious-site.com",
+            "http://bad-site.com/payload"
+        ],
+
+        "mitre": [
+            {
+                "name":
+                    "Command and Scripting Interpreter",
+                "id":
+                    "T1059"
+            },
+            {
+                "name":
+                    "Ingress Tool Transfer",
+                "id":
+                    "T1105"
+            }
+        ]
+    }
 
     return render_template(
         "malware_analysis.html",
-        files=[]
+        analysis=analysis
     )
 
 
@@ -712,7 +909,25 @@ def case_management():
         "case_management.html",
         cases=[]
     )
+@app.route(
+    "/api/verify-mfa",
+    methods=["POST"]
+)
+def verify_mfa():
 
+    data = request.get_json()
+
+    code = data.get("code")
+
+    if code == "123456":
+
+        return jsonify({
+            "success": True
+        })
+
+    return jsonify({
+        "success": False
+    }), 401
 
 @app.route("/incident-response")
 @permission_required(
@@ -732,10 +947,34 @@ def incident_response():
 
 @app.route("/ip-intelligence")
 @login_required
+
 def ip_intelligence():
 
-    return render_soc_page(
-        "ip_intelligence.html"
+    ip = request.args.get(
+        "ip",
+        "8.8.8.8"
+    )
+
+    ip_info = {
+        "ip": ip,
+        "country": "United States",
+        "city": "Mountain View",
+        "isp": "Google LLC",
+        "asn": "AS15169",
+        "org": "Google"
+    }
+
+    whois_data = f"""
+IP Address: {ip}
+Country: United States
+ISP: Google LLC
+ASN: AS15169
+"""
+
+    return render_template(
+        "ip_intelligence.html",
+        ip_info=ip_info,
+        whois_data=whois_data
     )
 
 
@@ -743,9 +982,58 @@ def ip_intelligence():
 @login_required
 def asset_inventory():
 
+    asset_stats = {
+        "total": 128,
+        "online": 117,
+        "critical": 12,
+        "vulnerabilities": 34
+    }
+
+    assets = [
+        {
+            "hostname": "MRI-SERVER-01",
+            "ip": "192.168.1.20",
+            "type": "Server",
+            "os": "Windows Server 2022",
+            "owner": "Radiology",
+            "status": "online",
+            "risk": "Critical",
+            "last_seen": "2026-06-04 03:45"
+        },
+        {
+            "hostname": "COWRIE-HONEYPOT",
+            "ip": "192.168.1.250",
+            "type": "Honeypot",
+            "os": "Ubuntu",
+            "owner": "SOC Team",
+            "status": "online",
+            "risk": "High",
+            "last_seen": "2026-06-04 03:47"
+        }
+    ]
+
+    categories = {
+        "servers": 28,
+        "workstations": 54,
+        "firewalls": 6,
+        "network": 18,
+        "iot": 20,
+        "honeypots": 2
+    }
+
+    vulnerabilities = {
+        "critical": 4,
+        "high": 11,
+        "medium": 14,
+        "low": 5
+    }
+
     return render_template(
         "asset_inventory.html",
-        assets=[]
+        asset_stats=asset_stats,
+        assets=assets,
+        categories=categories,
+        vulnerabilities=vulnerabilities
     )
 
 # ==================================================
@@ -801,6 +1089,30 @@ def audit_logs():
 # ==================================================
 # API
 # ==================================================
+@app.route("/api/session")
+@login_required
+def api_session():
+
+    return jsonify({
+
+        "authenticated": True,
+
+        "user": session.get("user"),
+
+        "role": session.get("role")
+
+    })
+@app.route("/api/alerts")
+@login_required
+def api_alerts():
+
+    return jsonify({
+
+        "count": 0,
+
+        "alerts": []
+
+    })
 
 @app.route("/api/stats")
 @login_required
@@ -825,7 +1137,25 @@ def api_recent():
                 ]
         }
     )
+@app.route("/api/user-role/<username>")
+@login_required
+def api_user_role(username):
 
+    users = load_users()
+
+    user = users.get(username)
+
+    if not user:
+
+        return jsonify({
+            "success": False,
+            "role": None
+        })
+
+    return jsonify({
+        "success": True,
+        "role": user.get("role", "user")
+    })
 
 @app.route("/api/health")
 def api_health():

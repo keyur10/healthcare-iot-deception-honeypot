@@ -8,118 +8,256 @@ SOC Login
 
 <div class="glitch-form-wrapper">
 
-```
-<!-- MATRIX BACKGROUND -->
+    <canvas id="matrix"></canvas>
 
-<canvas id="matrix"></canvas>
+    <div class="network-grid"></div>
 
-<!-- SYSTEM STATUS -->
+    <div class="scan-line"></div>
 
-<div class="cyber-panel system-panel">
+    <div class="cyber-panel system-panel">
 
-    <h5>// SYSTEM STATUS</h5>
+        <h5>// SYSTEM STATUS</h5>
 
-    <p>
-        NETWORK:
-        <span class="text-success">
-            SECURE
-        </span>
-    </p>
+        <p>
+            NETWORK:
+            <span class="text-success">
+                SECURE
+            </span>
+        </p>
 
-    <p>
-        THREATS:
-        <span class="text-warning">
-            MONITORING
-        </span>
-    </p>
+        <p>
+            THREATS:
+            <span class="text-warning">
+                MONITORING
+            </span>
+        </p>
 
-    <p>
-        SENSOR:
-        <span class="text-info">
-            COWRIE
-        </span>
-    </p>
+        <p>
+            SENSOR:
+            <span class="text-info">
+                COWRIE
+            </span>
+        </p>
 
-    <p>
-        STATUS:
-        <span class="text-success">
-            ACTIVE
-        </span>
-    </p>
+        <p>
+            STATUS:
+            <span class="text-success">
+                ACTIVE
+            </span>
+        </p>
 
-    <p>
-        USERS:
-        <span class="text-info">
-            {{ active_sessions|default(0) }}
-        </span>
-    </p>
+        <p>
+            USERS:
+            <span class="text-info">
+                {{ active_sessions|default(0) }}
+            </span>
+        </p>
 
-    <p>
-        VERSION:
-        <span class="text-success">
-            SOC v2.0
-        </span>
-    </p>
+        <p>
+            VERSION:
+            <span class="text-success">
+                SOC v2.0
+            </span>
+        </p>
 
-</div>
+    </div>
 
-<!-- THREAT ALERT -->
+    <div class="cyber-panel threat-panel">
 
-<div class="cyber-panel threat-panel">
+        <h5>THREAT ALERT</h5>
 
-    <h5>THREAT ALERT</h5>
+        <p>
+            Multiple SSH brute-force attempts detected
+        </p>
 
-    <p>
-        Multiple SSH brute-force attempts detected
-    </p>
+        <p class="text-danger">
+            Threat Level: HIGH
+        </p>
 
-    <p class="text-danger">
-        Threat Level: HIGH
-    </p>
+        <p class="text-warning">
+            Active Monitoring Enabled
+        </p>
 
-    <p class="text-warning">
-        Active Monitoring Enabled
-    </p>
+    </div>
 
-</div>
+    <form
+        id="draggable-login"
+        method="POST"
+        action="{{ url_for('login') }}"
+        class="glitch-card">
 
-<!-- LOGIN WINDOW -->
+        <div class="card-header">
 
-<form
-    id="draggable-login"
-    method="POST"
-    action="{{ url_for('login') }}"
-    class="glitch-card">
+            <div class="card-title">
 
-    <div class="card-header">
+                <i class="fas fa-shield-halved fa-2x"></i>
 
-        <div class="card-title">
+                <div>
 
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor">
+                    <span>
+                        SOC_LOGIN
+                    </span>
 
-                <path d="M12 2L4 5v6c0 5 3.5 9.74 8 11c4.5-1.26 8-6 8-11V5l-8-3z"/>
+                    <small class="d-block text-muted">
+                        Security Operations Center
+                    </small>
 
-                <path d="M9 12l2 2l4-4"/>
+                </div>
 
-            </svg>
+            </div>
 
-            <div>
+        </div>
 
-                <span>
+        <div class="card-body">
 
-                    SOC_LOGIN
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
 
-                </span>
+                {% for category, message in messages %}
 
-                <small class="d-block text-muted">
+                <div class="alert alert-{{ category }}">
 
-                    Security Operations Center
+                    {{ message }}
+
+                </div>
+
+                {% endfor %}
+
+            {% endif %}
+            {% endwith %}
+
+            <div class="form-group">
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    autocomplete="username"
+                    required>
+
+                <label
+                    for="username"
+                    class="form-label">
+
+                    USERNAME
+
+                </label>
+
+            </div>
+
+            <div class="form-group">
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    autocomplete="current-password"
+                    required>
+
+                <label
+                    for="password"
+                    class="form-label">
+
+                    ACCESS KEY
+
+                </label>
+
+            </div>
+
+            <div
+                id="mfa-group"
+                class="form-group"
+                style="display:none;">
+
+                <input
+                    type="text"
+                    id="mfa_code"
+                    name="mfa_code"
+                    maxlength="6">
+
+                <label
+                    for="mfa_code"
+                    class="form-label">
+
+                    MFA CODE
+
+                </label>
+
+            </div>
+
+            <div class="form-check mb-3">
+
+                <input
+                    type="checkbox"
+                    id="remember"
+                    name="remember"
+                    class="form-check-input">
+
+                <label
+                    class="form-check-label"
+                    for="remember">
+
+                    Remember Session
+
+                </label>
+
+            </div>
+
+            <button
+                type="submit"
+                class="submit-btn">
+
+                INITIATE CONNECTION
+
+            </button>
+
+            <div class="text-center mt-3">
+
+                <small>
+
+                    Last Login:
+                    {{ last_login|default("Unknown") }}
+
+                </small>
+
+            </div>
+
+            <div class="text-center">
+
+                <small>
+
+                    Active Sessions:
+                    {{ active_sessions|default(0) }}
+
+                </small>
+
+            </div>
+            <div class="text-center mt-2">
+
+                <a href="#">
+
+                    Forgot Password?
+
+                </a>
+
+            </div>
+
+            <div class="login-footer mt-4 text-center">
+
+                <small>
+
+                    AUTHORIZED PERSONNEL ONLY
+
+                </small>
+
+            </div>
+
+            <div class="text-center mt-2">
+
+                <small class="text-danger">
+
+                    UNAUTHORIZED ACCESS IS MONITORED,
+                    RECORDED AND AUDITED
 
                 </small>
 
@@ -127,326 +265,98 @@ SOC Login
 
         </div>
 
-        <div class="card-dots">
+    </form>
 
-            <span></span>
-            <span></span>
-            <span></span>
+    <div class="cyber-panel live-panel">
+
+        <h5>LIVE FEED</h5>
+
+        <div class="terminal-feed">
+
+            <div>> SSH LOGIN FAILED</div>
+            <div>> ROOT ACCESS ATTEMPT</div>
+            <div>> INVALID CREDENTIALS</div>
+            <div>> CONNECTION CLOSED</div>
+            <div>> ATTACK DETECTED</div>
+            <div>> BOTNET ACTIVITY IDENTIFIED</div>
+            <div>> THREAT SCORE INCREASED</div>
+            <div>> IOC GENERATED</div>
 
         </div>
 
     </div>
 
-    <div class="card-body">
-
-        <!-- FLASH MESSAGES -->
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-
-            {% for category, message in messages %}
-
-            <div class="alert alert-{{ category }}">
-
-                {{ message }}
-
-            </div>
-
-            {% endfor %}
-
-        {% endif %}
-        {% endwith %}
-
-        <!-- USERNAME -->
-
-        <div class="form-group">
-
-            <input
-                type="text"
-                id="username"
-                name="username"
-                autocomplete="username"
-                required>
-
-            <label
-                for="username"
-                class="form-label">
-
-                USERNAME
-
-            </label>
-
-        </div>
-
-        <!-- PASSWORD -->
-
-        <div class="form-group">
-
-            <input
-                type="password"
-                id="password"
-                name="password"
-                autocomplete="current-password"
-                required>
-
-            <label
-                for="password"
-                class="form-label">
-
-                ACCESS KEY
-
-            </label>
-
-        </div>
-
-        <!-- MFA -->
-
-        <div class="form-group">
-
-            <input
-                type="text"
-                id="otp"
-                name="otp">
-
-            <label
-                for="otp"
-                class="form-label">
-
-                MFA CODE
-
-            </label>
-
-        </div>
-
-        <!-- REMEMBER SESSION -->
-
-        <div class="form-check mb-3">
-
-            <input
-                type="checkbox"
-                id="remember"
-                name="remember"
-                class="form-check-input">
-
-            <label
-                class="form-check-label"
-                for="remember">
-
-                Remember Session
-
-            </label>
-
-        </div>
-
-        <!-- LOGIN BUTTON -->
-
-        <button
-            type="submit"
-            class="submit-btn">
-
-            INITIATE CONNECTION
-
-        </button>
-
-        <!-- LOGIN INFO -->
-
-        <div class="text-center mt-3">
-
-            <small>
-
-                Last Login:
-                {{ last_login|default("Unknown") }}
-
-            </small>
-
-        </div>
-
-        <div class="text-center">
-
-            <small>
-
-                Active Sessions:
-                {{ active_sessions|default(0) }}
-
-            </small>
-
-        </div>
-
-        <div class="text-center mt-2">
-
-            <a href="#">
-
-                Forgot Password?
-
-            </a>
-
-        </div>
-
-        <div class="login-footer mt-4 text-center">
-
-            <small>
-
-                AUTHORIZED PERSONNEL ONLY
-
-            </small>
-
-        </div>
-
-        <div class="text-center mt-2">
-
-            <small class="text-danger">
-
-                UNAUTHORIZED ACCESS IS MONITORED, RECORDED AND AUDITED
-
-            </small>
-
-        </div>
+    <div class="cyber-panel geo-panel">
+
+        <h5>GEO INTELLIGENCE</h5>
+
+        <p>Country: Unknown</p>
+        <p>City: Unknown</p>
+        <p>ASN: N/A</p>
+        <p>ISP: N/A</p>
+        <p>Risk Score: Medium</p>
 
     </div>
 
-</form>
+    <div class="cyber-panel monitor-panel">
 
-<!-- LIVE FEED -->
+        <h5>SYSTEM MONITOR</h5>
 
-<div class="cyber-panel live-panel">
+        <p>CPU</p>
 
-    <h5>LIVE FEED</h5>
-
-    <div class="terminal-feed">
-
-        <div>> SSH LOGIN FAILED</div>
-        <div>> ROOT ACCESS ATTEMPT</div>
-        <div>> INVALID CREDENTIALS</div>
-        <div>> CONNECTION CLOSED</div>
-        <div>> ATTACK DETECTED</div>
-        <div>> BOTNET ACTIVITY IDENTIFIED</div>
-        <div>> THREAT SCORE INCREASED</div>
-        <div>> IOC GENERATED</div>
-
-    </div>
-
-</div>
-
-<!-- GEO INTELLIGENCE -->
-
-<div class="cyber-panel geo-panel">
-
-    <h5>GEO INTELLIGENCE</h5>
-
-    <p>Country: Unknown</p>
-
-    <p>City: Unknown</p>
-
-    <p>ASN: N/A</p>
-
-    <p>ISP: N/A</p>
-
-    <p>Risk Score: Medium</p>
-
-</div>
-
-<!-- SYSTEM MONITOR -->
-
-<div class="cyber-panel monitor-panel">
-
-    <h5>SYSTEM MONITOR</h5>
-
-    <div class="metric">
-
-        CPU
-
-        <div class="progress">
-
+        <div class="progress mb-3">
             <div
                 class="progress-bar bg-info"
                 style="width:32%">
-
             </div>
-
         </div>
 
-    </div>
+        <p>MEMORY</p>
 
-    <div class="metric">
-
-        MEMORY
-
-        <div class="progress">
-
+        <div class="progress mb-3">
             <div
                 class="progress-bar bg-success"
                 style="width:45%">
-
             </div>
-
         </div>
 
-    </div>
+        <p>NETWORK</p>
 
-    <div class="metric">
-
-        NETWORK
-
-        <div class="progress">
-
+        <div class="progress mb-3">
             <div
                 class="progress-bar bg-warning"
                 style="width:68%">
-
             </div>
-
         </div>
 
-    </div>
-
-    <div class="metric">
-
-        STORAGE
+        <p>STORAGE</p>
 
         <div class="progress">
-
             <div
                 class="progress-bar bg-danger"
                 style="width:54%">
-
             </div>
-
         </div>
 
     </div>
 
-</div>
+    <div class="cyber-panel security-banner">
 
-<!-- SECURITY BANNER -->
+        <h5>SECURITY NOTICE</h5>
 
-<div class="cyber-panel security-banner">
+        <p>
+            This system is restricted to authorized personnel.
+        </p>
 
-    <h5>
+        <p>
+            All login attempts are logged and audited.
+        </p>
 
-        SECURITY NOTICE
+        <p>
+            MFA Authentication Enabled.
+        </p>
 
-    </h5>
-
-    <p>
-
-        This system is restricted to authorized personnel.
-
-    </p>
-
-    <p>
-
-        All login attempts are logged and audited.
-
-    </p>
-
-    <p>
-
-        MFA Authentication Recommended.
-
-    </p>
-
-</div>
-```
+    </div>
 
 </div>
 
@@ -454,6 +364,79 @@ SOC Login
 
 {% block scripts %}
 
-<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+<script>
+
+const MFA_USERS =
+{{ mfa_users|tojson }};
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const usernameField =
+            document.getElementById(
+                "username"
+            );
+
+        const mfaGroup =
+            document.getElementById(
+                "mfa-group"
+            );
+
+        const mfaInput =
+            document.getElementById(
+                "mfa_code"
+            );
+
+        function toggleMfa() {
+
+            const username =
+                usernameField.value
+                .trim()
+                .toLowerCase();
+
+            if (
+                MFA_USERS.includes(
+                    username
+                )
+            ) {
+
+                mfaGroup.style.display =
+                    "block";
+
+                mfaInput.required =
+                    true;
+
+            } else {
+
+                mfaGroup.style.display =
+                    "none";
+
+                mfaInput.required =
+                    false;
+
+                mfaInput.value =
+                    "";
+
+            }
+
+        }
+
+        usernameField.addEventListener(
+            "input",
+            toggleMfa
+        );
+
+        toggleMfa();
+
+    }
+);
+
+</script>
+
+<script src="{{ url_for(
+    'static',
+    filename='js/login.js'
+) }}"></script>
 
 {% endblock %}

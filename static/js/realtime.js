@@ -1,20 +1,120 @@
-// static/js/realtime.js
-
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-        updateDashboard();
-
-        setInterval(
-            updateDashboard,
-            10000
-        );
+        initializeRealtime();
 
     }
 );
 
-async function updateDashboard() {
+/* ==================================================
+   REALTIME INIT
+================================================== */
+
+let previousAttackCount = 0;
+
+function initializeRealtime() {
+
+    initializeClock();
+
+    initializeConnectionStatus();
+
+    initializeRealtimeMonitor();
+
+}
+
+/* ==================================================
+   CLOCK
+================================================== */
+
+function initializeClock() {
+
+    const clock =
+        document.getElementById(
+            "soc-clock"
+        );
+
+    if (!clock) {
+        return;
+    }
+
+    function updateClock() {
+
+        clock.textContent =
+            new Date()
+            .toLocaleString();
+
+    }
+
+    updateClock();
+
+    setInterval(
+        updateClock,
+        1000
+    );
+
+}
+
+/* ==================================================
+   CONNECTION STATUS
+================================================== */
+
+function initializeConnectionStatus() {
+
+    const indicator =
+        document.getElementById(
+            "connection-status"
+        );
+
+    if (!indicator) {
+        return;
+    }
+
+    function updateStatus() {
+
+        if (
+            navigator.onLine
+        ) {
+
+            indicator.textContent =
+                "ONLINE";
+
+            indicator.className =
+                "badge bg-success";
+
+        }
+
+        else {
+
+            indicator.textContent =
+                "OFFLINE";
+
+            indicator.className =
+                "badge bg-danger";
+
+        }
+
+    }
+
+    updateStatus();
+
+    window.addEventListener(
+        "online",
+        updateStatus
+    );
+
+    window.addEventListener(
+        "offline",
+        updateStatus
+    );
+
+}
+
+/* ==================================================
+   REALTIME MONITOR
+================================================== */
+
+async function checkForNewAttacks() {
 
     try {
 
@@ -24,167 +124,158 @@ async function updateDashboard() {
             );
 
         if (!response.ok) {
+
+            console.error(
+                "API Error:",
+                response.status
+            );
+
             return;
+
+        }
+
+        const contentType =
+            response.headers.get(
+                "content-type"
+            );
+
+        if (
+            !contentType ||
+            !contentType.includes(
+                "application/json"
+            )
+        ) {
+
+            console.error(
+                "API returned HTML instead of JSON"
+            );
+
+            return;
+
         }
 
         const data =
             await response.json();
 
-        updateStatistics(data);
+        const total =
+            data.total_attacks || 0;
 
-        updateAttackFeed(data);
+        if (
+            previousAttackCount !== 0 &&
+            total > previousAttackCount
+        ) {
 
-        updateAttackTable(data);
+            const newAttacks =
+                total -
+                previousAttackCount;
 
-        updateThreatLevel(data);
+            showNotification(
+                `${newAttacks} New Attack(s) Detected`
+            );
+
+        }
+
+        previousAttackCount =
+            total;
+
+        updateLastRefresh();
 
     }
 
     catch (error) {
 
         console.error(
-            "Realtime update error:",
+            "Realtime monitor failed:",
             error
         );
 
     }
 
 }
+/* ==================================================
+   LAST REFRESH
+================================================== */
 
-function updateStatistics(data) {
+function updateLastRefresh() {
 
-    const totalAttacks =
+    const refresh =
         document.getElementById(
-            "total-attacks"
+            "last-refresh"
         );
 
-    const uniqueIps =
-        document.getElementById(
-            "unique-ips"
-        );
-
-    if (totalAttacks) {
-
-        totalAttacks.textContent =
-            data.total_attacks;
-
-    }
-
-    if (uniqueIps) {
-
-        uniqueIps.textContent =
-            data.unique_ips;
-
-    }
-
-}
-
-function updateThreatLevel(data) {
-
-    const threat =
-        document.getElementById(
-            "threat-level"
-        );
-
-    if (!threat) {
+    if (!refresh) {
         return;
     }
 
-    threat.textContent =
-        data.threat_level;
+    refresh.textContent =
+        new Date()
+        .toLocaleTimeString();
 
 }
 
-function updateAttackFeed(data) {
+/* ==================================================
+   NOTIFICATIONS
+================================================== */
+
+function showNotification(
+    message
+) {
 
     const container =
         document.getElementById(
-            "attack-feed"
+            "notification-container"
         );
 
     if (!container) {
         return;
     }
 
-    const attacks =
-        data.recent_attacks || [];
-
-    container.innerHTML = "";
-
-    attacks.forEach(attack => {
-
-        container.innerHTML += `
-
-            <div class="feed-item">
-
-                <div class="feed-time">
-                    ${attack.timestamp}
-                </div>
-
-                <strong>
-                    ${attack.ip}
-                </strong>
-
-                <br>
-
-                Username:
-                ${attack.username}
-
-                <br>
-
-                Password:
-                ${attack.password}
-
-            </div>
-
-        `;
-
-    });
-
-}
-
-function updateAttackTable(data) {
-
-    const table =
-        document.querySelector(
-            "#attackTable tbody"
+    const notification =
+        document.createElement(
+            "div"
         );
 
-    if (!table) {
-        return;
-    }
+    notification.className =
+        "alert alert-warning shadow";
 
-    const attacks =
-        data.recent_attacks || [];
+    notification.innerHTML = `
 
-    table.innerHTML = "";
+        <i class="fas fa-bell me-2"></i>
 
-    attacks.forEach(attack => {
+        ${message}
 
-        table.innerHTML += `
+    `;
 
-            <tr>
+    container.prepend(
+        notification
+    );
 
-                <td>
-                    ${attack.ip}
-                </td>
+    setTimeout(
+        () => {
 
-                <td>
-                    ${attack.username}
-                </td>
+            notification.remove();
 
-                <td>
-                    ${attack.password}
-                </td>
-
-                <td>
-                    ${attack.timestamp}
-                </td>
-
-            </tr>
-
-        `;
-
-    });
+        },
+        5000
+    );
 
 }
+
+/* ==================================================
+   PAGE VISIBILITY
+================================================== */
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if (
+            !document.hidden
+        ) {
+
+            updateLastRefresh();
+
+        }
+
+    }
+);

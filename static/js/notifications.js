@@ -188,3 +188,28 @@ function notifyInfo(
     );
 
 }
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        setTimeout(() => {
+
+            document
+                .querySelectorAll(
+                    ".auto-dismiss-alert"
+                )
+                .forEach(alert => {
+
+                    const bsAlert =
+                        bootstrap.Alert.getOrCreateInstance(
+                            alert
+                        );
+
+                    bsAlert.close();
+
+                });
+
+        }, 2000);
+
+    }
+);

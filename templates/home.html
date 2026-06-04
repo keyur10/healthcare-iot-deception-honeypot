@@ -1,332 +1,249 @@
 {% extends "base.html" %}
 
 {% block title %}
-Home
+Healthcare IoT Deception Honeypot SOC
 {% endblock %}
 
 {% block content %}
 
-<div class="container-fluid py-4">
+<div class="container-fluid p-0">
 
     <!-- HERO -->
 
-    <div class="dashboard-panel text-center mb-4">
+    <section class="position-relative text-center text-white py-5">
 
-        <h1 class="display-5 fw-bold">
+        <div class="position-absolute top-0 start-0 w-100 h-100"
+             style="
+                background:
+                linear-gradient(
+                    rgba(0,0,0,.75),
+                    rgba(0,0,0,.85)
+                ),
+                url('{{ url_for('static', filename='images/soc-bg.jpg') }}');
+                background-size: cover;
+                background-position: center;
+                z-index:-1;">
+        </div>
 
-            🛡 Healthcare IoT Deception Honeypot Network
+        <div class="container py-5">
 
-        </h1>
+            <h1 class="display-3 fw-bold mb-4">
 
-        <p class="lead text-muted">
+                🛡 Healthcare IoT Deception Honeypot SOC
 
-            Advanced Security Operations Center for Threat Detection,
-            Threat Intelligence, Incident Response and Cyber Defense.
+            </h1>
 
-        </p>
+            <p class="lead mb-4">
 
-        {% if not session.get("user") %}
+                Advanced Security Operations Center Platform
+                for Healthcare IoT Threat Detection,
+                Threat Intelligence, Incident Response,
+                and Cyber Defense Operations.
 
-        <a
-            href="{{ url_for('login') }}"
-            class="btn btn-primary btn-lg">
+            </p>
 
-            Access SOC Platform
+            <a
+                href="{{ url_for('login') }}"
+                class="btn btn-danger btn-lg px-5">
 
-        </a>
+                Access SOC Platform
 
-        {% else %}
-
-        <a
-            href="{{ url_for('dashboard') }}"
-            class="btn btn-success btn-lg">
-
-            Open Dashboard
-
-        </a>
-
-        {% endif %}
-
-    </div>
-
-    <!-- STATS -->
-
-    <div class="row g-4 mb-4">
-
-        <div class="col-lg-3">
-
-            <div class="stat-card text-center p-4">
-
-                <h6>
-
-                    Total Attacks
-
-                </h6>
-
-                <h2>
-
-                    {{ total_attacks|default(0) }}
-
-                </h2>
-
-            </div>
+            </a>
 
         </div>
 
-        <div class="col-lg-3">
+    </section>
 
-            <div class="stat-card text-center p-4">
+    <!-- EXECUTIVE SUMMARY -->
 
-                <h6>
+    <section class="container py-5">
 
-                    Unique Attackers
+        <div class="dashboard-panel p-4">
 
-                </h6>
+            <h2 class="mb-4">
 
-                <h2>
+                Executive Summary
 
-                    {{ unique_ips|default(0) }}
+            </h2>
 
-                </h2>
+            <p>
 
-            </div>
+                The Healthcare IoT Deception Honeypot
+                Security Operations Center simulates
+                enterprise-grade cyber defense operations
+                by collecting, analyzing and visualizing
+                malicious activity targeting healthcare
+                environments.
 
-        </div>
+            </p>
 
-        <div class="col-lg-3">
+            <p>
 
-            <div class="stat-card text-center p-4">
+                The platform integrates deception
+                technologies, attack monitoring,
+                threat intelligence, analyst workflows,
+                incident response processes and reporting
+                capabilities into a centralized SOC.
 
-                <h6>
-
-                    Active Alerts
-
-                </h6>
-
-                <h2 class="text-danger">
-
-                    {{ active_alerts|default(0) }}
-
-                </h2>
-
-            </div>
+            </p>
 
         </div>
 
-        <div class="col-lg-3">
+    </section>
 
-            <div class="stat-card text-center p-4">
+    <!-- PLATFORM FEATURES -->
 
-                <h6>
+    <section class="container pb-5">
 
-                    Threat Level
-
-                </h6>
-
-                <h2 class="text-warning">
-
-                    {{ threat_level|default("LOW") }}
-
-                </h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- FEATURES -->
-
-    <div class="dashboard-panel mb-4">
-
-        <h3>
+        <h2 class="text-center mb-4">
 
             Platform Capabilities
 
-        </h3>
+        </h2>
 
-        <div class="row mt-4">
+        <div class="row g-4">
 
             <div class="col-lg-4">
 
-                <ul>
+                <div class="dashboard-panel p-4 h-100">
 
-                    <li>Attack Monitoring</li>
-                    <li>Real-Time Alerts</li>
-                    <li>Attack Statistics</li>
-                    <li>Threat Intelligence</li>
-                    <li>Geolocation Analysis</li>
+                    <h4>🔍 Threat Monitoring</h4>
 
-                </ul>
+                    <ul>
+                        <li>Real-Time Attack Monitoring</li>
+                        <li>Attack Statistics</li>
+                        <li>Threat Intelligence</li>
+                        <li>Geolocation Analysis</li>
+                        <li>Alert Management</li>
+                    </ul>
+
+                </div>
 
             </div>
 
             <div class="col-lg-4">
 
-                <ul>
+                <div class="dashboard-panel p-4 h-100">
 
-                    <li>IOC Extraction</li>
-                    <li>Malware Analysis</li>
-                    <li>MITRE ATT&CK Mapping</li>
-                    <li>Threat Classification</li>
-                    <li>Threat Hunting</li>
+                    <h4>🧠 Threat Analysis</h4>
 
-                </ul>
+                    <ul>
+                        <li>IOC Extraction</li>
+                        <li>Malware Analysis</li>
+                        <li>MITRE ATT&CK Mapping</li>
+                        <li>Threat Classification</li>
+                        <li>Threat Hunting</li>
+                    </ul>
+
+                </div>
 
             </div>
 
             <div class="col-lg-4">
 
-                <ul>
+                <div class="dashboard-panel p-4 h-100">
 
-                    <li>Incident Response</li>
-                    <li>Case Management</li>
-                    <li>Audit Logs</li>
-                    <li>User Management</li>
-                    <li>Security Reporting</li>
+                    <h4>⚡ Incident Response</h4>
 
-                </ul>
+                    <ul>
+                        <li>Case Management</li>
+                        <li>Incident Response</li>
+                        <li>Audit Logging</li>
+                        <li>User Management</li>
+                        <li>Security Reporting</li>
+                    </ul>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+    </section>
 
-    <!-- MODULES -->
+    <!-- DEMO WORKFLOW -->
 
-    <div class="dashboard-panel mb-4">
+    <section class="container pb-5">
 
-        <h3>
+        <div class="dashboard-panel p-4">
 
-            SOC Modules
+            <h2 class="mb-4">
 
-        </h3>
+                Security Operations Workflow
 
-        <div class="row g-3 mt-3">
+            </h2>
 
-            <div class="col-md-3">
+            <div class="row text-center">
 
-                <a
-                    href="{{ url_for('alerts') }}"
-                    class="btn btn-outline-danger w-100">
+                <div class="col-md">
 
-                    Alerts
+                    🌐<br>
+                    Internet
 
-                </a>
+                </div>
 
-            </div>
+                <div class="col-md">
 
-            <div class="col-md-3">
+                    ↓
 
-                <a
-                    href="{{ url_for('attack_logs') }}"
-                    class="btn btn-outline-primary w-100">
+                </div>
 
-                    Attack Logs
+                <div class="col-md">
 
-                </a>
+                    🍯<br>
+                    Cowrie Honeypot
 
-            </div>
+                </div>
 
-            <div class="col-md-3">
+                <div class="col-md">
 
-                <a
-                    href="{{ url_for('attack_statistics') }}"
-                    class="btn btn-outline-success w-100">
+                    ↓
 
-                    Statistics
+                </div>
 
-                </a>
+                <div class="col-md">
 
-            </div>
+                    📊<br>
+                    SOC Dashboard
 
-            <div class="col-md-3">
+                </div>
 
-                <a
-                    href="{{ url_for('reports') }}"
-                    class="btn btn-outline-warning w-100">
+                <div class="col-md">
 
-                    Reports
+                    ↓
 
-                </a>
+                </div>
+
+                <div class="col-md">
+
+                    👨‍💻<br>
+                    Security Analyst
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+    </section>
 
-    <!-- LIVE ACTIVITY -->
+    <!-- LIVE STATUS -->
 
-    <div class="dashboard-panel mb-4">
+    <section class="container pb-5">
 
-        <h3>
+        <h2 class="text-center mb-4">
 
-            Recent Threat Activity
+            Platform Status
 
-        </h3>
+        </h2>
 
-        <table class="table table-striped">
-
-            <thead>
-
-                <tr>
-
-                    <th>Time</th>
-                    <th>Source IP</th>
-                    <th>Country</th>
-                    <th>Activity</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {% for attack in recent_attacks|default([]) %}
-
-                <tr>
-
-                    <td>{{ attack.timestamp }}</td>
-
-                    <td>{{ attack.ip }}</td>
-
-                    <td>{{ attack.country }}</td>
-
-                    <td>{{ attack.activity }}</td>
-
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    <!-- SECURITY STATUS -->
-
-    <div class="dashboard-panel mb-4">
-
-        <h3>
-
-            Security Status
-
-        </h3>
-
-        <div class="row">
+        <div class="row g-4">
 
             <div class="col-md-4">
 
-                <div class="text-center">
+                <div class="stat-card text-center p-4">
 
-                    <h5>
-
-                        Cowrie Honeypot
-
-                    </h5>
+                    <h5>Cowrie Honeypot</h5>
 
                     <span class="badge bg-success">
 
@@ -340,13 +257,9 @@ Home
 
             <div class="col-md-4">
 
-                <div class="text-center">
+                <div class="stat-card text-center p-4">
 
-                    <h5>
-
-                        Threat Engine
-
-                    </h5>
+                    <h5>Threat Engine</h5>
 
                     <span class="badge bg-success">
 
@@ -360,13 +273,9 @@ Home
 
             <div class="col-md-4">
 
-                <div class="text-center">
+                <div class="stat-card text-center p-4">
 
-                    <h5>
-
-                        SOC Dashboard
-
-                    </h5>
+                    <h5>SOC Platform</h5>
 
                     <span class="badge bg-success">
 
@@ -380,34 +289,39 @@ Home
 
         </div>
 
-    </div>
+    </section>
 
-    <!-- ROADMAP -->
+    <!-- FINAL CTA -->
 
-    <div class="dashboard-panel">
+    <section class="container text-center pb-5">
 
-        <h3>
+        <div class="dashboard-panel p-5">
 
-            Future Roadmap
+            <h2>
 
-        </h3>
+                Ready to Access the SOC?
 
-        <ul>
+            </h2>
 
-            <li>SOAR Integration</li>
-            <li>AI Threat Detection</li>
-            <li>Automated Incident Response</li>
-            <li>Cloud Security Monitoring</li>
-            <li>Threat Intelligence Feeds</li>
-            <li>Mobile Dashboard</li>
-            <li>Executive Reporting</li>
-            <li>Advanced Malware Sandbox</li>
-            <li>Machine Learning Analytics</li>
-            <li>Multi-Honeypot Support</li>
+            <p class="lead">
 
-        </ul>
+                Login to access real-time monitoring,
+                threat intelligence, incident response,
+                and analyst tools.
 
-    </div>
+            </p>
+
+            <a
+                href="{{ url_for('login') }}"
+                class="btn btn-danger btn-lg px-5">
+
+                Launch SOC Platform
+
+            </a>
+
+        </div>
+
+    </section>
 
 </div>
 
