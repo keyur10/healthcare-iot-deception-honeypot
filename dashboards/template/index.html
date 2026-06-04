@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare IoT Threat Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        .card {
+            background: #ecf0f1;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Healthcare IoT Deception Honeypot Dashboard</h1>
+
+        <div class="card">
+            <strong>Total Attacks:</strong>
+            {{ data.total_attacks }}
+        </div>
+
+        <div class="card">
+            <strong>Top Country:</strong>
+            {{ data.top_country }}
+        </div>
+
+        <div class="card">
+            <strong>Top Attacker IP:</strong>
+            {{ data.top_ip }}
+        </div>
+
+        <div class="card">
+            <strong>Top Username:</strong>
+            {{ data.top_username }}
+        </div>
+
+        <div class="card">
+            <strong>Top Password:</strong>
+            {{ data.top_password }}
+        </div>
+
+        <div class="card">
+            <strong>Attack Type:</strong>
+            {{ data.attack_type }}
+        </div>
+
+        <hr>
+
+        <h2>Attack Statistics</h2>
+
+        <img src="{{ url_for('static', filename='top_attack_origins.png') }}"
+             alt="Attack Origin Statistics">
+
+    </div>
+
+</body>
+
+</html>
