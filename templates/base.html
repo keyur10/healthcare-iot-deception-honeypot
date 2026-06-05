@@ -49,8 +49,6 @@
 
                 <div class="loading-text">
 
-                    Loading SOC Dashboard
-
                 </div>
 
             </div>
@@ -103,7 +101,12 @@
                         Attack Logs
                     </a>
                 </li>
-
+<li>
+    <a href="/api/stats">
+        <i class="fas fa-code"></i>
+        API
+    </a>
+</li>
                 <li>
                     <a href="{{ url_for('attack_statistics') }}">
                         <i class="fas fa-chart-bar"></i>
@@ -270,32 +273,44 @@
 
                     </button>
 
+
                     <span class="navbar-brand">
 
-                        Honeypot Threat Intelligence Platform
+    Honeypot Threat Intelligence Platform
 
-                    </span>
+</span>
 
-                    <div class="d-flex align-items-center gap-3">
+<div class="d-flex align-items-center gap-3">
 
-                        <span class="badge bg-success">
+    <div class="live-badge">
+    <span class="live-dot"></span>
+    <span>Cowrie</span>
+</div>
 
-                            Cowrie Online
+<div class="live-badge">
+    <span class="live-dot"></span>
+    <span>Threat Engine</span>
+</div>
 
-                        </span>
+    <div class="soc-clock">
 
-                        <span class="badge bg-info">
+        <div class="soc-clock-label">
 
-                            Threat Engine Active
+            THREAT OPS TIME
 
-                        </span>
+        </div>
 
-                        <span
-                            id="soc-clock"
-                            class="text-info">
+        <div id="soc-time">
 
-                        </span>
-                                            <div class="dropdown">
+        </div>
+
+        <div id="soc-date">
+
+        </div>
+
+    </div>
+
+    <div class="dropdown">
 
                             <button
                                 class="btn cyber-user-btn dropdown-toggle"
@@ -304,12 +319,6 @@
                                 <i class="fas fa-user-shield"></i>
 
                                 {{ session.get("user") }}
-
-                                <span class="role-badge">
-
-                                    {{ session.get("role")|upper }}
-
-                                </span>
 
                             </button>
 
@@ -381,6 +390,40 @@
                 {% endif %}
 
             {% endwith %}
+<script>
+
+function updateSocClock(){
+
+    const now = new Date();
+
+    document.getElementById(
+        "soc-time"
+    ).innerHTML =
+        now.toLocaleTimeString(
+            "en-GB"
+        );
+
+    document.getElementById(
+        "soc-date"
+    ).innerHTML =
+        now.toLocaleDateString(
+            "en-GB",
+            {
+                day:"2-digit",
+                month:"short",
+                year:"numeric"
+            }
+        );
+}
+
+updateSocClock();
+
+setInterval(
+    updateSocClock,
+    1000
+);
+
+</script>
 
             {% block content %}
             {% endblock %}

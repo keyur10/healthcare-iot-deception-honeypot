@@ -1,7 +1,7 @@
 from pathlib import Path
 from collections import Counter
 from datetime import timedelta, datetime
-
+import psutil
 import json
 import logging
 import os
@@ -27,6 +27,7 @@ from core.auth import (
 from core.storage import (
     ensure_data_files,
     load_users,
+    save_users,
 )
 
 from core.audit import (
@@ -562,31 +563,89 @@ def logout():
 # ==================================================
 # DASHBOARD
 # ==================================================
-
 @app.route("/dashboard")
 @login_required
 def dashboard():
 
     stats = get_attack_data()
 
+    cpu_usage = psutil.cpu_percent(interval=0.1)
+
+    memory_usage = (
+        psutil
+        .virtual_memory()
+        .percent
+    )
+
+    disk_usage = (
+        psutil
+        .disk_usage("C:\\")
+        .percent
+    )
+
     return render_template(
         "dashboard.html",
-        total_attacks=stats[
-            "total_attacks"
-        ],
-        unique_ips=stats[
-            "unique_ips"
-        ],
-        recent_attacks=stats[
-            "recent_attacks"
-        ],
-        country_stats=stats[
-            "country_stats"
-        ],
-        threat_level=stats[
-            "threat_level"
-        ],
-        role=current_role(),
+
+        total_attacks=stats.get(
+            "total_attacks",
+            0
+        ),
+
+        unique_ips=stats.get(
+            "unique_ips",
+            0
+        ),
+
+        recent_attacks=stats.get(
+            "recent_attacks",
+            []
+        ),
+
+        country_stats=stats.get(
+            "country_stats",
+            []
+        ),
+
+        threat_level=stats.get(
+            "threat_level",
+            "LOW"
+        ),
+
+        current_user=session.get(
+            "user",
+            "Unknown"
+        ),
+
+        current_role=session.get(
+            "role",
+            "user"
+        ),
+
+        cpu_usage=cpu_usage,
+
+        memory_usage=memory_usage,
+
+        disk_usage=disk_usage,
+
+        top_attackers=[],
+
+        audit_events=[],
+
+        ioc_count=0,
+
+        domain_count=0,
+
+        hash_count=0,
+
+        url_count=0,
+
+        open_hunts=0,
+
+        ioc_matches=0,
+
+        investigations=0,
+
+        malware_count=0
     )
 
 # ==================================================
@@ -1041,15 +1100,17 @@ def asset_inventory():
 # ==================================================
 
 @app.route("/settings")
-@permission_required(
-    "settings"
-)
+@permission_required("settings")
 def settings():
 
     return render_soc_page(
         "settings.html"
     )
 
+
+# ==================================================
+# USER MANAGEMENT
+# ==================================================
 
 @app.route(
     "/user-management",
@@ -1058,21 +1119,202 @@ def settings():
 @permission_required("user_management")
 def user_management():
 
-    if request.method == "POST":
-        # create/update user
-
-        flash(
-            "User saved",
-            "success"
-        )
-
     users = load_users()
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+        role = request.form.get("role")
+
+        if username and password:
+
+           users[username] = {
+    "password": password,
+    "role": role,
+    "active": True,
+    "mfa": request.form.get("mfa") == "on",
+    "last_login": "Never",
+    "force_password_change": True
+}
+
+            save_users(users)
+
+            flash(
+                "User created successfully",
+                "success"
+            )
+
+            return redirect(
+                url_for("user_management")
+            )
 
     return render_template(
         "user_management.html",
         users=users
     )
 
+
+# ==================================================
+# EDIT USER
+# ==================================================
+
+@app.route(
+    "/user-management/edit/<username>",
+    methods=["GET", "POST"]
+)
+@permission_required("user_management")
+def edit_soc_user(username):
+
+    users = load_users()
+
+    if username not in users:
+
+        flash(
+            "User not found",
+            "danger"
+        )
+
+        return redirect(
+            url_for("user_management")
+        )
+
+    if request.method == "POST":
+
+        new_username = request.form.get(
+            "username"
+        )
+
+        role = request.form.get(
+            "role"
+        )
+
+        active = (
+            request.form.get("active")
+            == "on"
+        )
+
+        mfa = (
+            request.form.get("mfa")
+            == "on"
+        )
+
+        user_data = users.pop(
+            username
+        )
+
+        user_data["role"] = role
+        user_data["active"] = active
+        user_data["mfa"] = mfa
+
+        users[new_username] = user_data
+
+        save_users(users)
+
+        flash(
+            "User updated successfully",
+            "success"
+        )
+
+        return redirect(
+            url_for("user_management")
+        )
+
+    return render_template(
+        "edit_user.html",
+        username=username,
+        user=users[username]
+    )
+
+
+# ==================================================
+# DELETE USER
+# ==================================================
+
+@app.route(
+    "/user-management/delete/<username>"
+)
+@permission_required("user_management")
+def delete_user(username):
+
+    users = load_users()
+
+    if username in users:
+
+        users.pop(username)
+
+        save_users(users)
+
+        flash(
+            f"{username} deleted successfully",
+            "success"
+        )
+
+    return redirect(
+        url_for("user_management")
+    )
+
+
+# ==================================================
+# TOGGLE MFA
+# ==================================================
+
+@app.route(
+    "/user-management/mfa/<username>"
+)
+@permission_required("user_management")
+def toggle_mfa(username):
+
+    users = load_users()
+
+    if username in users:
+
+        users[username]["mfa"] = not users[
+            username
+        ].get(
+            "mfa",
+            False
+        )
+
+        save_users(users)
+
+        flash(
+            "MFA Updated",
+            "success"
+        )
+
+    return redirect(
+        url_for("user_management")
+    )
+
+
+# ==================================================
+# RESET PASSWORD
+# ==================================================
+
+@app.route(
+    "/user-management/reset/<username>"
+)
+@permission_required("user_management")
+def reset_password(username):
+
+    users = load_users()
+
+    if username in users:
+
+        users[username]["password"] = "Temp123!"
+        users[username]["force_password_change"] = True
+
+        save_users(users)
+
+        flash(
+            "Password Reset",
+            "success"
+        )
+
+    return redirect(
+        url_for("user_management")
+    )
 
 @app.route("/audit-logs")
 @permission_required(

@@ -522,5 +522,167 @@
         "details": {
             "role": "admin"
         }
+    },
+    {
+        "timestamp": "2026-06-05T01:48:36.220051",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T01:48:49.745516",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T02:04:10.344327",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T02:26:04.063135",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T03:08:25.880422",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T03:19:52.026588",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T03:31:49.527708",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T04:20:00.051563",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T04:22:10.089303",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T04:32:58.836628",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T04:52:37.206639",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T05:06:12.469854",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T06:02:46.062748",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T06:11:14.106193",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T09:36:21.168042",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T09:47:31.784410",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T09:55:22.982179",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
+    },
+    {
+        "timestamp": "2026-06-05T09:55:29.538336",
+        "actor": "admin",
+        "action": "LOGIN_SUCCESS",
+        "target": "",
+        "details": {
+            "role": "admin"
+        }
     }
 ]
