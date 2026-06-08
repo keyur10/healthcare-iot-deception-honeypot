@@ -1,0 +1,216 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/timeline.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="timeline-container">
+
+    <div class="page-header">
+
+        <h1>Attack Timeline Analysis</h1>
+
+        <p>
+            Chronological view of attacker activity
+        </p>
+
+    </div>
+
+    <div class="timeline-summary">
+
+        <div class="summary-card">
+
+            <h3>Total Events</h3>
+
+            <span>247</span>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Critical Events</h3>
+
+            <span class="critical">
+                12
+            </span>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Unique Attackers</h3>
+
+            <span>
+                43
+            </span>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Compromised Devices</h3>
+
+            <span>
+                8
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="timeline-panel">
+
+        <h2>Attack Timeline</h2>
+
+        <div class="timeline">
+
+            <div class="timeline-item critical">
+
+                <div class="timeline-time">
+                    14:32
+                </div>
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Ventilator Exploit Attempt
+                    </h3>
+
+                    <p>
+                        Source IP: 45.33.12.88
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="timeline-item high">
+
+                <div class="timeline-time">
+                    14:28
+                </div>
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Malware Communication
+                    </h3>
+
+                    <p>
+                        Target: Patient Monitor
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="timeline-item medium">
+
+                <div class="timeline-time">
+                    14:22
+                </div>
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Reconnaissance Scan
+                    </h3>
+
+                    <p>
+                        Port Scan Detected
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="timeline-item low">
+
+                <div class="timeline-time">
+                    14:15
+                </div>
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Device Discovery
+                    </h3>
+
+                    <p>
+                        Infusion Pump Enumeration
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="timeline-item critical">
+
+                <div class="timeline-time">
+                    14:10
+                </div>
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Credential Stuffing
+                    </h3>
+
+                    <p>
+                        Multiple Login Attempts
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="timeline-panel">
+
+        <h2>Attack Chain</h2>
+
+        <div class="attack-chain">
+
+            <div class="chain-box">
+                Recon
+            </div>
+
+            <div class="chain-arrow">
+                →
+            </div>
+
+            <div class="chain-box">
+                Exploit
+            </div>
+
+            <div class="chain-arrow">
+                →
+            </div>
+
+            <div class="chain-box">
+                Persistence
+            </div>
+
+            <div class="chain-arrow">
+                →
+            </div>
+
+            <div class="chain-box">
+                Impact
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

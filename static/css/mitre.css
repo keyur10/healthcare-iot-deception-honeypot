@@ -1,0 +1,124 @@
+.mitre-container {
+
+    padding: 30px;
+
+}
+
+.mitre-summary {
+
+    display: grid;
+
+    grid-template-columns: repeat(4,1fr);
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+
+}
+
+.summary-card {
+
+    background: rgba(11,22,47,.9);
+
+    border: 1px solid rgba(0,217,255,.2);
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+}
+
+.summary-card span {
+
+    font-size: 32px;
+
+    color: #00d9ff;
+
+    font-weight: 700;
+
+}
+
+.mitre-panel {
+
+    background: rgba(11,22,47,.9);
+
+    border: 1px solid rgba(0,217,255,.2);
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+.matrix-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(5,1fr);
+
+    gap: 15px;
+
+}
+
+.matrix-card {
+
+    background: rgba(0,217,255,.05);
+
+    border: 1px solid rgba(0,217,255,.15);
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    text-align: center;
+
+}
+
+.matrix-card h3 {
+
+    color: #00d9ff;
+
+    margin-top: 10px;
+
+}
+
+.mitre-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+.mitre-table th,
+.mitre-table td {
+
+    padding: 12px;
+
+    border-bottom: 1px solid rgba(255,255,255,.08);
+
+}
+
+.device-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 15px;
+
+}
+
+.device-card {
+
+    background: rgba(0,217,255,.05);
+
+    border: 1px solid rgba(0,217,255,.15);
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+}

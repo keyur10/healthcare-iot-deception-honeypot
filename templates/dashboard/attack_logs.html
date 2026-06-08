@@ -1,0 +1,507 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<div class="attack-logs-container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Attack Investigation Center</h1>
+
+            <p>
+                Healthcare IoT Threat Monitoring & Analysis
+            </p>
+
+        </div>
+
+        <div class="page-actions">
+
+            <button class="btn btn-primary">
+                Export CSV
+            </button>
+
+            <button class="btn btn-danger">
+                Export PDF
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card critical">
+
+            <span class="stat-title">
+                Total Attacks
+            </span>
+
+            <h2>
+                1,248
+            </h2>
+
+        </div>
+
+        <div class="stat-card warning">
+
+            <span class="stat-title">
+                Critical Threats
+            </span>
+
+            <h2>
+                87
+            </h2>
+
+        </div>
+
+        <div class="stat-card info">
+
+            <span class="stat-title">
+                Unique Attackers
+            </span>
+
+            <h2>
+                352
+            </h2>
+
+        </div>
+
+        <div class="stat-card success">
+
+            <span class="stat-title">
+                Countries Detected
+            </span>
+
+            <h2>
+                18
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- FILTERS -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h2>
+                Search & Filters
+            </h2>
+
+        </div>
+
+        <div class="filters-grid">
+
+            <input
+                type="text"
+                placeholder="Search IP Address..."
+            >
+
+            <select>
+
+                <option>
+                    All Attack Types
+                </option>
+
+                <option>
+                    Brute Force
+                </option>
+
+                <option>
+                    Exploit Attempt
+                </option>
+
+                <option>
+                    Reconnaissance
+                </option>
+
+            </select>
+
+            <select>
+
+                <option>
+                    All Risk Levels
+                </option>
+
+                <option>
+                    Critical
+                </option>
+
+                <option>
+                    High
+                </option>
+
+                <option>
+                    Medium
+                </option>
+
+                <option>
+                    Low
+                </option>
+
+            </select>
+
+            <select>
+
+                <option>
+                    All Devices
+                </option>
+
+                <option>
+                    Ventilator
+                </option>
+
+                <option>
+                    ECG
+                </option>
+
+                <option>
+                    Patient Monitor
+                </option>
+
+            </select>
+
+            <button class="btn btn-primary">
+
+                Apply Filters
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- MAIN GRID -->
+
+    <div class="attack-layout">
+
+        <!-- LEFT -->
+
+        <div class="attack-main">
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Recent Attack Activity
+                    </h2>
+
+                </div>
+
+                <table class="attack-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Time</th>
+                            <th>Source IP</th>
+                            <th>Country</th>
+                            <th>Target Device</th>
+                            <th>Attack</th>
+                            <th>Risk</th>
+                            <th>Status</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>04:10</td>
+                            <td>185.45.23.11</td>
+                            <td>Russia</td>
+                            <td>Ventilator-01</td>
+                            <td>Brute Force</td>
+                            <td>
+                                <span class="badge danger">
+                                    Critical
+                                </span>
+                            </td>
+                            <td>Open</td>
+
+                            <td>
+
+                                <button class="btn btn-small">
+
+                                    View
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>04:12</td>
+                            <td>91.22.55.18</td>
+                            <td>China</td>
+                            <td>ECG-02</td>
+                            <td>MQTT Probe</td>
+                            <td>
+                                <span class="badge warning">
+                                    High
+                                </span>
+                            </td>
+                            <td>Investigating</td>
+
+                            <td>
+
+                                <button class="btn btn-small">
+
+                                    View
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>04:15</td>
+                            <td>102.17.44.10</td>
+                            <td>Iran</td>
+                            <td>Patient Monitor</td>
+                            <td>Exploit Attempt</td>
+                            <td>
+                                <span class="badge info">
+                                    Medium
+                                </span>
+                            </td>
+                            <td>Open</td>
+
+                            <td>
+
+                                <button class="btn btn-small">
+
+                                    View
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- ATTACK DETAILS -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Selected Attack Details
+                    </h2>
+
+                </div>
+
+                <div class="details-grid">
+
+                    <div>
+
+                        <strong>
+                            Attack ID:
+                        </strong>
+
+                        ATT-2025-00124
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Source:
+                        </strong>
+
+                        185.45.23.11
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Country:
+                        </strong>
+
+                        Russia
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Target:
+                        </strong>
+
+                        Ventilator-01
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            MITRE:
+                        </strong>
+
+                        T1110
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Risk:
+                        </strong>
+
+                        Critical
+
+                    </div>
+
+                </div>
+
+                <div class="payload-box">
+
+                    POST /login
+
+                    username=admin
+
+                    password=123456
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="attack-sidebar">
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Live Threat Feed
+                    </h2>
+
+                </div>
+
+                <div class="feed">
+
+                    <div>
+                        [INFO] Ventilator honeypot online
+                    </div>
+
+                    <div>
+                        [WARNING] Brute force detected
+                    </div>
+
+                    <div>
+                        [ALERT] Exploit attempt detected
+                    </div>
+
+                    <div>
+                        [INFO] IOC added
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Top Attacker Countries
+                    </h2>
+
+                </div>
+
+                <ul class="country-list">
+
+                    <li>
+                        Russia (41)
+                    </li>
+
+                    <li>
+                        China (32)
+                    </li>
+
+                    <li>
+                        Iran (17)
+                    </li>
+
+                    <li>
+                        Germany (11)
+                    </li>
+
+                    <li>
+                        USA (8)
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Attack Types
+                    </h2>
+
+                </div>
+
+                <ul class="country-list">
+
+                    <li>
+                        Brute Force
+                    </li>
+
+                    <li>
+                        Reconnaissance
+                    </li>
+
+                    <li>
+                        MQTT Abuse
+                    </li>
+
+                    <li>
+                        Web Exploitation
+                    </li>
+
+                    <li>
+                        Credential Stuffing
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

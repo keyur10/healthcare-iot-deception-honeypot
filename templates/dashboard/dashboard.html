@@ -1,0 +1,337 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/dashboard.css') }}"
+>
+{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+
+        <div>
+            <h1>Healthcare IoT Deception Honeypot Network</h1>
+            <p>Security Operations Center Dashboard</p>
+        </div>
+
+        <div class="dashboard-status">
+
+            <span class="status-dot"></span>
+
+            System Healthy
+
+        </div>
+
+    </div>
+
+<div class="stats-grid">
+
+    <div
+        class="stat-card clickable-card"
+        onclick="window.location='/honeypots'"
+    >
+        <h3>Active Honeypots</h3>
+        <span>24</span>
+        <small>View & Manage Honeypots</small>
+    </div>
+
+    <div
+        class="stat-card clickable-card"
+        onclick="window.location='/attack-logs'"
+    >
+        <h3>Live Attacks</h3>
+        <span>12</span>
+        <small>Investigate Attacks</small>
+    </div>
+
+    <div
+        class="stat-card clickable-card"
+        onclick="window.location='/ioc'"
+    >
+        <h3>IOC Center</h3>
+        <span>309</span>
+        <small>Indicators of Compromise</small>
+    </div>
+
+    <div
+        class="stat-card clickable-card"
+        onclick="window.location='/devices'"
+    >
+        <h3>Connected Devices</h3>
+        <span>98</span>
+        <small>View Device Inventory</small>
+    </div>
+<div
+    class="stat-card clickable-card"
+    onclick="window.location='/mitre'"
+>
+    <h3>MITRE ATT&CK</h3>
+
+    <span>
+        37
+    </span>
+
+    <small>
+        Threat Techniques
+    </small>
+</div>
+</div>
+
+<div class="dashboard-row">
+
+    <div class="dashboard-panel">
+        <h2>Recent Attacks</h2>
+
+        <table class="attack-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Source IP</th>
+                    <th>Attack</th>
+                    <th>Target</th>
+                    <th>Risk</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Now</td>
+                    <td>192.168.1.50</td>
+                    <td>Brute Force</td>
+                    <td>Ventilator</td>
+                    <td>High</td>
+                </tr>
+
+                <tr>
+                    <td>2 min</td>
+                    <td>45.33.12.88</td>
+                    <td>Recon</td>
+                    <td>Patient Monitor</td>
+                    <td>Medium</td>
+                </tr>
+
+                <tr>
+                    <td>4 min</td>
+                    <td>85.12.4.22</td>
+                    <td>Exploit</td>
+                    <td>Infusion Pump</td>
+                    <td>High</td>
+                </tr>
+
+                <tr>
+                    <td>7 min</td>
+                    <td>66.81.21.17</td>
+                    <td>Malware</td>
+                    <td>MRI System</td>
+                    <td>Critical</td>
+                </tr>
+
+                <tr>
+                    <td>11 min</td>
+                    <td>102.44.8.99</td>
+                    <td>Scan</td>
+                    <td>ECG Monitor</td>
+                    <td>Low</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="dashboard-panel">
+
+    <h2>WHOIS Lookup</h2>
+
+    <form
+        action="/whois"
+        method="POST"
+        class="whois-form"
+    >
+
+        <input
+            type="text"
+            name="ip"
+            placeholder="Enter IP Address..."
+            required
+        >
+
+        <button type="submit">
+
+            Lookup
+
+        </button>
+
+    </form>
+
+    {% if whois_result %}
+
+    <div class="whois-result">
+
+        <div>
+
+            <strong>IP:</strong>
+
+            {{ whois_result.ip }}
+
+        </div>
+
+        <div>
+
+            <strong>Country:</strong>
+
+            {{ whois_result.country }}
+
+        </div>
+
+        <div>
+
+            <strong>ASN:</strong>
+
+            {{ whois_result.asn }}
+
+        </div>
+
+        <div>
+
+            <strong>Provider:</strong>
+
+            {{ whois_result.provider }}
+
+        </div>
+
+        <div>
+
+            <strong>City:</strong>
+
+            {{ whois_result.city }}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<div class="dashboard-row">
+
+    <div class="dashboard-panel">
+
+        <h2>VirusTotal Intelligence</h2>
+
+        <div class="mitre-grid">
+
+            <div class="mitre-card">
+                Malicious IPs
+                <h3>32</h3>
+            </div>
+
+            <div class="mitre-card">
+                Suspicious URLs
+                <h3>18</h3>
+            </div>
+
+            <div class="mitre-card">
+                Malware Hashes
+                <h3>41</h3>
+            </div>
+
+            <div class="mitre-card">
+                Clean Samples
+                <h3>312</h3>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="dashboard-panel">
+
+        <h2>Threat Feed</h2>
+
+        <div id="threatFeed">
+
+            <p>[INFO] Honeypot Monitoring Active</p>
+            <p>[INFO] Device Inventory Updated</p>
+            <p>[WARNING] Brute Force Detected</p>
+            <p>[CRITICAL] Ventilator Exploit Attempt</p>
+            <p>[INFO] MITRE Mapping Updated</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="dashboard-row">
+
+    <div class="dashboard-panel">
+
+        <h2>Top Targeted Medical Devices</h2>
+
+        <div class="mitre-grid">
+
+            <div class="mitre-card">
+                Ventilator
+                <h3>19</h3>
+            </div>
+
+            <div class="mitre-card">
+                Infusion Pump
+                <h3>14</h3>
+            </div>
+
+            <div class="mitre-card">
+                Patient Monitor
+                <h3>12</h3>
+            </div>
+
+            <div class="mitre-card">
+                ECG System
+                <h3>9</h3>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="dashboard-row">
+
+    <div class="dashboard-panel">
+
+        <h2>MITRE ATT&CK Mapping</h2>
+
+        <div class="mitre-grid">
+
+            <div class="mitre-card">
+                Initial Access
+                <h3>37</h3>
+            </div>
+
+            <div class="mitre-card">
+                Execution
+                <h3>21</h3>
+            </div>
+
+            <div class="mitre-card">
+                Persistence
+                <h3>11</h3>
+            </div>
+
+            <div class="mitre-card">
+                Discovery
+                <h3>16</h3>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

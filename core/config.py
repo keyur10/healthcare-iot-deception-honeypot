@@ -1,7 +1,17 @@
 from pathlib import Path
 
 # ==================================================
-# PROJECT PATHS
+# PROJECT
+# ==================================================
+
+PROJECT_NAME = "Healthcare IoT Deception Honeypot Network"
+PROJECT_SHORT_NAME = "HIDHN"
+VERSION = "2.0.0"
+
+SECRET_KEY = "change-this-before-production"
+
+# ==================================================
+# PATHS
 # ==================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,17 +20,18 @@ DATA_DIR = BASE_DIR / "data"
 LOG_DIR = BASE_DIR / "logs"
 REPORT_DIR = BASE_DIR / "reports"
 HONEYPOT_DIR = BASE_DIR / "honeypots"
+STATIC_DIR = BASE_DIR / "static"
+TEMPLATE_DIR = BASE_DIR / "templates"
 
 # ==================================================
-# APPLICATION
+# APP
 # ==================================================
 
 APP = {
-    "name": "Healthcare IoT Deception Honeypot Network",
-    "short_name": "HIDHN",
-    "version": "2.0.0",
     "environment": "development",
     "debug": True,
+    "host": "0.0.0.0",
+    "port": 5000,
 }
 
 # ==================================================
@@ -31,7 +42,7 @@ SECURITY = {
     "session_timeout_minutes": 30,
     "max_login_attempts": 5,
     "password_min_length": 8,
-    "mfa_enabled": True,
+    "mfa_enabled": False,
     "audit_logging": True,
 }
 
@@ -40,8 +51,8 @@ SECURITY = {
 # ==================================================
 
 DASHBOARD = {
-    "refresh_interval": 10,
     "auto_refresh": True,
+    "refresh_interval": 10,
     "show_attack_feed": True,
     "show_threat_feed": True,
     "show_terminal": True,
@@ -63,7 +74,7 @@ THEME = {
 }
 
 # ==================================================
-# HEALTHCARE IOT DEVICE PROFILES
+# DEVICE PROFILES
 # ==================================================
 
 DEVICE_PROFILES = {
@@ -71,31 +82,37 @@ DEVICE_PROFILES = {
         "vendor": "Philips",
         "model": "IntelliVue MX450",
         "port": 8080,
+        "protocol": "HTTP",
     },
     "infusion_pump": {
         "vendor": "Baxter",
         "model": "Sigma Spectrum",
         "port": 8443,
+        "protocol": "HTTPS",
     },
     "smart_hvac": {
         "vendor": "Johnson Controls",
         "model": "Metasys",
         "port": 47808,
+        "protocol": "BACnet",
     },
     "smart_bed": {
         "vendor": "Hillrom",
         "model": "Progressa",
         "port": 9000,
+        "protocol": "TCP",
     },
     "medical_imaging": {
         "vendor": "GE Healthcare",
         "model": "Revolution CT",
         "port": 104,
+        "protocol": "DICOM",
     },
     "nurse_station": {
         "vendor": "Cerner",
         "model": "Care Station",
         "port": 443,
+        "protocol": "HTTPS",
     },
 }
 
@@ -119,11 +136,11 @@ HONEYPOTS = {
 
 THREAT_INTEL = {
     "mitre_enabled": True,
+    "whois_enabled": True,
+    "geoip_enabled": True,
     "virustotal_enabled": False,
     "shodan_enabled": False,
     "abuseipdb_enabled": False,
-    "geoip_enabled": True,
-    "whois_enabled": True,
 }
 
 # ==================================================
@@ -160,6 +177,8 @@ DATA_FILES = {
     "audit_logs": DATA_DIR / "audit_logs.json",
     "threat_feed": DATA_DIR / "threat_feed.json",
     "dashboard_cache": DATA_DIR / "dashboard_cache.json",
+    "geo_cache": DATA_DIR / "geo_cache.json",
+    "mitre_mapping": DATA_DIR / "mitre_mapping.json",
 }
 
 # ==================================================
@@ -188,7 +207,7 @@ FEATURES = {
 }
 
 # ==================================================
-# FUTURE ENHANCEMENTS
+# FUTURE
 # ==================================================
 
 FUTURE = {

@@ -1,0 +1,160 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/geolocation.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="geo-container">
+
+    <div class="page-header">
+
+        <h1>Threat Geolocation Center</h1>
+
+        <p>
+            Attack Source Intelligence & Geographic Tracking
+        </p>
+
+    </div>
+
+    <div class="geo-stats">
+
+        <div class="geo-card">
+
+            <h3>Total Countries</h3>
+
+            <span>27</span>
+
+        </div>
+
+        <div class="geo-card">
+
+            <h3>Tracked IPs</h3>
+
+            <span>154</span>
+
+        </div>
+
+        <div class="geo-card">
+
+            <h3>High Risk Nations</h3>
+
+            <span class="danger">
+                8
+            </span>
+
+        </div>
+
+        <div class="geo-card">
+
+            <h3>Live Connections</h3>
+
+            <span>
+                41
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="geo-grid">
+
+        <div class="geo-panel">
+
+            <h2>IP Geolocation Lookup</h2>
+
+            <form>
+
+                <input
+                    type="text"
+                    placeholder="Enter IP Address..."
+                >
+
+                <button>
+                    Lookup
+                </button>
+
+            </form>
+
+            <div class="lookup-result">
+
+                <div>Country: Russia</div>
+                <div>City: Moscow</div>
+                <div>ASN: AS12345</div>
+                <div>ISP: Example ISP</div>
+
+            </div>
+
+        </div>
+
+        <div class="geo-panel">
+
+            <h2>Attack Heat Map</h2>
+
+            <div class="map-placeholder">
+
+                🌍 World Threat Map
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="geo-panel">
+
+        <h2>Top Attack Origins</h2>
+
+        <table class="geo-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Country</th>
+                    <th>Attacks</th>
+                    <th>Risk</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Russia</td>
+                    <td>58</td>
+                    <td>Critical</td>
+                </tr>
+
+                <tr>
+                    <td>China</td>
+                    <td>43</td>
+                    <td>High</td>
+                </tr>
+
+                <tr>
+                    <td>North Korea</td>
+                    <td>17</td>
+                    <td>High</td>
+                </tr>
+
+                <tr>
+                    <td>Iran</td>
+                    <td>12</td>
+                    <td>Medium</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

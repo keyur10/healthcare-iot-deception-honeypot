@@ -1,0 +1,68 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <h1>Connected Medical Devices</h1>
+
+    <table class="attack-table">
+
+        <thead>
+
+            <tr>
+
+                <th>Device</th>
+                <th>IP</th>
+                <th>Status</th>
+                <th>Firmware</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr>
+
+                <td>Ventilator</td>
+                <td>10.0.0.10</td>
+                <td>Online</td>
+                <td>v2.3</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Patient Monitor</td>
+                <td>10.0.0.11</td>
+                <td>Online</td>
+                <td>v1.8</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Infusion Pump</td>
+                <td>10.0.0.12</td>
+                <td>Online</td>
+                <td>v3.1</td>
+
+            </tr>
+
+            <tr>
+
+                <td>ECG Monitor</td>
+                <td>10.0.0.13</td>
+                <td>Online</td>
+                <td>v2.1</td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

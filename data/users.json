@@ -1,23 +1,7 @@
-{
-    "admin": {
+[
+    {
+        "username": "admin",
         "password": "admin123",
-        "role": "admin",
-        "mfa": false
-    },
-    "analyst1": {
-        "password": "analyst123",
-        "role": "analyst",
-        "mfa": true
-    },
-    "user1": {
-        "password": "user123",
-        "role": "user",
-        "mfa": true
-    },
-    "keyur": {
-        "password": "Keyur@20012345",
-        "role": "analyst",
-        "active": true,
-        "mfa": false
+        "role": "admin"
     }
-}
+]

@@ -1,0 +1,188 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/ioc.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="ioc-container">
+
+    <div class="page-header">
+
+        <h1>IOC Extraction Center</h1>
+
+        <p>
+            Indicators of Compromise Analysis & Intelligence
+        </p>
+
+    </div>
+
+    <div class="ioc-summary">
+
+        <div class="ioc-card">
+
+            <h3>Malicious IPs</h3>
+
+            <span>152</span>
+
+        </div>
+
+        <div class="ioc-card">
+
+            <h3>Domains</h3>
+
+            <span>43</span>
+
+        </div>
+
+        <div class="ioc-card">
+
+            <h3>URLs</h3>
+
+            <span>88</span>
+
+        </div>
+
+        <div class="ioc-card">
+
+            <h3>Hashes</h3>
+
+            <span>26</span>
+
+        </div>
+
+    </div>
+
+    <div class="ioc-panel">
+
+        <h2>IOC Search</h2>
+
+        <div class="ioc-search">
+
+            <input
+                type="text"
+                id="iocSearch"
+                placeholder="Search IOC..."
+            >
+
+            <button id="searchBtn">
+
+                Search
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="ioc-panel">
+
+        <h2>Detected Indicators</h2>
+
+        <table class="ioc-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Type</th>
+                    <th>Indicator</th>
+                    <th>Risk</th>
+                    <th>First Seen</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="iocTable">
+
+                <tr>
+
+                    <td>IP</td>
+                    <td>45.33.12.88</td>
+                    <td class="critical">
+                        Critical
+                    </td>
+                    <td>Today</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Domain</td>
+                    <td>malicious-example.com</td>
+                    <td class="high">
+                        High
+                    </td>
+                    <td>Today</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Hash</td>
+                    <td>8a5f4e...</td>
+                    <td class="medium">
+                        Medium
+                    </td>
+                    <td>Yesterday</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="ioc-panel">
+
+        <h2>Threat Intelligence</h2>
+
+        <div class="intel-grid">
+
+            <div class="intel-box">
+
+                VirusTotal Hits
+
+                <h3>37</h3>
+
+            </div>
+
+            <div class="intel-box">
+
+                WHOIS Matches
+
+                <h3>18</h3>
+
+            </div>
+
+            <div class="intel-box">
+
+                Blacklisted IPs
+
+                <h3>11</h3>
+
+            </div>
+
+            <div class="intel-box">
+
+                Active Campaigns
+
+                <h3>4</h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/ioc.js') }}"></script>
+
+{% endblock %}

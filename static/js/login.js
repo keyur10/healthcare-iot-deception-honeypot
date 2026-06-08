@@ -1,297 +1,140 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    initializeMatrix();
-
-    initializeDraggableLogin();
-
-    initializeThreatAlerts();
-
-    initializeSystemMonitor();
-
+    initializeAttackCounter();
+    initializeDeviceCounter();
+    initializeThreatLevel();
+    initializeTrafficCounter();
     initializeTerminalFeed();
-
     initializeClock();
+    initializeWidgetPulse();
 
-    initializeGeoIntel();
-    
-    initializeRoleMfa();
 });
 
 /* ==================================================
-   MATRIX RAIN
+   ATTACK COUNTER
 ================================================== */
 
-function initializeMatrix() {
+function initializeAttackCounter() {
 
-    const canvas =
+    const attackCounter =
         document.getElementById(
-            "matrix"
+            "attackCounter"
         );
 
-    if (!canvas) {
-        return;
-    }
+    if (!attackCounter) return;
 
-    const ctx =
-        canvas.getContext(
-            "2d"
-        );
+    setInterval(() => {
 
-    const characters =
-        "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&@";
-
-    const fontSize = 14;
-
-    let columns;
-    let drops;
-
-    function resizeCanvas() {
-
-        canvas.width =
-            window.innerWidth;
-
-        canvas.height =
-            window.innerHeight;
-
-        columns =
+        attackCounter.innerText =
             Math.floor(
-                canvas.width /
-                fontSize
+                10 + Math.random() * 40
             );
 
-        drops =
-            Array(columns)
-            .fill(1);
-
-    }
-
-    function drawMatrix() {
-
-        ctx.fillStyle =
-            "rgba(5,11,20,0.08)";
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-        ctx.fillStyle =
-            "#00e5ff";
-
-        ctx.font =
-            `${fontSize}px Consolas`;
-
-        for (
-            let i = 0;
-            i < drops.length;
-            i++
-        ) {
-
-            const char =
-                characters[
-                    Math.floor(
-                        Math.random() *
-                        characters.length
-                    )
-                ];
-
-            ctx.fillText(
-                char,
-                i * fontSize,
-                drops[i] *
-                fontSize
-            );
-
-            if (
-                drops[i] *
-                    fontSize >
-                canvas.height &&
-                Math.random() >
-                    0.975
-            ) {
-
-                drops[i] = 0;
-
-            }
-
-            drops[i]++;
-
-        }
-
-    }
-
-    function animate() {
-
-        drawMatrix();
-
-        requestAnimationFrame(
-            animate
-        );
-
-    }
-
-    resizeCanvas();
-
-    animate();
-
-    window.addEventListener(
-        "resize",
-        resizeCanvas
-    );
+    }, 2500);
 
 }
 
 /* ==================================================
-   DRAGGABLE LOGIN
+   DEVICE COUNTER
 ================================================== */
 
-function initializeDraggableLogin() {
+function initializeDeviceCounter() {
 
-    const card =
+    const deviceCounter =
         document.getElementById(
-            "draggable-login"
+            "deviceCounter"
         );
 
-    if (!card) {
-        return;
-    }
+    if (!deviceCounter) return;
 
-    let dragging = false;
+    setInterval(() => {
 
-    let offsetX = 0;
-    let offsetY = 0;
+        deviceCounter.innerText =
+            Math.floor(
+                85 + Math.random() * 25
+            );
 
-    card.style.cursor =
-        "grab";
-
-    card.addEventListener(
-        "mousedown",
-        event => {
-
-            dragging = true;
-
-            offsetX =
-                event.clientX -
-                card.offsetLeft;
-
-            offsetY =
-                event.clientY -
-                card.offsetTop;
-
-            card.style.cursor =
-                "grabbing";
-
-        }
-    );
-
-    document.addEventListener(
-        "mousemove",
-        event => {
-
-            if (!dragging) {
-                return;
-            }
-
-            card.style.position =
-                "absolute";
-
-            const left =
-                Math.max(
-                    0,
-                    Math.min(
-                        window.innerWidth -
-                        card.offsetWidth,
-                        event.clientX -
-                        offsetX
-                    )
-                );
-
-            const top =
-                Math.max(
-                    0,
-                    Math.min(
-                        window.innerHeight -
-                        card.offsetHeight,
-                        event.clientY -
-                        offsetY
-                    )
-                );
-
-            card.style.left =
-                `${left}px`;
-
-            card.style.top =
-                `${top}px`;
-
-        }
-    );
-
-    document.addEventListener(
-        "mouseup",
-        () => {
-
-            dragging = false;
-
-            card.style.cursor =
-                "grab";
-
-        }
-    );
+    }, 4000);
 
 }
 
 /* ==================================================
-   THREAT ALERTS
+   THREAT LEVEL
 ================================================== */
 
-function initializeThreatAlerts() {
+function initializeThreatLevel() {
 
-    const panel =
+    const threatElement =
         document.querySelector(
-            ".threat-panel p"
+            ".status-orange"
         );
 
-    if (!panel) {
-        return;
-    }
+    if (!threatElement) return;
 
-    const alerts = [
+    const levels = [
 
-        "SSH BRUTE FORCE DETECTED",
+        {
+            text: "LOW",
+            color: "#00ff88"
+        },
 
-        "TELNET SCAN IDENTIFIED",
+        {
+            text: "MEDIUM",
+            color: "#ff9f1a"
+        },
 
-        "BOTNET ACTIVITY OBSERVED",
-
-        "UNAUTHORIZED LOGIN ATTEMPT",
-
-        "HIGH RISK SOURCE IP",
-
-        "SUSPICIOUS CREDENTIAL SPRAY",
-
-        "REMOTE ACCESS ATTEMPT",
-
-        "MALICIOUS SESSION CREATED",
-
-        "IOT DEVICE COMPROMISE",
-
-        "THREAT LEVEL ELEVATED"
+        {
+            text: "HIGH",
+            color: "#ff304f"
+        }
 
     ];
 
     setInterval(() => {
 
-        panel.textContent =
-            alerts[
+        const randomLevel =
+            levels[
                 Math.floor(
                     Math.random() *
-                    alerts.length
+                    levels.length
                 )
             ];
 
-    }, 5000);
+        threatElement.innerText =
+            randomLevel.text;
+
+        threatElement.style.color =
+            randomLevel.color;
+
+    }, 6000);
+
+}
+
+/* ==================================================
+   NETWORK TRAFFIC
+================================================== */
+
+function initializeTrafficCounter() {
+
+    const trafficElement =
+        document.querySelector(
+            ".traffic-value"
+        );
+
+    if (!trafficElement) return;
+
+    setInterval(() => {
+
+        const value =
+            (
+                1 +
+                Math.random() * 5
+            ).toFixed(2);
+
+        trafficElement.innerText =
+            `${value} GB/s`;
+
+    }, 3000);
 
 }
 
@@ -302,46 +145,50 @@ function initializeThreatAlerts() {
 function initializeTerminalFeed() {
 
     const terminal =
-        document.querySelector(
-            ".terminal-feed"
+        document.getElementById(
+            "terminalFeed"
         );
 
-    if (!terminal) {
-        return;
-    }
+    if (!terminal) return;
 
     const logs = [
 
-        "> SSH LOGIN FAILED",
+        "[INFO] Healthcare Node Registered",
 
-        "> ROOT ACCESS ATTEMPT",
+        "[INFO] MQTT Reconnaissance Detected",
 
-        "> BOTNET CONNECTION",
+        "[WARNING] SSH Brute Force Attempt",
 
-        "> SESSION OPENED",
+        "[INFO] Smart Bed Connected",
 
-        "> INVALID PASSWORD",
+        "[INFO] Patient Monitor Online",
 
-        "> ATTACK DETECTED",
+        "[ALERT] Unauthorized Device Scan",
 
-        "> CREDENTIAL HARVESTING",
+        "[INFO] Modbus Probe Captured",
 
-        "> CONNECTION CLOSED",
+        "[ALERT] Honeypot Triggered",
 
-        "> PORT SCAN IDENTIFIED",
+        "[INFO] Ventilator Telemetry Active",
 
-        "> MALICIOUS PAYLOAD BLOCKED"
+        "[WARNING] Suspicious DNS Request",
+
+        "[INFO] Threat Intelligence Updated",
+
+        "[INFO] Fake Device Interaction Logged",
+
+        "[ALERT] Malware Signature Matched",
+
+        "[INFO] Infusion Pump Responded",
+
+        "[INFO] Nurse Station Connected"
 
     ];
 
     setInterval(() => {
 
-        const line =
-            document.createElement(
-                "div"
-            );
+        const log =
 
-        const text =
             logs[
                 Math.floor(
                     Math.random() *
@@ -349,58 +196,34 @@ function initializeTerminalFeed() {
                 )
             ];
 
-        line.textContent =
-            text;
+        const timestamp =
+            new Date()
+            .toLocaleTimeString();
 
-        terminal.prepend(
-            line
-        );
+        const line =
 
-        while (
-            terminal.children
-                .length > 8
+            `<div>[${timestamp}] ${log}</div>`;
+
+        terminal.innerHTML =
+            line +
+            terminal.innerHTML;
+
+        const lines =
+            terminal.querySelectorAll(
+                "div"
+            );
+
+        if (
+            lines.length > 12
         ) {
 
-            terminal.removeChild(
-                terminal.lastChild
-            );
+            lines[
+                lines.length - 1
+            ].remove();
 
         }
 
-    }, 2500);
-
-}
-
-/* ==================================================
-   SYSTEM MONITOR
-================================================== */
-
-function initializeSystemMonitor() {
-
-    const bars =
-        document.querySelectorAll(
-            ".progress-bar"
-        );
-
-    if (!bars.length) {
-        return;
-    }
-
-    setInterval(() => {
-
-        bars.forEach(bar => {
-
-            const value =
-                Math.floor(
-                    Math.random() * 90
-                ) + 10;
-
-            bar.style.width =
-                `${value}%`;
-
-        });
-
-    }, 2500);
+    }, 2000);
 
 }
 
@@ -412,16 +235,14 @@ function initializeClock() {
 
     const clock =
         document.getElementById(
-            "soc-live-clock"
+            "liveClock"
         );
 
-    if (!clock) {
-        return;
-    }
+    if (!clock) return;
 
     setInterval(() => {
 
-        clock.textContent =
+        clock.innerText =
             new Date()
             .toLocaleString();
 
@@ -430,207 +251,151 @@ function initializeClock() {
 }
 
 /* ==================================================
-   GEO INTELLIGENCE
+   PANEL GLOW EFFECT
 ================================================== */
 
-function initializeGeoIntel() {
+function initializeWidgetPulse() {
 
-    const geo =
-        document.getElementById(
-            "geo-country"
+    const cards =
+        document.querySelectorAll(
+            ".widget-card"
         );
-
-    if (!geo) {
-        return;
-    }
-
-    const countries = [
-
-        "United States",
-        "Russia",
-        "China",
-        "Iran",
-        "Germany",
-        "India",
-        "Brazil",
-        "Unknown"
-
-    ];
 
     setInterval(() => {
 
-        geo.textContent =
-            countries[
-                Math.floor(
-                    Math.random() *
-                    countries.length
-                )
-            ];
+        cards.forEach(card => {
 
-    }, 4000);
+            card.style.boxShadow =
+                `0 0 ${
+                    15 +
+                    Math.random() * 25
+                }px rgba(0,217,255,.15)`;
+
+        });
+
+    }, 2500);
 
 }
+
 /* ==================================================
-   ROLE MFA CHECK
+   RANDOM ATTACK TYPES
 ================================================== */
 
-function initializeRoleMfa() {
+setInterval(() => {
 
-    const usernameInput =
-        document.getElementById(
-            "username"
+    const attacks =
+        document.querySelectorAll(
+            ".attack-list li"
         );
 
-    const mfaGroup =
-        document.getElementById(
-            "mfa-group"
-        );
+    attacks.forEach(item => {
 
-    if (
-        !usernameInput ||
-        !mfaGroup
-    ) {
+        if (
+            Math.random() > 0.7
+        ) {
 
-        return;
+            item.style.color =
+                "#ff304f";
+
+            setTimeout(() => {
+
+                item.style.color =
+                    "#9fe8ff";
+
+            }, 1000);
+
+        }
+
+    });
+
+}, 3500);
+
+/* ==================================================
+   LOGIN CARD PARALLAX
+================================================== */
+
+document.addEventListener(
+    "mousemove",
+    event => {
+
+        const card =
+            document.querySelector(
+                ".login-card"
+            );
+
+        if (!card) return;
+
+        const x =
+            (
+                event.clientX /
+                window.innerWidth
+            ) - 0.5;
+
+        const y =
+            (
+                event.clientY /
+                window.innerHeight
+            ) - 0.5;
+
+        card.style.transform =
+
+            `translateY(-5px)
+             rotateY(${x * 4}deg)
+             rotateX(${y * -4}deg)`;
 
     }
+);
 
-    usernameInput.addEventListener(
-        "blur",
-        async () => {
+/* ==================================================
+   SYSTEM STATUS BLINK
+================================================== */
 
-            const username =
-                usernameInput.value.trim();
+setInterval(() => {
 
-            if (!username) {
+    const greenStatus =
+        document.querySelector(
+            ".status-green"
+        );
 
-                mfaGroup.style.display =
-                    "none";
+    if (!greenStatus) return;
 
-                return;
+    greenStatus.style.opacity =
+        greenStatus.style.opacity ===
+        "0.6"
+            ? "1"
+            : "0.6";
 
-            }
+}, 1500);
 
-            try {
+/* ==================================================
+   FAKE LIVE ALERTS
+================================================== */
 
-                const response =
-                    await fetch(
-                        `/api/user-role/${username}`
-                    );
+const alertMessages = [
 
-                const data =
-                    await response.json();
+    "Suspicious MQTT Scan",
+    "Brute Force Attempt",
+    "Unknown IoT Device",
+    "Medical Network Probe",
+    "Unauthorized Access",
+    "Malware Beacon",
+    "Smart Bed Enumeration"
 
-                if (
-                    data.role === "admin"
-                ) {
+];
 
-                    mfaGroup.style.display =
-                        "none";
+setInterval(() => {
 
-                }
+    console.log(
 
-                else if (
-                    data.role === "analyst" ||
-                    data.role === "user"
-                ) {
+        "[SOC ALERT]",
 
-                    mfaGroup.style.display =
-                        "block";
+        alertMessages[
+            Math.floor(
+                Math.random() *
+                alertMessages.length
+            )
+        ]
 
-                }
-
-                else {
-
-                    mfaGroup.style.display =
-                        "none";
-
-                }
-
-            }
-
-            catch {
-
-                mfaGroup.style.display =
-                    "none";
-
-            }
-
-        }
     );
 
-}
-const usernameInput =
-    document.getElementById(
-        "username"
-    );
-
-const mfaGroup =
-    document.getElementById(
-        "mfa-group"
-    );
-
-if (
-    usernameInput &&
-    mfaGroup
-) {
-
-    mfaGroup.style.display =
-        "none";
-
-    usernameInput.addEventListener(
-        "blur",
-        async () => {
-
-            const username =
-                usernameInput.value.trim();
-
-            if (!username) {
-
-                mfaGroup.style.display =
-                    "none";
-
-                return;
-
-            }
-
-            try {
-
-                const response =
-                    await fetch(
-                        `/api/user-role/${username}`
-                    );
-
-                const data =
-                    await response.json();
-
-                if (
-                    data.role &&
-                    data.role.toLowerCase() !== "admin"
-                ) {
-
-                    mfaGroup.style.display =
-                        "block";
-
-                }
-
-                else {
-
-                    mfaGroup.style.display =
-                        "none";
-
-                }
-
-            }
-
-            catch {
-
-                mfaGroup.style.display =
-                    "none";
-
-            }
-
-        }
-    );
-
-}
+}, 5000);

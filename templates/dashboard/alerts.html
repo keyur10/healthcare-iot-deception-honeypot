@@ -1,0 +1,164 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/alerts.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="alerts-container">
+
+    <div class="page-header">
+
+        <h1>Security Alerts Center</h1>
+
+        <p>
+            Real-time Healthcare IoT Threat Monitoring
+        </p>
+
+    </div>
+
+    <div class="alert-summary-grid">
+
+        <div class="summary-card critical">
+
+            <h3>Critical</h3>
+
+            <span>4</span>
+
+        </div>
+
+        <div class="summary-card high">
+
+            <h3>High</h3>
+
+            <span>12</span>
+
+        </div>
+
+        <div class="summary-card medium">
+
+            <h3>Medium</h3>
+
+            <span>18</span>
+
+        </div>
+
+        <div class="summary-card low">
+
+            <h3>Low</h3>
+
+            <span>34</span>
+
+        </div>
+
+    </div>
+
+    <div class="alerts-panel">
+
+        <h2>Live Security Alerts</h2>
+
+        <table class="alerts-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Time</th>
+                    <th>Severity</th>
+                    <th>Source IP</th>
+                    <th>Target Device</th>
+                    <th>Alert Type</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>Now</td>
+                    <td class="critical-text">CRITICAL</td>
+                    <td>45.33.12.88</td>
+                    <td>Ventilator</td>
+                    <td>Exploit Attempt</td>
+                    <td>Open</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>2 min ago</td>
+                    <td class="high-text">HIGH</td>
+                    <td>66.81.21.17</td>
+                    <td>Patient Monitor</td>
+                    <td>Malware Traffic</td>
+                    <td>Investigating</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>5 min ago</td>
+                    <td class="medium-text">MEDIUM</td>
+                    <td>102.44.8.99</td>
+                    <td>ECG Monitor</td>
+                    <td>Recon Activity</td>
+                    <td>Open</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="alerts-bottom-grid">
+
+        <div class="alerts-panel">
+
+            <h2>Alert Details</h2>
+
+            <div class="detail-box">
+
+                Selected Alert Information
+
+            </div>
+
+        </div>
+
+        <div class="alerts-panel">
+
+            <h2>Response Actions</h2>
+
+            <button class="action-btn">
+
+                Block IP
+
+            </button>
+
+            <button class="action-btn">
+
+                Isolate Device
+
+            </button>
+
+            <button class="action-btn">
+
+                Create Incident
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

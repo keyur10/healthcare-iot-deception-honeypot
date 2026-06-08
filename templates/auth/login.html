@@ -1,0 +1,322 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<div class="cyber-background">
+
+    <div class="network-grid"></div>
+
+    <div class="radar-circle radar-1"></div>
+    <div class="radar-circle radar-2"></div>
+    <div class="radar-circle radar-3"></div>
+
+    <div class="floating-node node-1"></div>
+    <div class="floating-node node-2"></div>
+    <div class="floating-node node-3"></div>
+    <div class="floating-node node-4"></div>
+    <div class="floating-node node-5"></div>
+    <div class="hospital-blueprint"></div>
+
+    <div class="particle particle-1"></div>
+    <div class="particle particle-2"></div>
+    <div class="particle particle-3"></div>
+    <div class="particle particle-4"></div>
+     <div class="attack-path attack-1"></div>
+<div class="attack-path attack-2"></div>
+<div class="attack-path attack-3"></div>
+
+<div class="hospital-bed-hologram"></div>
+
+<div class="ecg-monitor"></div>
+
+    <div class="global-threat-map"></div>
+
+    <div class="iot-network-layer"></div>
+
+    <div class="medical-pulse-layer"></div>
+
+    <div class="particle-layer"></div>
+
+    <div class="medical-icon icon-heart">
+        <i class="fa-solid fa-heart-pulse"></i>
+    </div>
+
+    <div class="medical-icon icon-bed">
+        <i class="fa-solid fa-bed-pulse"></i>
+    </div>
+
+    <div class="medical-icon icon-syringe">
+        <i class="fa-solid fa-syringe"></i>
+    </div>
+
+    <div class="medical-icon icon-monitor">
+        <i class="fa-solid fa-desktop"></i>
+    </div>
+
+    <div class="medical-icon icon-shield">
+        <i class="fa-solid fa-shield-halved"></i>
+    </div>
+
+    <div class="world-map-overlay"></div>
+
+</div>
+
+<div class="login-page">
+
+    <!-- LEFT PANEL -->
+
+    <div class="left-panel">
+
+        <div class="widget-card">
+
+            <h4>SYSTEM STATUS</h4>
+
+            <h2 class="status-green">
+                OPERATIONAL
+            </h2>
+
+            <div class="ecg-line"></div>
+
+        </div>
+
+        <div class="widget-card">
+
+            <h4>HONEYPOT NODES</h4>
+
+            <h2 id="honeypotCount">
+                24
+            </h2>
+
+            <span>
+                ACTIVE
+            </span>
+
+        </div>
+
+        <div class="widget-card">
+
+            <h4>LIVE ATTACKS</h4>
+
+            <h2
+                id="attackCounter"
+                class="status-red"
+            >
+                12
+            </h2>
+
+            <span>
+                IN PROGRESS
+            </span>
+
+        </div>
+
+        <div class="widget-card world-map-card">
+
+            <h4>
+                GLOBAL ATTACK MAP
+            </h4>
+
+            <div class="world-map"></div>
+
+        </div>
+
+        <div class="widget-card">
+
+            <h4>CPU USAGE</h4>
+
+            <h2>32%</h2>
+
+        </div>
+
+        <div class="widget-card">
+
+            <h4>NETWORK</h4>
+
+            <h2>68%</h2>
+
+        </div>
+
+        <div class="widget-card">
+
+            <h4>MEMORY</h4>
+
+            <h2>45%</h2>
+
+        </div>
+
+    </div>
+
+    <!-- CENTER PANEL -->
+
+    <div class="center-panel">
+
+        <div class="cloud-hologram">
+            <i class="fa-solid fa-cloud"></i>
+        </div>
+
+        <div class="hologram-platform">
+
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+            <div class="ring ring-3"></div>
+
+        </div>
+
+        <div class="login-card floating-card">
+
+            <div class="login-header">
+
+                <div class="login-icon">
+
+                    <i class="fa-solid fa-shield-heart"></i>
+
+                </div>
+
+                <h1>
+                    Healthcare IoT
+                </h1>
+
+                <h2>
+                    Deception Honeypot
+                </h2>
+
+                <p>
+                    Security Operations Center Login
+                </p>
+
+            </div>
+
+            <form
+                method="POST"
+                action="/login"
+                class="login-form"
+            >
+
+                <div class="form-group">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter Username"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter Password"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary login-btn"
+                >
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                    Login
+
+                </button>
+
+            </form>
+
+            <div class="login-footer">
+
+                <p>
+                    Healthcare SOC Platform
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+
+    <div class="right-panel">
+
+        <div class="widget-card">
+
+            <h4>DEVICE MONITORING</h4>
+
+            <h2 id="deviceCounter">
+                98
+            </h2>
+
+            <span>
+                DEVICES ONLINE
+            </span>
+
+        </div>
+
+        <div class="widget-card">
+
+            <h4>THREAT LEVEL</h4>
+
+            <h2 class="status-orange">
+                MEDIUM
+            </h2>
+
+        </div>
+
+        <div class="widget-card">
+
+            <h4>TOP ATTACK TYPES</h4>
+
+            <ul class="attack-list">
+
+                <li>Brute Force</li>
+                <li>Exploit Attempt</li>
+                <li>Malware Traffic</li>
+                <li>Reconnaissance</li>
+                <li>Credential Stuffing</li>
+
+            </ul>
+
+        </div>
+
+        <div class="widget-card">
+
+            <h4>LIVE TRAFFIC</h4>
+
+            <h2>
+                2.45 GB/s
+            </h2>
+
+        </div>
+
+        <div class="widget-card">
+
+            <h4>TERMINAL FEED</h4>
+
+            <div id="terminalFeed">
+
+                [INFO] Healthcare IoT Node Online<br>
+                [INFO] Monitoring Active<br>
+                [INFO] Deception Network Running
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        http-equiv="X-UA-Compatible"
+        content="IE=edge"
+    >
+
+    <title>
+        {{ project_name if project_name else "Healthcare IoT Deception Honeypot Network" }}
+    </title>
+
+    <!-- Fonts -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Core CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/core.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/layout.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/dashboard.css') }}"
+    >
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/login.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/theme.css') }}"
+    >
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/attack_logs.css') }}"
+    >
+    {% block styles %}
+    {% endblock %}
+
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- Sidebar -->
+
+        {% if request.endpoint != 'login' %}
+    {% include 'components/sidebar.html' %}
+{% endif %}
+
+        <!-- Main Area -->
+
+        <div class="main-container">
+
+            <!-- Top Navbar -->
+
+            {% if request.endpoint != 'login' %}
+    {% include 'components/navbar.html' %}
+{% endif %}
+
+            <!-- Flash Messages -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    <div class="flash-container">
+
+                        {% for category, message in messages %}
+
+                            <div class="flash-message flash-{{ category }}">
+
+                                {{ message }}
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endwith %}
+
+            <!-- Main Content -->
+
+            <main class="content-area">
+
+                {% block content %}
+                {% endblock %}
+
+            </main>
+
+            <!-- Footer -->
+
+            {% if request.endpoint != 'login' %}
+    {% include 'components/footer.html' %}
+{% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- Loading Overlay -->
+
+    <div id="loading-overlay">
+
+        <div class="loader">
+
+            <div class="loader-circle"></div>
+
+            <div class="loader-text">
+
+                Loading SOC Dashboard...
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Global Variables -->
+
+    <script>
+
+        window.APP_CONFIG = {
+
+            projectName:
+                "{{ project_name if project_name else 'Healthcare IoT Deception Honeypot Network' }}",
+
+            username:
+                "{{ username if username else '' }}",
+
+            role:
+                "{{ role if role else '' }}"
+
+        };
+
+    </script>
+
+    <!-- Core JS -->
+
+    {% if request.path == '/dashboard' %}
+
+<script src="{{ url_for('static',
+filename='js/dashboard.js') }}"></script>
+
+{% endif %}
+
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+
+</html>

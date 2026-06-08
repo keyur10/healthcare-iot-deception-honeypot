@@ -1,6 +1,11 @@
-# core/audit.py
+from __future__ import annotations
 
-from datetime import datetime
+from typing import Any
+
+from core.helpers import (
+    generate_id,
+    utc_timestamp,
+)
 
 from core.storage import (
     load_audit_logs,
@@ -8,49 +13,82 @@ from core.storage import (
 )
 
 
+# ==================================================
+# AUDIT LOGGING
+# ==================================================
+
 def log_event(
-    actor: str,
-    action: str,
-    target: str = "",
-    details: dict | None = None,
-) -> None:
+    event_type: str,
+    message: str,
+    user: str = "system",
+    severity: str = "INFO",
+    metadata: dict[str, Any] | None = None,
+) -> dict:
+    """
+    Create and store an audit event.
+    """
+
+    event = {
+        "id": generate_id(),
+        "timestamp": utc_timestamp(),
+        "event_type": event_type,
+        "user": user,
+        "severity": severity,
+        "message": message,
+        "metadata": metadata or {},
+    }
 
     logs = load_audit_logs()
 
-    entry = {
-        "timestamp": datetime.utcnow().isoformat(),
-        "actor": actor,
-        "action": action,
-        "target": target,
-        "details": details or {},
-    }
+    if not isinstance(logs, list):
+        logs = []
 
-    logs.append(entry)
+    logs.append(event)
 
     save_audit_logs(logs)
 
+    return event
 
-def get_audit_logs():
+
+# ==================================================
+# READ LOGS
+# ==================================================
+
+def get_audit_logs() -> list:
+    """
+    Return all audit logs.
+    """
 
     logs = load_audit_logs()
 
-    return sorted(
-        logs,
-        key=lambda item: item["timestamp"],
-        reverse=True,
-    )
+    if not isinstance(logs, list):
+        return []
+
+    return logs
 
 
 def get_recent_logs(
-    limit: int = 100,
-):
+    limit: int = 50,
+) -> list:
+    """
+    Return recent audit logs.
+    """
 
-    return get_audit_logs()[:limit]
+    logs = get_audit_logs()
 
+    return logs[-limit:]
+
+
+# ==================================================
+# SEARCH
+# ==================================================
 
 def search_logs(
     keyword: str,
-):
+) -> list:
+    """
+    Search audit logs.
+    """
 
     keyword = keyword.lower()
 
@@ -58,10 +96,20 @@ def search_logs(
 
     for log in get_audit_logs():
 
-        if (
-            keyword in str(log).lower()
-        ):
+        if keyword in str(log).lower():
 
             results.append(log)
 
     return results
+
+
+# ==================================================
+# CLEAR
+# ==================================================
+
+def clear_audit_logs() -> None:
+    """
+    Remove all audit logs.
+    """
+
+    save_audit_logs([])

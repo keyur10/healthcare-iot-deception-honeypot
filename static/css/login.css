@@ -1,0 +1,1203 @@
+/* ==================================================
+   HEALTHCARE SOC THEME
+================================================== */
+
+:root {
+
+    --bg-primary: #020814;
+    --bg-secondary: #071225;
+    --panel-bg: rgba(6,18,35,.82);
+
+    --medical-cyan: #00d9ff;
+    --medical-blue: #0088ff;
+
+    --success: #00ff88;
+    --warning: #ff9f1a;
+    --danger: #ff304f;
+
+    --text: #e8f8ff;
+    --text-muted: #8ca8c8;
+
+}
+/* ==================================================
+   LOGIN PAGE
+================================================== */
+
+body {
+
+    overflow: hidden;
+
+}
+
+.cyber-background {
+
+    position: fixed;
+    inset: 0;
+
+    z-index: 1;
+
+    overflow: hidden;
+
+    background:
+
+        radial-gradient(
+            circle at 20% 30%,
+            rgba(0,217,255,.12),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(0,136,255,.08),
+            transparent 40%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(0,217,255,.10),
+            transparent 40%
+        ),
+
+        linear-gradient(
+            180deg,
+            #01060f,
+            #020814,
+            #040d1c
+        );
+
+}
+
+/* ==================================================
+   GRID
+================================================== */
+
+.network-grid {
+
+    position: absolute;
+
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(0,255,255,.15) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0,255,255,.05) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        60px 60px;
+
+    animation:
+        gridMove 12s linear infinite;
+
+}
+
+@keyframes gridMove {
+
+    from {
+
+        transform:
+            translateY(0);
+
+    }
+
+    to {
+
+        transform:
+            translateY(60px);
+
+    }
+
+}
+
+/* ==================================================
+   FLOATING LOGIN CARD
+================================================== */
+
+.floating-card {
+
+    animation:
+        floatCard 5s ease-in-out infinite;
+
+}
+
+@keyframes floatCard {
+
+    0% {
+
+        transform:
+            translateY(0px);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-15px);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(0px);
+
+    }
+
+}
+
+/* ==================================================
+   RADAR
+================================================== */
+
+.radar-circle {
+
+    position: absolute;
+
+    width: 900px;
+
+    height: 900px;
+    opacity: .18;
+    border:
+        2px solid rgba(0,255,255,.35);
+
+    box-shadow:
+        0 0 25px rgba(0,255,255,.35);
+
+    border-radius: 50%;
+
+}
+
+.radar-1 {
+
+    left: 5%;
+
+    top: 15%;
+
+    animation:
+        radar 8s infinite;
+
+}
+
+.radar-2 {
+
+    right: 5%;
+
+    top: 10%;
+
+    animation:
+        radar 10s infinite;
+
+}
+
+.radar-3 {
+
+    bottom: 5%;
+
+    left: 50%;
+
+    animation:
+        radar 12s infinite;
+
+}
+
+@keyframes radar {
+
+    0% {
+
+        transform:
+            scale(.3);
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        transform:
+            scale(2);
+
+        opacity: 0;
+
+    }
+
+}
+
+/* ==================================================
+   MEDICAL ICONS
+================================================== */
+
+.medical-icon {
+
+    position: absolute;
+
+    color: #00ffff;
+
+    font-size: 48px;
+
+    text-shadow:
+        0 0 10px #00ffff,
+        0 0 20px #00ffff,
+        0 0 40px #00ffff;
+
+    opacity: .8;
+
+}
+
+.icon-heart {
+
+    left: 10%;
+
+    top: 20%;
+
+    animation:
+        iconFloat 6s infinite;
+
+}
+
+.icon-bed {
+
+    right: 12%;
+
+    top: 25%;
+
+    animation:
+        iconFloat 8s infinite;
+
+}
+
+.icon-syringe {
+
+    left: 20%;
+
+    bottom: 15%;
+
+    animation:
+        iconFloat 7s infinite;
+
+}
+
+@keyframes iconFloat {
+
+    0% {
+
+        transform:
+            translateY(0px);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-20px);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(0px);
+
+    }
+
+}
+/* ==================================================
+   ADVANCED LOGIN LAYOUT
+================================================== */
+
+.login-page {
+
+    position: relative;
+
+    z-index: 100;
+
+    display: grid;
+
+    grid-template-columns: 280px 1fr 280px;
+
+    align-items: center;
+
+    width: 100vw;
+
+    height: 100vh;
+
+    padding: 40px;
+
+    gap: 30px;
+
+}
+
+/* ==================================================
+   PANELS
+================================================== */
+
+.left-panel,
+.right-panel {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+}
+
+.center-panel {
+
+    position: relative;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 200;
+}
+
+/* ==================================================
+   WIDGETS
+================================================== */
+
+.widget-card {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(4,12,28,.90),
+            rgba(6,18,35,.75)
+        );
+
+    border:
+        1px solid rgba(0,217,255,.18);
+
+    backdrop-filter:
+        blur(20px);
+
+    box-shadow:
+        0 0 20px rgba(0,217,255,.08);
+
+    animation:
+        panelPulse 8s ease-in-out infinite;
+     padding: 20px;
+
+border-radius: 18px;
+
+min-height: 90px;
+
+}
+
+.widget-card h4 {
+
+    color: #89dfff;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 10px;
+
+}
+
+.widget-card h2 {
+
+    color: #00e5ff;
+
+    font-size: 34px;
+
+    font-weight: 700;
+
+}
+
+.status-green {
+
+    color: #00ff88 !important;
+
+}
+
+.status-red {
+
+    color: #ff3b5c !important;
+
+}
+
+.status-orange {
+
+    color: #ff9f1a !important;
+
+}
+
+/* ==================================================
+   LOGIN CARD OVERRIDE
+================================================== */
+
+.login-card {
+
+    width: 620px;
+
+    min-hight: 650px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(5,12,25,.95),
+            rgba(8,18,35,.90)
+        );
+
+    border:
+        1px solid rgba(0,217,255,.25);
+
+    box-shadow:
+
+        0 0 40px rgba(0,217,255,.10),
+
+        inset 0 0 20px rgba(255,255,255,.02);
+
+    backdrop-filter:
+        blur(25px);
+     padding: 40px;
+
+border-radius: 24px;
+
+position: relative;
+
+z-index: 200;
+
+box-shadow:
+    0 0 40px rgba(0,217,255,.15),
+    0 0 100px rgba(0,217,255,.05);
+
+}
+
+/* ==================================================
+   WORLD MAP
+================================================== */
+
+.world-map-card {
+
+    min-height: 220px;
+
+}
+
+.world-map {
+
+    width: 100%;
+
+    height: 160px;
+
+    border-radius: 12px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,0,80,.35),
+            transparent 70%
+        );
+
+    opacity: .8;
+
+}
+
+/* ==================================================
+   ATTACK LIST
+================================================== */
+
+.attack-list {
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+
+}
+
+.attack-list li {
+
+    padding: 8px 0;
+
+    color: #9fe8ff;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.05);
+
+}
+
+/* ==================================================
+   TERMINAL
+================================================== */
+
+#terminalFeed {
+
+    color: #00ff88;
+
+    font-family: monospace;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+}
+
+/* ==================================================
+   HOLOGRAM PLATFORM
+================================================== */
+
+.hologram-platform {
+
+    position: absolute;
+
+    width: 1100px;
+
+    height: 1100px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+}
+
+.ring {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(0,255,255,.18);
+
+    animation:
+        rotateRing 20s linear infinite;
+
+}
+
+.ring-1 {
+
+    width: 400px;
+    height: 400px;
+
+    top: 150px;
+    left: 150px;
+
+}
+
+.ring-2 {
+
+    width: 550px;
+    height: 550px;
+
+    top: 75px;
+    left: 75px;
+
+    animation-duration: 30s;
+
+}
+
+.ring-3 {
+
+    width: 700px;
+    height: 700px;
+
+    animation-duration: 40s;
+
+}
+
+/* ==================================================
+   CLOUD
+================================================== */
+
+.cloud-hologram {
+
+    position: absolute;
+
+    top: -80px;
+
+    font-size: 180px;
+    
+    opacity: .35;
+
+    color: #00e5ff;
+
+    text-shadow:
+        0 0 25px #00e5ff;
+
+    animation:
+        cloudFloat 5s ease-in-out infinite;
+
+}
+
+/* ==================================================
+   NODES
+================================================== */
+
+.floating-node {
+
+    position: absolute;
+
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #00ffff;
+
+    box-shadow:
+        0 0 15px #00ffff;
+
+}
+
+.node-1 { top:15%; left:25%; }
+.node-2 { top:70%; left:20%; }
+.node-3 { top:30%; right:15%; }
+.node-4 { bottom:25%; right:30%; }
+.node-5 { bottom:15%; left:55%; }
+
+/* ==================================================
+   ANIMATIONS
+================================================== */
+
+@keyframes rotateRing {
+
+    from {
+
+        transform:
+            rotate(0deg);
+
+    }
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+@keyframes cloudFloat {
+
+    0% {
+
+        transform:
+            translateY(0);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-15px);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media (max-width: 1400px) {
+
+    .left-panel,
+    .right-panel {
+
+        display: none;
+
+    }
+
+    .login-page {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+/* ==================================================
+   LIVING BACKGROUND ENGINE
+================================================== */
+
+.cyber-background::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+
+        linear-gradient(
+            rgba(0,217,255,.04) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(0,217,255,.04) 1px,
+            transparent 1px
+        );
+
+    background-size: 80px 80px;
+
+    animation:
+        backgroundDrift 20s linear infinite;
+
+}
+@keyframes backgroundDrift {
+
+    from {
+
+        transform:
+            translateY(0);
+
+    }
+
+    to {
+
+        transform:
+            translateY(80px);
+
+    }
+
+}
+@keyframes panelPulse {
+
+    0% {
+
+        transform:
+            translateY(0);
+
+        box-shadow:
+            0 0 20px rgba(0,217,255,.08);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-5px);
+
+        box-shadow:
+            0 0 35px rgba(0,217,255,.15);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+.ecg-line {
+
+    height: 3px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            #00ff88,
+            transparent
+        );
+
+    animation:
+        ecgPulse 1.8s linear infinite;
+
+}
+@keyframes ecgPulse {
+
+    0% {
+
+        transform:
+            scaleX(.2);
+
+    }
+
+    100% {
+
+        transform:
+            scaleX(1);
+
+    }
+
+}
+/* ==================================================
+   FLOATING PARTICLES
+================================================== */
+
+.particle {
+
+    position: absolute;
+
+    width: 4px;
+
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: #00d9ff;
+
+    box-shadow:
+        0 0 15px #00d9ff;
+
+}
+
+.particle-1 {
+
+    top: 20%;
+    left: 15%;
+
+    animation:
+        particleFloat 12s infinite;
+
+}
+
+.particle-2 {
+
+    top: 70%;
+    left: 25%;
+
+    animation:
+        particleFloat 18s infinite;
+
+}
+
+.particle-3 {
+
+    top: 40%;
+    right: 20%;
+
+    animation:
+        particleFloat 14s infinite;
+
+}
+
+.particle-4 {
+
+    bottom: 20%;
+    right: 30%;
+
+    animation:
+        particleFloat 20s infinite;
+
+}
+
+@keyframes particleFloat {
+
+    0% {
+
+        transform:
+            translateY(0);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-50px);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+@keyframes threatPulse {
+
+    0% {
+
+        opacity: .15;
+
+    }
+
+    50% {
+
+        opacity: .45;
+
+    }
+
+    100% {
+
+        opacity: .15;
+
+    }
+
+}
+.iot-network-layer {
+
+    position: absolute;
+
+    inset: 0;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(0,217,255,.4) 2px,
+            transparent 3px
+        );
+
+    background-size:
+        180px 180px;
+
+    opacity: .25;
+
+}
+.particle-layer {
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+}
+
+.world-map-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(0,217,255,.03),
+            transparent 70%
+        );
+
+}
+/* ==================================================
+   ATTACK PATHS
+================================================== */
+
+.attack-path {
+
+    position: absolute;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,48,79,.9),
+            transparent
+        );
+
+    box-shadow:
+        0 0 20px rgba(255,48,79,.9);
+
+    animation:
+        attackMove 4s infinite;
+
+}
+
+.attack-1 {
+
+    width: 500px;
+
+    left: -100px;
+
+    top: 35%;
+
+    transform:
+        rotate(20deg);
+
+}
+
+.attack-2 {
+
+    width: 500px;
+
+    right: -100px;
+
+    top: 50%;
+
+    transform:
+        rotate(-20deg);
+
+}
+
+.attack-3 {
+
+    width: 700px;
+
+    left: 30%;
+
+    bottom: 15%;
+
+}
+
+@keyframes attackMove {
+
+    0% {
+
+        opacity: .1;
+
+    }
+
+    50% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        opacity: .1;
+
+    }
+
+}
+
+/* ==================================================
+   HOSPITAL BED HOLOGRAM
+================================================== */
+
+.hospital-bed-hologram {
+
+    position: absolute;
+
+    left: 6%;
+
+    bottom: 18%;
+
+    width: 300px;
+
+    height: 220px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,217,255,.25),
+            transparent 70%
+        );
+
+    border-radius: 20px;
+
+    filter:
+        blur(30px);
+
+    animation:
+        hospitalFloat 8s ease-in-out infinite;
+
+}
+
+@keyframes hospitalFloat {
+
+    0% {
+
+        transform:
+            translateY(0);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-25px);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+/* ==================================================
+   ECG FLOOR
+================================================== */
+
+.ecg-monitor {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 0;
+
+    width: 900px;
+
+    height: 120px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,255,136,.15),
+            transparent
+        );
+
+    filter:
+        blur(8px);
+
+    animation:
+        ecgFloor 3s linear infinite;
+
+}
+
+@keyframes ecgFloor {
+
+    from {
+
+        background-position-x: 0;
+
+    }
+
+    to {
+
+        background-position-x: 900px;
+
+    }
+
+}
+.icon-monitor {
+
+    right: 10%;
+
+    top: 55%;
+
+    animation:
+        iconFloat 9s infinite;
+
+}
+
+.icon-shield {
+
+    left: 1%;
+
+    top: 1%;
+
+    animation:
+        iconFloat 11s infinite;
+
+}

@@ -1,48 +1,38 @@
-from functools import wraps
-import logging
+from __future__ import annotations
 
-from flask import (
-    abort,
-    redirect,
-    url_for,
-)
-
-from core.auth import (
-    current_role,
-    current_user,
-    is_authenticated,
-)
-
-from core.storage import (
-    load_permissions,
-)
-
-from core.audit import (
-    log_event,
-)
-
-logger = logging.getLogger(__name__)
+from core.storage import load_permissions
+from core.audit import log_event
 
 
-def has_permission(permission: str) -> bool:
+def get_role_permissions(
+    role: str,
+) -> dict:
     """
-    Check whether the current user's role
-    has the requested permission.
+    Get permissions for a role.
     """
-
-    role = current_role()
-
-    if not role:
-        return False
 
     permissions = load_permissions()
 
-    role_permissions = permissions.get(
+    return permissions.get(
         role,
         {},
     )
 
-    if role_permissions.get("*", False):
+
+def has_permission(
+    role: str,
+    permission: str,
+) -> bool:
+    """
+    Check role permission.
+    """
+
+    role_permissions = get_role_permissions(
+        role
+    )
+
+    if role_permissions.get("*"):
+
         return True
 
     return role_permissions.get(
@@ -51,67 +41,30 @@ def has_permission(permission: str) -> bool:
     )
 
 
-def permission_required(permission: str):
+def validate_permission(
+    role: str,
+    permission: str,
+    user: str = "system",
+) -> bool:
     """
-    Route decorator for permission checks.
+    Check and audit permission usage.
     """
 
-    def decorator(func):
+    allowed = has_permission(
+        role,
+        permission,
+    )
 
-        @wraps(func)
-        def wrapper(*args, **kwargs):
+    if not allowed:
 
-            if not is_authenticated():
+        log_event(
+            event_type="PERMISSION_DENIED",
+            user=user,
+            severity="WARNING",
+            message=(
+                f"{role} denied access to "
+                f"{permission}"
+            ),
+        )
 
-                logger.warning(
-                    "AUTH REQUIRED | "
-                    "PERMISSION=%s",
-                    permission,
-                )
-
-                return redirect(
-                    url_for("login")
-                )
-
-            if not has_permission(permission):
-
-                username = current_user()
-                role = current_role()
-
-                logger.warning(
-                    "PERMISSION DENIED | "
-                    "USER=%s | "
-                    "ROLE=%s | "
-                    "PERMISSION=%s",
-                    username,
-                    role,
-                    permission,
-                )
-
-                try:
-
-                    log_event(
-                        actor=username,
-                        action="PERMISSION_DENIED",
-                        details={
-                            "permission": permission,
-                            "role": role,
-                        },
-                    )
-
-                except Exception:
-
-                    logger.exception(
-                        "Failed to write audit log"
-                    )
-
-                abort(403)
-
-            return func(
-                *args,
-                **kwargs,
-            )
-
-        return wrapper
-
-    return decorator
+    return allowed

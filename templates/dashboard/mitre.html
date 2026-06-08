@@ -1,0 +1,217 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/mitre.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="mitre-container">
+
+    <div class="page-header">
+
+        <h1>MITRE ATT&CK Framework</h1>
+
+        <p>
+            Healthcare IoT Threat Mapping & Adversary Techniques
+        </p>
+
+    </div>
+
+    <div class="mitre-summary">
+
+        <div class="summary-card">
+            <h3>Tactics</h3>
+            <span>14</span>
+        </div>
+
+        <div class="summary-card">
+            <h3>Techniques</h3>
+            <span>37</span>
+        </div>
+
+        <div class="summary-card">
+            <h3>Active Campaigns</h3>
+            <span>8</span>
+        </div>
+
+        <div class="summary-card">
+            <h3>Threat Actors</h3>
+            <span>12</span>
+        </div>
+
+    </div>
+
+    <div class="mitre-panel">
+
+        <h2>MITRE ATT&CK Matrix</h2>
+
+        <div class="matrix-grid">
+
+            <div class="matrix-card critical">
+                Initial Access
+                <h3>37</h3>
+            </div>
+
+            <div class="matrix-card">
+                Execution
+                <h3>21</h3>
+            </div>
+
+            <div class="matrix-card">
+                Persistence
+                <h3>11</h3>
+            </div>
+
+            <div class="matrix-card">
+                Privilege Escalation
+                <h3>7</h3>
+            </div>
+
+            <div class="matrix-card">
+                Defense Evasion
+                <h3>13</h3>
+            </div>
+
+            <div class="matrix-card">
+                Credential Access
+                <h3>18</h3>
+            </div>
+
+            <div class="matrix-card">
+                Discovery
+                <h3>16</h3>
+            </div>
+
+            <div class="matrix-card">
+                Lateral Movement
+                <h3>6</h3>
+            </div>
+
+            <div class="matrix-card">
+                Collection
+                <h3>9</h3>
+            </div>
+
+            <div class="matrix-card">
+                Exfiltration
+                <h3>4</h3>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="mitre-panel">
+
+        <h2>Detected Techniques</h2>
+
+        <table class="mitre-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Technique</th>
+                    <th>Tactic</th>
+                    <th>Detections</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>T1110</td>
+                    <td>Brute Force</td>
+                    <td>Credential Access</td>
+                    <td>48</td>
+                </tr>
+
+                <tr>
+                    <td>T1046</td>
+                    <td>Network Service Discovery</td>
+                    <td>Discovery</td>
+                    <td>32</td>
+                </tr>
+
+                <tr>
+                    <td>T1190</td>
+                    <td>Exploit Public Facing Application</td>
+                    <td>Initial Access</td>
+                    <td>27</td>
+                </tr>
+
+                <tr>
+                    <td>T1078</td>
+                    <td>Valid Accounts</td>
+                    <td>Persistence</td>
+                    <td>15</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="mitre-panel">
+
+        <h2>Healthcare Device Target Mapping</h2>
+
+        <div class="device-grid">
+
+            <div class="device-card">
+
+                Ventilator
+
+                <ul>
+
+                    <li>T1110</li>
+                    <li>T1046</li>
+                    <li>T1190</li>
+
+                </ul>
+
+            </div>
+
+            <div class="device-card">
+
+                Patient Monitor
+
+                <ul>
+
+                    <li>T1046</li>
+                    <li>T1078</li>
+
+                </ul>
+
+            </div>
+
+            <div class="device-card">
+
+                Infusion Pump
+
+                <ul>
+
+                    <li>T1110</li>
+                    <li>T1190</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/mitre.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+<header class="navbar">
+
+    <div class="navbar-left">
+
+        <div class="page-title">
+
+            <h3>
+                Healthcare IoT Deception Honeypot Network
+            </h3>
+
+            <span>
+                Security Operations Center
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="navbar-center">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                placeholder="Search IP, IOC, Device, Alert..."
+            >
+
+        </div>
+
+    </div>
+
+    <div class="navbar-right">
+
+        <div class="health-status">
+
+            <span class="health-dot"></span>
+
+            <span>
+                Healthy
+            </span>
+
+        </div>
+
+        <div class="live-clock">
+
+            <i class="fa-regular fa-clock"></i>
+
+            <span id="live-clock">
+
+                --:--:--
+
+            </span>
+
+        </div>
+
+        <div class="notification-btn">
+
+            <i class="fa-regular fa-bell"></i>
+
+            <span class="notification-count">
+
+                0
+
+            </span>
+
+        </div>
+
+        <div class="user-info">
+
+            <div class="user-avatar">
+
+                <i class="fa-solid fa-user-shield"></i>
+
+            </div>
+
+            <div class="user-details">
+
+                <span class="username">
+
+                    {{ username if username else "Admin" }}
+
+                </span>
+
+                <span class="role">
+
+                    {{ role if role else "Administrator" }}
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <a
+            href="/logout"
+            class="logout-btn"
+        >
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+        </a>
+
+    </div>
+
+</header>
+
+<script>
+
+function updateClock() {
+
+    const now = new Date();
+
+    document.getElementById(
+        "live-clock"
+    ).textContent = now.toLocaleTimeString();
+
+}
+
+setInterval(
+    updateClock,
+    1000
+);
+
+updateClock();
+
+</script>

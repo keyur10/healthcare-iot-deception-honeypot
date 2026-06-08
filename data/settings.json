@@ -1,5 +1,0 @@
-{
-    "refresh_interval":30,
-    "email_alerts":true,
-    "telegram_alerts":false
-}
