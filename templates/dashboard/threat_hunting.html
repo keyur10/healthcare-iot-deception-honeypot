@@ -1,0 +1,80 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+<h1>🎯 Threat Hunting Center</h1>
+
+<div class="dashboard-row">
+
+<div class="dashboard-panel">
+
+<h2>Threat Statistics</h2>
+
+<p>Total Events:
+<strong>{{ threat_hunt.total_hunts }}</strong></p>
+
+</div>
+
+</div>
+
+<div class="dashboard-row">
+
+<div class="dashboard-panel">
+
+<h2>Top Suspicious IPs</h2>
+
+<table class="attack-table">
+
+<tr>
+<th>IP Address</th>
+<th>Hits</th>
+</tr>
+
+{% for ip,count in threat_hunt.top_ips %}
+
+<tr>
+<td>{{ ip }}</td>
+<td>{{ count }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+<div class="dashboard-row">
+
+<div class="dashboard-panel">
+
+<h2>Most Attempted Passwords</h2>
+
+<table class="attack-table">
+
+<tr>
+<th>Password</th>
+<th>Attempts</th>
+</tr>
+
+{% for password,count in threat_hunt.top_passwords %}
+
+<tr>
+<td>{{ password }}</td>
+<td>{{ count }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

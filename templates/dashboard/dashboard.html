@@ -79,6 +79,22 @@
 </div>
 </div>
 
+<div class="stat-card clickable-card"
+    onclick="window.location='/threat-hunting'">
+
+    <h3>Threat Hunting</h3>
+
+    <span>
+        🎯
+    </span>
+
+    <small>
+        Investigate Suspicious Activity
+    </small>
+
+</div>
+
+
 <div class="dashboard-row">
 
     <div class="dashboard-panel">
@@ -331,6 +347,103 @@
         </div>
 
     </div>
+
+</div>
+
+<div class="dashboard-row">
+
+    <div class="dashboard-panel">
+
+        <h2>🎯 Threat Hunting Center</h2>
+
+        <div class="mitre-grid">
+
+            <div class="mitre-card">
+
+                Threat Events
+
+                <h3>
+                    {{ threat_hunt.total_hunts }}
+                </h3>
+
+            </div>
+
+        </div>
+
+        <h3>Top Suspicious IPs</h3>
+
+        <table class="attack-table">
+
+            <tr>
+
+                <th>IP Address</th>
+                <th>Hits</th>
+
+            </tr>
+
+            {% for ip,count in threat_hunt.top_ips %}
+
+            <tr>
+
+                <td>{{ ip }}</td>
+                <td>{{ count }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        <h3 style="margin-top:20px;">
+            Most Used Passwords
+        </h3>
+
+        <table class="attack-table">
+
+            <tr>
+
+                <th>Password</th>
+                <th>Attempts</th>
+
+            </tr>
+
+            {% for password,count in threat_hunt.top_passwords %}
+
+            <tr>
+
+                <td>{{ password }}</td>
+                <td>{{ count }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</div>
+<div class="dashboard-row">
+
+<div class="dashboard-panel">
+
+<h2>🏥 Healthcare Threat Intelligence</h2>
+
+<div id="threatFeed">
+
+<p>[CRITICAL] Unauthorized access attempt on Ventilator Network</p>
+
+<p>[HIGH] Multiple SSH brute force attempts detected</p>
+
+<p>[MEDIUM] Suspicious login pattern from foreign IP</p>
+
+<p>[INFO] Honeypot captured malware payload</p>
+
+<p>[INFO] IOC database updated</p>
+
+</div>
+
+</div>
 
 </div>
 

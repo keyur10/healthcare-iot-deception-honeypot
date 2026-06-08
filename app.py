@@ -154,11 +154,14 @@ def dashboard():
             url_for("login")
         )
 
+    threat_hunt = hunt_threats()
+
     return render_template(
         "dashboard/dashboard.html",
         username=current_user(),
         role=current_role(),
         project_name=PROJECT_NAME,
+        threat_hunt=threat_hunt
     )
 @app.route(
     "/whois",
@@ -200,6 +203,7 @@ def whois_lookup():
         username=current_user(),
         role=current_role(),
         project_name=PROJECT_NAME,
+        threat_hunt=threat_hunt,
     )
 # ==================================================
 # ATTACK LOGS
@@ -265,10 +269,31 @@ def geolocation():
         role=current_role(),
         project_name=PROJECT_NAME,
     )
+
 # ==================================================
-# IOC EXTRACTION
+# THREAT HUNTING
 # ==================================================
 
+from core.threat_hunting import hunt_threats
+
+@app.route("/threat-hunting")
+def threat_hunting():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    threat_hunt = hunt_threats()
+
+    return render_template(
+        "dashboard/threat_hunting.html",
+        threat_hunt=threat_hunt,
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+    )
 # ==================================================
 # IOC EXTRACTION
 # ==================================================
