@@ -101,62 +101,64 @@
         <h2>Recent Attacks</h2>
 
         <table class="attack-table">
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Source IP</th>
-                    <th>Attack</th>
-                    <th>Target</th>
-                    <th>Risk</th>
-                </tr>
-            </thead>
 
-            <tbody>
+<thead>
 
-                <tr>
-                    <td>Now</td>
-                    <td>192.168.1.50</td>
-                    <td>Brute Force</td>
-                    <td>Ventilator</td>
-                    <td>High</td>
-                </tr>
+<tr>
 
-                <tr>
-                    <td>2 min</td>
-                    <td>45.33.12.88</td>
-                    <td>Recon</td>
-                    <td>Patient Monitor</td>
-                    <td>Medium</td>
-                </tr>
+<th>Time</th>
+<th>Source IP</th>
+<th>Username</th>
+<th>Password</th>
+<th>Threat</th>
 
-                <tr>
-                    <td>4 min</td>
-                    <td>85.12.4.22</td>
-                    <td>Exploit</td>
-                    <td>Infusion Pump</td>
-                    <td>High</td>
-                </tr>
+</tr>
 
-                <tr>
-                    <td>7 min</td>
-                    <td>66.81.21.17</td>
-                    <td>Malware</td>
-                    <td>MRI System</td>
-                    <td>Critical</td>
-                </tr>
+</thead>
 
-                <tr>
-                    <td>11 min</td>
-                    <td>102.44.8.99</td>
-                    <td>Scan</td>
-                    <td>ECG Monitor</td>
-                    <td>Low</td>
-                </tr>
+<tbody>
 
-            </tbody>
-        </table>
-    </div>
+{% for attack in attacks %}
 
+<tr>
+
+<td>{{ attack.time }}</td>
+
+<td>{{ attack.ip }}</td>
+
+<td>{{ attack.username }}</td>
+
+<td>{{ attack.password }}</td>
+
+<td style="color:red;">HIGH</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% for attack in attacks %}
+
+<tr>
+
+<td>{{ attack.time }}</td>
+
+<td>{{ attack.ip }}</td>
+
+<td>{{ attack.username }}</td>
+
+<td>{{ attack.password }}</td>
+
+<td>HIGH</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
     <div class="dashboard-panel">
 
     <h2>WHOIS Lookup</h2>

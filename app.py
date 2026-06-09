@@ -156,12 +156,24 @@ def dashboard():
 
     threat_hunt = hunt_threats()
 
+    attacks = get_attack_logs()
+
     return render_template(
+
         "dashboard/dashboard.html",
+
         username=current_user(),
+
         role=current_role(),
+
         project_name=PROJECT_NAME,
-        threat_hunt=threat_hunt
+
+        whois_result=None,
+
+        threat_hunt=threat_hunt,
+
+        attacks=attacks
+
     )
 @app.route(
     "/whois",
@@ -332,6 +344,8 @@ def honeypots():
         role=current_role(),
         project_name=PROJECT_NAME,
     )
+
+from log_parser import get_attack_logs 
 # ==================================================
 # DEVICES
 # ==================================================
