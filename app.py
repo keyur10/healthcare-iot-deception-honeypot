@@ -346,6 +346,61 @@ def honeypots():
     )
 
 from log_parser import get_attack_logs 
+
+# ==================================================
+# MITRE ATT&CK
+# ==================================================
+
+@app.route("/mitre")
+def mitre():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    techniques = [
+
+        {
+            "id": "T1110",
+            "name": "Brute Force",
+            "tactic": "Credential Access"
+        },
+
+        {
+            "id": "T1595",
+            "name": "Active Scanning",
+            "tactic": "Reconnaissance"
+        },
+
+        {
+            "id": "T1059",
+            "name": "Command Execution",
+            "tactic": "Execution"
+        },
+
+        {
+            "id": "T1046",
+            "name": "Network Service Discovery",
+            "tactic": "Discovery"
+        }
+
+    ]
+
+    return render_template(
+
+        "dashboard/mitre.html",
+
+        techniques=techniques,
+
+        username=current_user(),
+
+        role=current_role(),
+
+        project_name=PROJECT_NAME,
+
+    )
 # ==================================================
 # DEVICES
 # ==================================================
