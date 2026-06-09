@@ -493,5 +493,77 @@
         "severity": "INFO",
         "message": "Application started",
         "metadata": {}
+    },
+    {
+        "id": "646c5646-9cca-4244-a5cd-8ed6dd301a07",
+        "timestamp": "2026-06-09T11:30:12.076046+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "b24ebcf4-c497-4f7d-b0b9-602d7c96ac00",
+        "timestamp": "2026-06-09T11:30:12.525786+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "be8764d2-06ca-432e-afab-b9cf2eb21cbc",
+        "timestamp": "2026-06-09T11:30:48.217884+00:00",
+        "event_type": "LOGOUT",
+        "user": "admin",
+        "severity": "INFO",
+        "message": "User logged out",
+        "metadata": {}
+    },
+    {
+        "id": "c73d8782-a192-486a-9a48-afc8b5a40b70",
+        "timestamp": "2026-06-09T11:30:50.996734+00:00",
+        "event_type": "LOGIN",
+        "user": "admin",
+        "severity": "INFO",
+        "message": "User logged in",
+        "metadata": {}
+    },
+    {
+        "id": "f5959f63-3f70-4107-b207-ea3dc853c6a3",
+        "timestamp": "2026-06-09T11:33:58.332593+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "a054cd50-0d1b-4859-b6bc-4b839a4d0598",
+        "timestamp": "2026-06-09T11:33:58.849868+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "bbf9fd69-e3fc-4671-be12-37053c9d3e78",
+        "timestamp": "2026-06-09T11:34:19.548734+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "2a2ab425-bc1f-4381-9a16-f02d0b036661",
+        "timestamp": "2026-06-09T11:38:05.030160+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
     }
 ]
