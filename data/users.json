@@ -2,6 +2,42 @@
     {
         "username": "admin",
         "password": "admin123",
-        "role": "admin"
+        "role": "Administrator",
+        "status": "Active",
+        "permissions": {
+            "dashboard": true,
+            "attack_logs": true,
+            "alerts": true,
+            "timeline": true,
+            "geolocation": true,
+            "mitre": true,
+            "ioc": true,
+            "threat_hunting": true,
+            "soc_terminal": true,
+            "reports": true,
+            "settings": true,
+            "user_management": true
+        }
+    },
+
+    {
+        "username": "analyst1",
+        "password": "123",
+        "role": "Threat Analyst",
+        "status": "Active",
+        "permissions": {
+            "dashboard": true,
+            "attack_logs": true,
+            "alerts": true,
+            "timeline": true,
+            "geolocation": true,
+            "mitre": false,
+            "ioc": true,
+            "threat_hunting": false,
+            "soc_terminal": false,
+            "reports": true,
+            "settings": false,
+            "user_management": false
+        }
     }
 ]

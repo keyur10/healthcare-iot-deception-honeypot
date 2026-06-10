@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "SSH-HP01",
+        "type": "SSH",
+        "ip": "192.168.1.100",
+        "port": 22,
+        "status": "Running",
+        "attacks": 24
+    },
+    {
+        "id": 2,
+        "name": "MQTT-HP01",
+        "type": "MQTT",
+        "ip": "192.168.1.101",
+        "port": 1883,
+        "status": "Running",
+        "attacks": 8
+    }
+]

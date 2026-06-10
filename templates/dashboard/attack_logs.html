@@ -32,57 +32,69 @@
 
     <!-- STATS -->
 
-    <div class="stats-grid">
+<div class="stats-grid">
 
-        <div class="stat-card critical">
+    <a
+        href="/attack-logs?filter=all"
+        class="stat-card critical"
+    >
 
-            <span class="stat-title">
-                Total Attacks
-            </span>
+        <span class="stat-title">
+            Total Attacks
+        </span>
 
-            <h2>
-                1,248
-            </h2>
+        <h2>
+            {{ total_attacks }}
+        </h2>
 
-        </div>
+    </a>
 
-        <div class="stat-card warning">
+    <a
+        href="/attack-logs?risk=Critical"
+        class="stat-card warning"
+    >
 
-            <span class="stat-title">
-                Critical Threats
-            </span>
+        <span class="stat-title">
+            Critical Threats
+        </span>
 
-            <h2>
-                87
-            </h2>
+        <h2>
+            {{ critical_threats }}
+        </h2>
 
-        </div>
+    </a>
 
-        <div class="stat-card info">
+    <a
+        href="/attack-logs?unique=1"
+        class="stat-card info"
+    >
 
-            <span class="stat-title">
-                Unique Attackers
-            </span>
+        <span class="stat-title">
+            Unique Attackers
+        </span>
 
-            <h2>
-                352
-            </h2>
+        <h2>
+            {{ unique_attackers }}
+        </h2>
 
-        </div>
+    </a>
 
-        <div class="stat-card success">
+    <a
+        href="/geo-location"
+        class="stat-card success"
+    >
 
-            <span class="stat-title">
-                Countries Detected
-            </span>
+        <span class="stat-title">
+            Countries Detected
+        </span>
 
-            <h2>
-                18
-            </h2>
+        <h2>
+            {{ countries }}
+        </h2>
 
-        </div>
+    </a>
 
-    </div>
+</div>
 
     <!-- FILTERS -->
 
@@ -373,16 +385,6 @@
                         Critical
 
                     </div>
-
-                </div>
-
-                <div class="payload-box">
-
-                    POST /login
-
-                    username=admin
-
-                    password=123456
 
                 </div>
 

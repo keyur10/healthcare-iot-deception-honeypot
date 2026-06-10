@@ -1,27 +1,41 @@
-document
-    .querySelectorAll(
-        ".matrix-card"
-    )
-    .forEach(card => {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-        card.addEventListener(
-            "mouseenter",
-            () => {
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
 
-                card.style.transform =
-                    "scale(1.05)";
+        if (!searchInput) return;
+
+        searchInput.addEventListener(
+            "keyup",
+            function () {
+
+                const filter =
+                    this.value.toLowerCase();
+
+                const rows =
+                    document.querySelectorAll(
+                        "#honeypotTable tr"
+                    );
+
+                rows.forEach(
+                    row => {
+
+                        row.style.display =
+                            row.innerText
+                                .toLowerCase()
+                                .includes(filter)
+                                ? ""
+                                : "none";
+
+                    }
+                );
 
             }
         );
 
-        card.addEventListener(
-            "mouseleave",
-            () => {
-
-                card.style.transform =
-                    "scale(1)";
-
-            }
-        );
-
-    });
+    }
+);

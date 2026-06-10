@@ -1,0 +1,146 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<link
+rel="stylesheet"
+href="{{ url_for('static', filename='css/threat_hunting.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="threat-container">
+
+    <div class="page-header">
+
+        <h1>Threat Hunting Center</h1>
+
+        <p>
+            Search, Correlate and Investigate Threat Indicators
+        </p>
+
+    </div>
+
+    <div class="hunt-search">
+
+        <input
+            type="text"
+            id="huntQuery"
+            placeholder="IP, Domain, Hash, IOC..."
+        >
+
+        <button onclick="huntIOC()">
+            Hunt
+        </button>
+
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <h3>IOC Matches</h3>
+
+            <span>
+                {{ ioc_matches|default(0) }}
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3>Malicious IPs</h3>
+
+            <span>
+                {{ malicious_ips|default(0) }}
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3>Threat Feeds</h3>
+
+            <span>
+                {{ feeds|default(0) }}
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3>Active Hunts</h3>
+
+            <span>
+                {{ active_hunts|default(0) }}
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>Hunting Results</h2>
+
+        <table class="hunt-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Indicator</th>
+                    <th>Type</th>
+                    <th>Source</th>
+                    <th>Severity</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="huntResults">
+
+                {% for result in results %}
+
+                <tr>
+
+                    <td>{{ result.indicator }}</td>
+                    <td>{{ result.type }}</td>
+                    <td>{{ result.source }}</td>
+                    <td>{{ result.severity }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>Threat Feed</h2>
+
+        <div class="feed-box">
+
+            {% for feed in threat_feed %}
+
+            <p>
+                {{ feed }}
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/threat_hunting.js') }}"></script>
+{% endblock %}
