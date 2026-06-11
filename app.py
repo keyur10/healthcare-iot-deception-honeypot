@@ -421,6 +421,30 @@ def devices():
         project_name=PROJECT_NAME,
     )
 
+# ==================================================
+# SETTINGS
+# ==================================================
+
+@app.route("/settings")
+def settings():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    return render_template(
+
+        "dashboard/settings.html",
+
+        username=current_user(),
+
+        role=current_role(),
+
+        project_name=PROJECT_NAME,
+
+    )
 
 # ==================================================
 # HEALTH CHECK

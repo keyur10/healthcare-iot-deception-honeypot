@@ -835,5 +835,113 @@
         "severity": "INFO",
         "message": "Application started",
         "metadata": {}
+    },
+    {
+        "id": "e89628cd-ac33-4d9b-9240-84ea32a52f85",
+        "timestamp": "2026-06-11T09:15:51.911269+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "0edccf7c-33e6-4c58-9726-92e33dd802f4",
+        "timestamp": "2026-06-11T09:15:52.739718+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "7b5f3bb1-6ec0-46ba-9b1e-837c361c2d2c",
+        "timestamp": "2026-06-11T09:16:00.916589+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "a1a29975-9a24-46a8-9f26-305565d14d32",
+        "timestamp": "2026-06-11T09:17:31.798314+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "920b27ec-c8fd-4d9a-8b68-18917dfce5d6",
+        "timestamp": "2026-06-11T09:17:43.199842+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "fe6ee8f0-4a65-4531-8907-99bcc94d82c9",
+        "timestamp": "2026-06-11T09:18:14.298006+00:00",
+        "event_type": "LOGIN",
+        "user": "admin",
+        "severity": "INFO",
+        "message": "User logged in",
+        "metadata": {}
+    },
+    {
+        "id": "aea72ccb-1215-4114-9529-e11abaee39d6",
+        "timestamp": "2026-06-11T09:38:30.227922+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "3bfb4f2b-c3cd-49af-b9b6-e29a4d7753e2",
+        "timestamp": "2026-06-11T09:38:36.310592+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "e694e1b0-418f-40e2-9a73-bce24e3f78ca",
+        "timestamp": "2026-06-11T09:38:50.161315+00:00",
+        "event_type": "LOGIN",
+        "user": "admin",
+        "severity": "INFO",
+        "message": "User logged in",
+        "metadata": {}
+    },
+    {
+        "id": "5d82d96b-d948-4ee0-8df7-2289e1f307b1",
+        "timestamp": "2026-06-11T09:38:54.642663+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "d6c15ea6-fb5d-4158-a0f2-ba6a9fc8d654",
+        "timestamp": "2026-06-11T09:42:01.612181+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "a4278f26-1d3f-4c79-9308-d82f0e9834ea",
+        "timestamp": "2026-06-11T09:42:03.547233+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
     }
 ]
