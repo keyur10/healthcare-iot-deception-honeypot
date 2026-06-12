@@ -1087,5 +1087,41 @@
         "severity": "INFO",
         "message": "Application started",
         "metadata": {}
+    },
+    {
+        "id": "ad060b7b-6afc-4121-9a9d-ca63f94640ac",
+        "timestamp": "2026-06-12T07:13:43.233326+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "356ac13d-8515-463d-af51-0355940975c3",
+        "timestamp": "2026-06-12T07:13:45.460887+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "32244af3-1a3a-49c8-a778-16c211817757",
+        "timestamp": "2026-06-12T07:47:24.046989+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "3681af45-f23e-48e2-b643-5db10bfffd79",
+        "timestamp": "2026-06-12T07:47:26.337819+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
     }
 ]

@@ -462,6 +462,45 @@ def health():
         "version": APP["environment"],
     }
 
+# ==================================================
+# DASHBOARD API STATS
+# ==================================================
+
+@app.route("/api/stats")
+def api_stats():
+
+    if not is_authenticated():
+
+        return {
+            "error": "Unauthorized"
+        }, 401
+
+    attacks = get_attack_logs()
+
+    stats = {
+
+        "active_honeypots": 24,
+
+        "live_attacks": len(attacks),
+
+        "ioc_count": 309,
+
+        "devices": 98,
+
+        "mitre": 37,
+
+        "critical": 5,
+
+        "high": 12,
+
+        "medium": 18,
+
+        "low": 26
+
+    }
+
+    return stats
+
 
 # ==================================================
 # MAIN

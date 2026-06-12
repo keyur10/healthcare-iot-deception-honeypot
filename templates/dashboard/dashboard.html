@@ -16,6 +16,37 @@
             <p>Security Operations Center Dashboard</p>
         </div>
 
+        <div
+class="dashboard-panel"
+style="margin-bottom:20px;">
+
+<h2>
+
+Threat Level:
+
+<span
+id="threat-level"
+style="color:red;">
+
+LOW
+
+</span>
+
+</h2>
+
+<p>
+
+Last Refresh:
+
+<span id="last-refresh">
+
+Never
+
+</span>
+
+</p>
+
+</div>
         <div class="dashboard-status">
 
             <span class="status-dot"></span>
@@ -42,7 +73,7 @@
         onclick="window.location='/attack-logs'"
     >
         <h3>Live Attacks</h3>
-        <span>12</span>
+        <span id="total-attacks">0</span>
         <small>Investigate Attacks</small>
     </div>
 
@@ -51,7 +82,7 @@
         onclick="window.location='/ioc'"
     >
         <h3>IOC Center</h3>
-        <span>309</span>
+        <span id="unique-ips">0</span>
         <small>Indicators of Compromise</small>
     </div>
 
@@ -97,140 +128,123 @@
 
 <div class="dashboard-row">
 
+    <!-- Recent Attacks -->
+
     <div class="dashboard-panel">
+
         <h2>Recent Attacks</h2>
 
-        <table class="attack-table">
+        <table
+            class="attack-table"
+            id="attackTable">
 
-<thead>
+            <thead>
 
-<tr>
+                <tr>
 
-<th>Time</th>
-<th>Source IP</th>
-<th>Username</th>
-<th>Password</th>
-<th>Threat</th>
+                    <th>IP</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Timestamp</th>
 
-</tr>
+                </tr>
 
-</thead>
+            </thead>
 
-<tbody>
+            <tbody>
 
-{% for attack in attacks %}
+                {% for attack in attacks %}
 
-<tr>
+                <tr>
 
-<td>{{ attack.time }}</td>
+                    <td>{{ attack.ip }}</td>
+                    <td>{{ attack.username }}</td>
+                    <td>{{ attack.password }}</td>
+                    <td>{{ attack.time }}</td>
 
-<td>{{ attack.ip }}</td>
+                </tr>
 
-<td>{{ attack.username }}</td>
+                {% endfor %}
 
-<td>{{ attack.password }}</td>
+            </tbody>
 
-<td style="color:red;">HIGH</td>
+        </table>
 
-</tr>
+    </div>
 
-{% endfor %}
+    <!-- Live Attack Feed -->
 
-</tbody>
-
-</table>
-
-{% for attack in attacks %}
-
-<tr>
-
-<td>{{ attack.time }}</td>
-
-<td>{{ attack.ip }}</td>
-
-<td>{{ attack.username }}</td>
-
-<td>{{ attack.password }}</td>
-
-<td>HIGH</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
     <div class="dashboard-panel">
 
-    <h2>WHOIS Lookup</h2>
+        <h2>Live Attack Feed</h2>
 
-    <form
-        action="/whois"
-        method="POST"
-        class="whois-form"
-    >
-
-        <input
-            type="text"
-            name="ip"
-            placeholder="Enter IP Address..."
-            required
-        >
-
-        <button type="submit">
-
-            Lookup
-
-        </button>
-
-    </form>
-
-    {% if whois_result %}
-
-    <div class="whois-result">
-
-        <div>
-
-            <strong>IP:</strong>
-
-            {{ whois_result.ip }}
-
-        </div>
-
-        <div>
-
-            <strong>Country:</strong>
-
-            {{ whois_result.country }}
-
-        </div>
-
-        <div>
-
-            <strong>ASN:</strong>
-
-            {{ whois_result.asn }}
-
-        </div>
-
-        <div>
-
-            <strong>Provider:</strong>
-
-            {{ whois_result.provider }}
-
-        </div>
-
-        <div>
-
-            <strong>City:</strong>
-
-            {{ whois_result.city }}
+        <div id="attack-feed">
 
         </div>
 
     </div>
 
-    {% endif %}
+</div>
+
+<div class="dashboard-row">
+
+    <!-- WHOIS Lookup -->
+
+    <div class="dashboard-panel">
+
+        <h2>WHOIS Lookup</h2>
+
+        <form
+            action="/whois"
+            method="POST"
+            class="whois-form">
+
+            <input
+                type="text"
+                name="ip"
+                placeholder="Enter IP Address..."
+                required>
+
+            <button type="submit">
+                Lookup
+            </button>
+
+        </form>
+
+        {% if whois_result %}
+
+        <div class="whois-result">
+
+            <div>
+                <strong>IP:</strong>
+                {{ whois_result.ip }}
+            </div>
+
+            <div>
+                <strong>Country:</strong>
+                {{ whois_result.country }}
+            </div>
+
+            <div>
+                <strong>ASN:</strong>
+                {{ whois_result.asn }}
+            </div>
+
+            <div>
+                <strong>Provider:</strong>
+                {{ whois_result.provider }}
+            </div>
+
+            <div>
+                <strong>City:</strong>
+                {{ whois_result.city }}
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
 
 </div>
 
