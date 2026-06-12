@@ -1,33 +1,29 @@
+```html
 {% extends "layouts/base.html" %}
-
-{% block extra_css %}
-<link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/ioc.css') }}"
->
-{% endblock %}
 
 {% block content %}
 
 <div class="ioc-container">
 
-    <div class="page-header">
+    <div class="dashboard-header">
 
-        <h1>IOC Extraction Center</h1>
+        <div>
 
-        <p>
-            Indicators of Compromise Analysis & Intelligence
-        </p>
+            <h1>IOC Extraction Center</h1>
+
+            <p>Indicators of Compromise collected from Honeypots</p>
+
+        </div>
 
     </div>
 
-    <div class="ioc-summary">
+    <div class="ioc-grid">
 
         <div class="ioc-card">
 
             <h3>Malicious IPs</h3>
 
-            <span>152</span>
+            <span>128</span>
 
         </div>
 
@@ -35,7 +31,7 @@
 
             <h3>Domains</h3>
 
-            <span>43</span>
+            <span>42</span>
 
         </div>
 
@@ -43,7 +39,7 @@
 
             <h3>URLs</h3>
 
-            <span>88</span>
+            <span>63</span>
 
         </div>
 
@@ -51,7 +47,7 @@
 
             <h3>Hashes</h3>
 
-            <span>26</span>
+            <span>97</span>
 
         </div>
 
@@ -61,27 +57,17 @@
 
         <h2>IOC Search</h2>
 
-        <div class="ioc-search">
-
-            <input
-                type="text"
-                id="iocSearch"
-                placeholder="Search IOC..."
-            >
-
-            <button id="searchBtn">
-
-                Search
-
-            </button>
-
-        </div>
+        <input
+            type="text"
+            placeholder="Search IP, Domain, URL or Hash..."
+            class="ioc-search"
+        >
 
     </div>
 
     <div class="ioc-panel">
 
-        <h2>Detected Indicators</h2>
+        <h2>Latest Extracted IOCs</h2>
 
         <table class="ioc-table">
 
@@ -90,46 +76,61 @@
                 <tr>
 
                     <th>Type</th>
-                    <th>Indicator</th>
-                    <th>Risk</th>
-                    <th>First Seen</th>
+                    <th>IOC</th>
+                    <th>Threat</th>
+                    <th>Source</th>
 
                 </tr>
 
             </thead>
 
-            <tbody id="iocTable">
+            <tbody>
 
                 <tr>
 
                     <td>IP</td>
+
                     <td>45.33.12.88</td>
-                    <td class="critical">
-                        Critical
-                    </td>
-                    <td>Today</td>
 
-                </tr>
+                    <td style="color:red;">HIGH</td>
 
-                <tr>
-
-                    <td>Domain</td>
-                    <td>malicious-example.com</td>
-                    <td class="high">
-                        High
-                    </td>
-                    <td>Today</td>
+                    <td>Cowrie Honeypot</td>
 
                 </tr>
 
                 <tr>
 
                     <td>Hash</td>
-                    <td>8a5f4e...</td>
-                    <td class="medium">
-                        Medium
-                    </td>
-                    <td>Yesterday</td>
+
+                    <td>3fa9f92a8bc4d23e...</td>
+
+                    <td style="color:orange;">MEDIUM</td>
+
+                    <td>Malware Sample</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Domain</td>
+
+                    <td>evil-healthcare.com</td>
+
+                    <td style="color:red;">HIGH</td>
+
+                    <td>Threat Feed</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>URL</td>
+
+                    <td>http://malicious.site/login</td>
+
+                    <td style="color:red;">HIGH</td>
+
+                    <td>Captured Traffic</td>
 
                 </tr>
 
@@ -141,41 +142,19 @@
 
     <div class="ioc-panel">
 
-        <h2>Threat Intelligence</h2>
+        <h2>Live IOC Feed</h2>
 
-        <div class="intel-grid">
+        <div class="feed">
 
-            <div class="intel-box">
+            <p>[INFO] IOC Database Updated</p>
 
-                VirusTotal Hits
+            <p>[HIGH] New Malicious IP Detected</p>
 
-                <h3>37</h3>
+            <p>[HIGH] Suspicious URL Captured</p>
 
-            </div>
+            <p>[INFO] Hash Added to Blacklist</p>
 
-            <div class="intel-box">
-
-                WHOIS Matches
-
-                <h3>18</h3>
-
-            </div>
-
-            <div class="intel-box">
-
-                Blacklisted IPs
-
-                <h3>11</h3>
-
-            </div>
-
-            <div class="intel-box">
-
-                Active Campaigns
-
-                <h3>4</h3>
-
-            </div>
+            <p>[CRITICAL] C2 Domain Identified</p>
 
         </div>
 
@@ -183,6 +162,12 @@
 
 </div>
 
-<script src="{{ url_for('static', filename='js/ioc.js') }}"></script>
+{% endblock %}
+```
+{% block styles %}
+
+<link
+rel="stylesheet"
+href="{{ url_for('static', filename='css/ioc.css') }}">
 
 {% endblock %}

@@ -315,15 +315,18 @@ def ioc():
 
     if not is_authenticated():
 
-        return redirect(
-            url_for("login")
-        )
+        return redirect(url_for("login"))
 
     return render_template(
+
         "dashboard/ioc.html",
+
         username=current_user(),
+
         role=current_role(),
+
         project_name=PROJECT_NAME,
+
     )
 # ==================================================
 # HONEYPOTS
