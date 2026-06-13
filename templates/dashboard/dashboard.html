@@ -9,44 +9,67 @@
 {% block content %}
 <div class="dashboard-container">
 
-    <div class="dashboard-header">
+        <div class="dashboard-header"
+style="
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+margin-bottom:35px;
+">
 
-        <div>
-            <h1>Healthcare IoT Deception Honeypot Network</h1>
-            <p>Security Operations Center Dashboard</p>
+    <!-- Dashboard Title -->
+
+    <div>
+
+        <h1>
+            Healthcare IoT Deception Honeypot Network
+        </h1>
+
+        <p>
+            Security Operations Center Dashboard
+        </p>
+
+    </div>
+
+    <!-- Right Side -->
+
+    <div
+    style="
+    display:flex;
+    align-items:flex-start;
+    gap:20px;
+    ">
+
+        <!-- Threat Widget -->
+
+        <div class="threat-widget">
+
+            <h4>
+                Threat Level
+            </h4>
+
+            <div id="threat-level">
+
+                LOW
+
+            </div>
+
+            <small>
+
+                Last Refresh
+
+            </small>
+
+            <p id="last-refresh">
+
+                Never
+
+            </p>
+
         </div>
 
-        <div
-class="dashboard-panel"
-style="margin-bottom:20px;">
+        <!-- Status -->
 
-<h2>
-
-Threat Level:
-
-<span
-id="threat-level"
-style="color:red;">
-
-LOW
-
-</span>
-
-</h2>
-
-<p>
-
-Last Refresh:
-
-<span id="last-refresh">
-
-Never
-
-</span>
-
-</p>
-
-</div>
         <div class="dashboard-status">
 
             <span class="status-dot"></span>
@@ -56,6 +79,8 @@ Never
         </div>
 
     </div>
+
+</div>
 
 <div class="stats-grid">
 
@@ -108,23 +133,20 @@ Never
         Threat Techniques
     </small>
 </div>
-</div>
-
-<div class="stat-card clickable-card"
+<div
+    class="stat-card clickable-card"
     onclick="window.location='/threat-hunting'">
 
     <h3>Threat Hunting</h3>
 
-    <span>
-        🎯
-    </span>
+    <span>🎯</span>
 
     <small>
         Investigate Suspicious Activity
     </small>
 
 </div>
-
+</div>
 
 <div class="dashboard-row">
 
