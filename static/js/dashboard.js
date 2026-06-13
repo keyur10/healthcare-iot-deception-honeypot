@@ -67,7 +67,7 @@ async function updateDashboard() {
 
         const response =
             await fetch(
-                "/api/stats",
+                "/api/dashboard",
                 {
                     signal:
                         controller.signal

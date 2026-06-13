@@ -1,0 +1,279 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/user_management.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+{% set is_admin = user.role == "Administrator" %}
+
+<div class="settings-container">
+
+    <div class="page-header">
+
+        <h1>
+            <i class="fa-solid fa-user-shield"></i>
+            User Permissions
+        </h1>
+
+        <p>
+            Manage Access Rights for {{ user.username }}
+        </p>
+
+    </div>
+
+    <!-- User Profile Card -->
+
+    <div class="user-profile-card">
+
+        <div class="user-avatar">
+
+            <i class="fa-solid fa-user"></i>
+
+        </div>
+
+        <div class="user-details">
+
+            <h2>{{ user.username }}</h2>
+
+            <span class="role-badge">
+                {{ user.role }}
+            </span>
+
+            <span class="status-badge active">
+                {{ user.status }}
+            </span>
+
+        </div>
+
+    </div>
+
+    {% if is_admin %}
+
+    <div class="admin-notice">
+
+        <i class="fa-solid fa-shield-halved"></i>
+
+        Administrator accounts always have full system access.
+        Permissions are read-only.
+
+    </div>
+
+    {% endif %}
+
+    <!-- Permissions -->
+
+    <div class="settings-panel">
+
+        <div class="panel-header">
+
+            <h2>
+
+                <i class="fa-solid fa-lock"></i>
+
+                Access Permissions
+
+            </h2>
+
+        </div>
+
+        <form
+            action="{{ url_for('save_permissions', username=user.username) }}"
+            method="POST"
+        >
+
+            <div class="permissions-grid">
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="dashboard"
+                        {% if user.permissions.get('dashboard', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>Dashboard</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="attack_logs"
+                        {% if user.permissions.get('attack_logs', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>Attack Logs</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="alerts"
+                        {% if user.permissions.get('alerts', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>Alerts</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="timeline"
+                        {% if user.permissions.get('timeline', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>Attack Timeline</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="geolocation"
+                        {% if user.permissions.get('geolocation', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>Geo Location</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="mitre"
+                        {% if user.permissions.get('mitre', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>MITRE ATT&CK</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="ioc"
+                        {% if user.permissions.get('ioc', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>IOC Center</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="threat_hunting"
+                        {% if user.permissions.get('threat_hunting', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>Threat Hunting</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="soc_terminal"
+                        {% if user.permissions.get('soc_terminal', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>SOC Terminal</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="reports"
+                        {% if user.permissions.get('reports', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>Reports</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="settings"
+                        {% if user.permissions.get('settings', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>Settings</span>
+
+                </label>
+
+                <label class="permission-card">
+
+                    <input
+                        type="checkbox"
+                        name="user_management"
+                        {% if user.permissions.get('user_management', False) %}checked{% endif %}
+                        {% if is_admin %}disabled{% endif %}
+                    >
+
+                    <span>User Management</span>
+
+                </label>
+
+            </div>
+
+            <div class="button-group">
+
+                {% if not is_admin %}
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Permissions
+                </button>
+
+                {% endif %}
+
+                <a
+                    href="{{ url_for('user_management') }}"
+                    class="warning-btn"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

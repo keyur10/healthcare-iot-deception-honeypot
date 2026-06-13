@@ -11,103 +11,237 @@
 
 <div class="mitre-container">
 
+    <!-- PAGE HEADER -->
+
     <div class="page-header">
 
-        <h1>MITRE ATT&CK Framework</h1>
+        <div>
 
-        <p>
-            Healthcare IoT Threat Mapping & Adversary Techniques
-        </p>
+            <h1>
+                MITRE ATT&CK Framework Center
+            </h1>
+
+            <p>
+                Healthcare IoT Threat Mapping, ATT&CK Correlation & Adversary Analysis
+            </p>
+
+        </div>
+
+        <div class="mitre-status">
+
+            <span class="status-dot"></span>
+
+            ATT&CK Monitoring Active
+
+        </div>
 
     </div>
+
+    <!-- SUMMARY CARDS -->
 
     <div class="mitre-summary">
 
         <div class="summary-card">
-            <h3>Tactics</h3>
-            <span>14</span>
+
+            <h3>
+                Total Techniques
+            </h3>
+
+            <span>
+
+                {{ mitre_data|length }}
+
+            </span>
+
         </div>
 
-        <div class="summary-card">
-            <h3>Techniques</h3>
-            <span>37</span>
+        <div class="summary-card critical">
+
+            <h3>
+                Critical
+            </h3>
+
+            <span>
+
+                {{ risk_counts.Critical }}
+
+            </span>
+
         </div>
 
-        <div class="summary-card">
-            <h3>Active Campaigns</h3>
-            <span>8</span>
+        <div class="summary-card high">
+
+            <h3>
+                High
+            </h3>
+
+            <span>
+
+                {{ risk_counts.High }}
+
+            </span>
+
         </div>
 
-        <div class="summary-card">
-            <h3>Threat Actors</h3>
-            <span>12</span>
+        <div class="summary-card medium">
+
+            <h3>
+                Medium
+            </h3>
+
+            <span>
+
+                {{ risk_counts.Medium }}
+
+            </span>
+
         </div>
 
     </div>
 
+    <!-- ATTACK TACTICS -->
+
     <div class="mitre-panel">
 
-        <h2>MITRE ATT&CK Matrix</h2>
+        <h2>
+            ATT&CK Tactics Coverage
+        </h2>
 
         <div class="matrix-grid">
 
-            <div class="matrix-card critical">
+            <div class="matrix-card">
+
                 Initial Access
-                <h3>37</h3>
+
+                <h3>
+
+                    {{ initial_access }}
+
+                </h3>
+
             </div>
 
             <div class="matrix-card">
-                Execution
-                <h3>21</h3>
-            </div>
 
-            <div class="matrix-card">
-                Persistence
-                <h3>11</h3>
-            </div>
-
-            <div class="matrix-card">
-                Privilege Escalation
-                <h3>7</h3>
-            </div>
-
-            <div class="matrix-card">
-                Defense Evasion
-                <h3>13</h3>
-            </div>
-
-            <div class="matrix-card">
-                Credential Access
-                <h3>18</h3>
-            </div>
-
-            <div class="matrix-card">
                 Discovery
-                <h3>16</h3>
+
+                <h3>
+
+                    {{ discovery }}
+
+                </h3>
+
             </div>
 
             <div class="matrix-card">
-                Lateral Movement
-                <h3>6</h3>
+
+                Execution
+
+                <h3>
+
+                    {{ execution }}
+
+                </h3>
+
             </div>
 
             <div class="matrix-card">
-                Collection
-                <h3>9</h3>
-            </div>
 
-            <div class="matrix-card">
-                Exfiltration
-                <h3>4</h3>
+                Persistence
+
+                <h3>
+
+                    {{ persistence }}
+
+                </h3>
+
             </div>
 
         </div>
 
     </div>
 
+    <!-- MITRE MATRIX -->
+
     <div class="mitre-panel">
 
-        <h2>Detected Techniques</h2>
+        <h2>
+            ATT&CK Matrix Overview
+        </h2>
+
+        <div class="attack-matrix">
+
+            <div class="matrix-technique">
+
+                T1110
+
+                <span>
+
+                    Brute Force
+
+                </span>
+
+            </div>
+
+            <div class="matrix-technique">
+
+                T1595
+
+                <span>
+
+                    Active Scanning
+
+                </span>
+
+            </div>
+
+            <div class="matrix-technique">
+
+                T1046
+
+                <span>
+
+                    Network Service Discovery
+
+                </span>
+
+            </div>
+
+            <div class="matrix-technique">
+
+                T1190
+
+                <span>
+
+                    Exploit Public Facing Application
+
+                </span>
+
+            </div>
+
+            <div class="matrix-technique">
+
+                T1021
+
+                <span>
+
+                    Remote Services
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- LIVE MITRE TABLE -->
+
+    <div class="mitre-panel">
+
+        <h2>
+            MITRE Technique Mapping
+        </h2>
 
         <table class="mitre-table">
 
@@ -115,10 +249,12 @@
 
                 <tr>
 
-                    <th>ID</th>
+                    <th>#</th>
+                    <th>Time</th>
+                    <th>Source IP</th>
                     <th>Technique</th>
-                    <th>Tactic</th>
-                    <th>Detections</th>
+                    <th>Target</th>
+                    <th>Risk</th>
 
                 </tr>
 
@@ -126,83 +262,336 @@
 
             <tbody>
 
-                <tr>
-                    <td>T1110</td>
-                    <td>Brute Force</td>
-                    <td>Credential Access</td>
-                    <td>48</td>
-                </tr>
+                {% if mitre_data %}
 
-                <tr>
-                    <td>T1046</td>
-                    <td>Network Service Discovery</td>
-                    <td>Discovery</td>
-                    <td>32</td>
-                </tr>
+                    {% for item in mitre_data %}
 
-                <tr>
-                    <td>T1190</td>
-                    <td>Exploit Public Facing Application</td>
-                    <td>Initial Access</td>
-                    <td>27</td>
-                </tr>
+                    <tr>
 
-                <tr>
-                    <td>T1078</td>
-                    <td>Valid Accounts</td>
-                    <td>Persistence</td>
-                    <td>15</td>
-                </tr>
+                        <td>
+
+                            {{ loop.index }}
+
+                        </td>
+
+                        <td>
+
+                            {{ item.time }}
+
+                        </td>
+
+                        <td>
+
+                            {{ item.source_ip }}
+
+                        </td>
+
+                        <td>
+
+                            {{ item.technique }}
+
+                        </td>
+
+                        <td>
+
+                            {{ item.target }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="risk-{{ item.risk|lower }}">
+
+                                {{ item.risk }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="6">
+
+                            No MITRE Events Available
+
+                        </td>
+
+                    </tr>
+
+                {% endif %}
 
             </tbody>
 
         </table>
 
     </div>
+    <!-- RECENT EVENTS -->
 
     <div class="mitre-panel">
 
-        <h2>Healthcare Device Target Mapping</h2>
+        <h2>
+            Recent ATT&CK Events
+        </h2>
+
+        <div class="event-feed">
+
+            {% if mitre_data %}
+
+                {% for item in mitre_data[:10] %}
+
+                <div class="event-item">
+
+                    <div class="event-technique">
+
+                        {{ item.technique }}
+
+                    </div>
+
+                    <div class="event-ip">
+
+                        {{ item.source_ip }}
+
+                    </div>
+
+                    <div class="event-risk">
+
+                        {{ item.risk }}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="event-item">
+
+                    No Events Available
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- OBSERVED TECHNIQUES -->
+
+    <div class="mitre-panel">
+
+        <h2>
+            Observed Techniques
+        </h2>
 
         <div class="device-grid">
 
-            <div class="device-card">
+            {% if mitre_data %}
 
-                Ventilator
+                {% for item in mitre_data[:12] %}
 
-                <ul>
+                <div class="device-card">
 
-                    <li>T1110</li>
-                    <li>T1046</li>
-                    <li>T1190</li>
+                    <h3>
 
-                </ul>
+                        {{ item.technique }}
+
+                    </h3>
+
+                    <p>
+
+                        Target:
+                        {{ item.target }}
+
+                    </p>
+
+                    <p>
+
+                        Risk:
+                        {{ item.risk }}
+
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="device-card">
+
+                    No Techniques Available
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- TOP ATTACKER IPS -->
+
+    <div class="mitre-panel">
+
+        <h2>
+            Top Attacker IPs
+        </h2>
+
+        <div class="device-grid">
+
+            {% if mitre_data %}
+
+                {% for item in mitre_data[:8] %}
+
+                <div class="device-card">
+
+                    <h3>
+
+                        {{ item.source_ip }}
+
+                    </h3>
+
+                    <p>
+
+                        {{ item.technique }}
+
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- SESSION INFO -->
+
+    <div class="mitre-panel">
+
+        <h2>
+            Session Information
+        </h2>
+
+        <div class="matrix-grid">
+
+            <div class="matrix-card">
+
+                User
+
+                <h3>
+
+                    {{ username }}
+
+                </h3>
 
             </div>
 
-            <div class="device-card">
+            <div class="matrix-card">
 
-                Patient Monitor
+                Role
 
-                <ul>
+                <h3>
 
-                    <li>T1046</li>
-                    <li>T1078</li>
+                    {{ role }}
 
-                </ul>
+                </h3>
 
             </div>
 
-            <div class="device-card">
+            <div class="matrix-card">
 
-                Infusion Pump
+                Project
 
-                <ul>
+                <h3>
 
-                    <li>T1110</li>
-                    <li>T1190</li>
+                    HIDHN
 
-                </ul>
+                </h3>
+
+            </div>
+
+            <div class="matrix-card">
+
+                Total Events
+
+                <h3>
+
+                    {{ mitre_data|length }}
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RISK DISTRIBUTION -->
+
+    <div class="mitre-panel">
+
+        <h2>
+            Risk Distribution
+        </h2>
+
+        <div class="matrix-grid">
+
+            <div class="matrix-card">
+
+                Critical
+
+                <h3>
+
+                    {{ risk_counts.Critical }}
+
+                </h3>
+
+            </div>
+
+            <div class="matrix-card">
+
+                High
+
+                <h3>
+
+                    {{ risk_counts.High }}
+
+                </h3>
+
+            </div>
+
+            <div class="matrix-card">
+
+                Medium
+
+                <h3>
+
+                    {{ risk_counts.Medium }}
+
+                </h3>
+
+            </div>
+
+            <div class="matrix-card">
+
+                Low
+
+                <h3>
+
+                    {{ risk_counts.Low }}
+
+                </h3>
 
             </div>
 
@@ -212,6 +601,12 @@
 
 </div>
 
-<script src="{{ url_for('static', filename='js/mitre.js') }}"></script>
+{% endblock %}
+
+{% block extra_js %}
+
+<script
+src="{{ url_for('static', filename='js/mitre.js') }}"
+></script>
 
 {% endblock %}

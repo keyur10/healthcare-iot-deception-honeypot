@@ -179,6 +179,8 @@ DATA_FILES = {
     "dashboard_cache": DATA_DIR / "dashboard_cache.json",
     "geo_cache": DATA_DIR / "geo_cache.json",
     "mitre_mapping": DATA_DIR / "mitre_mapping.json",
+    "honeypots": DATA_DIR / "honeypots.json",
+    "settings": DATA_DIR / "settings.json",
 }
 
 # ==================================================

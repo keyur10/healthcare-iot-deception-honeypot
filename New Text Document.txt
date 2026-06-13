@@ -1,0 +1,1054 @@
+from flask import Flask
+from flask import redirect
+from flask import render_template
+from flask import request
+from flask import url_for
+from flask import flash
+from core.storage import load_attacks
+from core.storage import ensure_data_files
+from core.config import APP
+from ipwhois import IPWhois
+import json
+from core.attack_manager import (
+    create_attack
+)
+
+USERS_FILE = "users.json"
+
+
+def load_users():
+    try:
+        with open(USERS_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return []
+HONEYPOTS_FILE = "data/honeypots.json"
+
+def load_honeypots():
+
+    try:
+        with open(HONEYPOTS_FILE, "r") as f:
+            return json.load(f)
+
+    except Exception:
+        return []
+ATTACKS_FILE = "data/attacks.json"
+
+
+def load_attacks():
+
+    try:
+
+        with open(
+            ATTACKS_FILE,
+            "r"
+        ) as f:
+
+            return json.load(f)
+
+    except Exception:
+
+        return []    
+def hunt_threats():
+
+    return []    
+
+def save_users(users):
+    with open(USERS_FILE, "w") as f:
+        json.dump(users, f, indent=4)
+
+from core.config import (
+    APP,
+    SECRET_KEY,
+    PROJECT_NAME,
+)
+
+from core.helpers import (
+    configure_logging,
+)
+
+from core.storage import (
+    ensure_data_files,
+)
+
+from core.auth import (
+    login_user,
+    logout_user,
+    is_authenticated,
+    current_user,
+    current_role,
+    has_permission,
+    get_all_users,
+)
+from core.storage import (
+    load_users,
+    save_users,
+    load_attacks,
+    load_honeypots,
+    load_settings,
+    save_settings
+)
+def save_users(users):
+    with open(USERS_FILE, "w") as f:
+        json.dump(users, f, indent=4)
+
+def get_current_permissions():
+
+    users = load_users()
+
+    username = current_user()
+
+    for user in users:
+
+        if user.get("username") == username:
+
+            return user.get(
+                "permissions",
+                {}
+            )
+
+    return {}
+
+from core.audit import (
+    log_event,
+)
+
+# ==================================================
+# APP
+# ==================================================
+
+app = Flask(__name__)
+
+app.config["SECRET_KEY"] = SECRET_KEY
+
+
+# ==================================================
+# STARTUP
+# ==================================================
+
+def initialize_app() -> None:
+
+    configure_logging()
+
+    ensure_data_files()
+
+    log_event(
+        event_type="SYSTEM",
+        message="Application started",
+        severity="INFO",
+    )
+
+
+initialize_app()
+
+
+# ==================================================
+# HOME
+# ==================================================
+
+@app.route("/")
+def home():
+
+    if is_authenticated():
+
+        return redirect(
+            url_for("dashboard")
+        )
+
+    return redirect(
+        url_for("login")
+    )
+
+
+# ==================================================
+# LOGIN
+# ==================================================
+
+@app.route(
+    "/login",
+    methods=["GET", "POST"],
+)
+def login():
+
+    if request.method == "POST":
+
+        username = request.form.get(
+            "username",
+            "",
+        )
+
+        password = request.form.get(
+            "password",
+            "",
+        )
+
+        if login_user(
+            username,
+            password,
+        ):
+
+            flash(
+                "Login successful",
+                "success",
+            )
+
+            return redirect(
+                url_for("dashboard")
+            )
+
+        flash(
+            "Invalid credentials",
+            "danger",
+        )
+
+    return render_template(
+    "auth/login.html",
+    project_name=PROJECT_NAME,
+)
+
+
+# ==================================================
+# LOGOUT
+# ==================================================
+
+@app.route("/logout")
+def logout():
+
+    logout_user()
+
+    return redirect(
+        url_for("login")
+    )
+
+
+# ==================================================
+# DASHBOARD
+# ==================================================
+
+@app.route("/dashboard")
+def dashboard():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+    
+    honeypots = load_honeypots()
+
+    users = load_users()
+
+    active_honeypots = len([
+        h for h in honeypots
+        if h.get("status") == "Active"
+    ])
+
+    total_users = len(users)
+
+    admins = len([
+        u for u in users
+        if u.get("role") == "Administrator"
+    ])
+
+    analysts = len([
+        u for u in users
+        if u.get("role") == "Threat Analyst"
+    ])
+
+    disabled_accounts = len([
+        u for u in users
+        if u.get("status") == "Disabled"
+    ])
+    threat_hunt = hunt_threats()
+
+    attacks = load_attacks()
+
+    return render_template(
+
+        "dashboard/dashboard.html",
+        active_honeypots=active_honeypots,
+        total_users=total_users,
+        admins=admins,
+        analysts=analysts,
+        disabled_accounts=disabled_accounts,
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+        whois_result=None,
+        threat_hunt=[],
+        attacks=attacks
+
+    )
+@app.route(
+    "/whois",
+    methods=["POST"]
+)
+def whois_lookup():
+
+    ip = request.form.get("ip")
+
+    result = None
+
+    try:
+
+        lookup = IPWhois(ip)
+
+        data = lookup.lookup_rdap()
+
+        result = {
+            "ip": ip,
+            "country": data.get("asn_country_code"),
+            "asn": data.get("asn"),
+            "provider": data.get("network", {}).get("name"),
+            "city": "Unknown",
+        }
+
+    except Exception:
+
+        result = {
+            "ip": ip,
+            "country": "Unknown",
+            "asn": "Unknown",
+            "provider": "Unknown",
+            "city": "Unknown",
+        }
+
+    return render_template(
+        "dashboard/dashboard.html",
+        whois_result=result,
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+        threat_hunt=[],
+    )
+# ==================================================
+# ATTACK LOGS
+# ==================================================
+
+@app.route("/attack-logs")
+def attack_logs():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    attacks = load_attacks()
+
+    total_attacks = len(attacks)
+
+    critical_threats = len(
+        [
+            a for a in attacks
+            if a.get("risk") == "Critical"
+        ]
+    )
+
+    unique_attackers = len(
+        set(
+            a.get(
+                "source_ip",
+                ""
+            )
+            for a in attacks
+        )
+    )
+
+    countries = len(
+        set(
+            a.get(
+                "country",
+                ""
+            )
+            for a in attacks
+        )
+    )
+
+    return render_template(
+        "dashboard/attack_logs.html",
+        attacks=attacks,
+        total_attacks=total_attacks,
+        critical_threats=critical_threats,
+        unique_attackers=unique_attackers,
+        countries=countries,
+        username=current_user(),
+        role=current_role(),
+        permissions=get_current_permissions(),
+        project_name=PROJECT_NAME
+    )
+
+
+@app.route("/alerts")
+def alerts():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    return render_template(
+        "dashboard/alerts.html",
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+    )
+@app.route("/timeline")
+def timeline():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    return render_template(
+        "dashboard/timeline.html",
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+    )
+@app.route("/geolocation")
+def geolocation():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    return render_template(
+        "dashboard/geolocation.html",
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+    )
+
+# ==================================================
+# THREAT HUNTING
+# ==================================================
+
+@app.route("/threat-hunting")
+def threat_hunting():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    threat_hunt = hunt_threats()
+
+    return render_template(
+        "dashboard/threat_hunting.html",
+        threat_hunt=threat_hunt,
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+    )
+# ==================================================
+# IOC EXTRACTION
+# ==================================================
+
+@app.route("/ioc")
+def ioc():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    return render_template(
+        "dashboard/ioc_extraction.html",
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+        permissions=get_current_permissions(),
+    )
+
+# ==================================================
+# HONEYPOTS
+# ==================================================
+@app.route("/honeypots")
+def honeypots():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    honeypots = load_honeypots()
+
+    running_count = len(
+        [
+            hp
+            for hp in honeypots
+            if hp.get("status") == "Running"
+        ]
+    )
+
+    stopped_count = len(
+        [
+            hp
+            for hp in honeypots
+            if hp.get("status") == "Stopped"
+        ]
+    )
+
+    total_attacks = sum(
+        hp.get("attacks", 0)
+        for hp in honeypots
+    )
+
+    return render_template(
+        "dashboard/honeypots.html",
+        honeypots=honeypots,
+        running_count=running_count,
+        stopped_count=stopped_count,
+        total_attacks=total_attacks,
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME
+    )
+
+@app.route(
+    "/add-honeypot",
+    methods=["POST"]
+)
+def add_honeypot():
+
+    honeypots = load_honeypots()
+
+    honeypots.append({
+
+        "id": len(honeypots) + 1,
+
+        "name": request.form.get(
+            "name"
+        ),
+
+        "type": request.form.get(
+            "type"
+        ),
+
+        "ip": request.form.get(
+            "ip"
+        ),
+
+        "port": request.form.get(
+            "port"
+        ),
+
+        "status": "Stopped",
+
+        "attacks": 0
+
+    })
+
+    save_honeypots(
+        honeypots
+    )
+
+    return redirect(
+        url_for("honeypots")
+    )
+
+@app.route(
+    "/start-honeypot/<int:id>"
+)
+def start_honeypot(id):
+
+    honeypots = load_honeypots()
+
+    for hp in honeypots:
+
+        if hp["id"] == id:
+
+            hp["status"] = "Running"
+
+    save_honeypots(
+        honeypots
+    )
+
+    return redirect(
+        url_for("honeypots")
+    )
+@app.route(
+    "/stop-honeypot/<int:id>"
+)
+def stop_honeypot(id):
+
+    honeypots = load_honeypots()
+
+    for hp in honeypots:
+
+        if hp["id"] == id:
+
+            hp["status"] = "Stopped"
+
+    save_honeypots(
+        honeypots
+    )
+
+    return redirect(
+        url_for("honeypots")
+    )
+
+@app.route(
+    "/delete-honeypot/<int:id>"
+)
+def delete_honeypot(id):
+
+    honeypots = load_honeypots()
+
+    honeypots = [
+
+        hp
+
+        for hp in honeypots
+
+        if hp["id"] != id
+
+    ]
+
+    save_honeypots(
+        honeypots
+    )
+
+    return redirect(
+        url_for("honeypots")
+    )
+@app.route(
+    "/view-honeypot/<int:id>"
+)
+def view_honeypot(id):
+
+    honeypots = load_honeypots()
+
+    honeypot = next(
+
+        (
+            hp
+            for hp in honeypots
+            if hp["id"] == id
+        ),
+
+        None
+
+    )
+
+    return render_template(
+        "dashboard/view_honeypot.html",
+        honeypot=honeypot,
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME
+    )
+
+@app.route("/api/honeypots")
+def api_honeypots():
+
+    with open(
+        "data/honeypots.json",
+        "r"
+    ) as f:
+
+        return json.load(f)
+# ==================================================
+# MITRE ATT&CK
+# ==================================================
+
+@app.route("/mitre")
+def mitre():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    techniques = [
+
+        {
+            "id": "T1110",
+            "name": "Brute Force",
+            "tactic": "Credential Access"
+        },
+
+        {
+            "id": "T1595",
+            "name": "Active Scanning",
+            "tactic": "Reconnaissance"
+        },
+
+        {
+            "id": "T1059",
+            "name": "Command Execution",
+            "tactic": "Execution"
+        },
+
+        {
+            "id": "T1046",
+            "name": "Network Service Discovery",
+            "tactic": "Discovery"
+        }
+
+    ]
+
+    return render_template(
+
+        "dashboard/mitre.html",
+
+        techniques=techniques,
+
+        username=current_user(),
+
+        role=current_role(),
+
+        project_name=PROJECT_NAME,
+
+    )
+# ==================================================
+# DEVICES
+# ==================================================
+
+@app.route("/devices")
+def devices():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    return render_template(
+        "dashboard/devices.html",
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+    )
+@app.route("/reports")
+def reports():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    reports = []
+
+    return render_template(
+        "dashboard/reports.html",
+        reports=reports,
+        reports_count=0,
+        attacks_count=0,
+        ioc_count=0,
+        audit_count=0,
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+    )
+
+@app.route("/settings")
+def settings():
+
+    if not is_authenticated():
+
+        return redirect(
+            url_for("login")
+        )
+
+    settings_data = load_settings()
+
+    if not settings_data:
+
+        settings_data = {
+
+            "security": {
+                "password_length": 8,
+                "session_timeout": 30,
+                "two_factor": True
+            },
+
+            "api_keys": {
+                "virustotal": "",
+                "abuseipdb": "",
+                "shodan": "",
+                "otx": ""
+            }
+
+        }
+
+    users = load_users()
+
+    return render_template(
+        "dashboard/settings.html",
+        settings=settings_data,
+        users=users,
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME
+    )
+@app.route("/settings/user-management")
+def user_management():
+
+    users = load_users()
+
+    total_users = len(users)
+
+    admins = sum(
+        1 for user in users
+        if user.get("role") == "Administrator"
+    )
+
+    analysts = sum(
+        1 for user in users
+        if user.get("role") == "Threat Analyst"
+    )
+
+    disabled_accounts = sum(
+        1 for user in users
+        if user.get("status") == "Disabled"
+    )
+
+    return render_template(
+        "dashboard/user_management.html",
+        users=users,
+        total_users=total_users,
+        admins=admins,
+        analysts=analysts,
+        disabled_accounts=disabled_accounts,
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME,
+        permissions=get_current_permissions(),
+    )
+@app.route("/add-user", methods=["POST"])
+def add_user():
+
+    users = load_users()
+
+    username = request.form["username"]
+
+    for user in users:
+
+        if user.get("username") == username:
+
+            flash(
+                "Username already exists",
+                "danger"
+            )
+
+            return redirect(
+                url_for("user_management")
+            )
+
+    users.append({
+
+        "username": username,
+
+        "password": request.form["password"],
+
+        "role": request.form["role"],
+
+        "status": "Active",
+
+        "last_login": "Never",
+
+        "permissions": {}
+
+    })
+
+    save_users(users)
+
+    flash(
+        "User created successfully",
+        "success"
+    )
+
+    return redirect(
+        url_for("user_management")
+    )
+@app.route("/view-user/<username>")
+def view_user(username):
+
+    users = load_users()
+
+    for user in users:
+
+        if user["username"] == username:
+
+            return render_template(
+    "dashboard/view_user.html",
+    user=user,
+    username=current_user(),
+    role=current_role(),
+    project_name=PROJECT_NAME,
+)
+
+    return redirect(
+        url_for("user_management")
+    )
+
+
+@app.route("/toggle-user/<username>")
+def toggle_user(username):
+
+    users = load_users()
+
+    for user in users:
+
+        if user["username"] == username:
+
+            if user["status"] == "Active":
+                user["status"] = "Disabled"
+            else:
+                user["status"] = "Active"
+
+    save_users(users)
+
+    return redirect(
+        url_for("user_management")
+    )
+
+
+@app.route(
+    "/save-permissions/<username>",
+    methods=["POST"]
+)
+def save_permissions(username):
+
+    users = load_users()
+
+    permissions = {
+
+        "dashboard":
+            "dashboard" in request.form,
+
+        "attack_logs":
+            "attack_logs" in request.form,
+
+        "alerts":
+            "alerts" in request.form,
+
+        "timeline":
+            "timeline" in request.form,
+
+        "geolocation":
+            "geolocation" in request.form,
+
+        "mitre":
+            "mitre" in request.form,
+
+        "ioc":
+            "ioc" in request.form,
+
+        "threat_hunting":
+            "threat_hunting" in request.form,
+
+        "soc_terminal":
+            "soc_terminal" in request.form,
+
+        "reports":
+            "reports" in request.form,
+
+        "settings":
+            "settings" in request.form,
+
+        "user_management":
+            "user_management" in request.form,
+    }
+
+    for user in users:
+
+        if user["username"] == username:
+
+            user["permissions"] = permissions
+
+            break
+
+    save_users(users)
+
+    flash(
+        "Permissions Updated",
+        "success"
+    )
+
+    return redirect(
+        url_for("user_management")
+    )
+@app.route(
+    "/change-password/<username>",
+    methods=["POST"]
+)
+def change_password(username):
+
+    users = load_users()
+
+    new_password = request.form.get(
+        "password"
+    )
+
+    for user in users:
+
+        if user["username"] == username:
+
+            user["password"] = new_password
+
+            break
+
+    save_users(users)
+
+    flash(
+        "Password Updated",
+        "success"
+    )
+
+    return redirect(
+        url_for("user_management")
+    )
+
+
+    return redirect(
+        url_for("user_management")
+    )
+# ==================================================
+# HEALTH CHECK
+# ==================================================
+
+@app.route("/health")
+def health():
+
+    return {
+        "status": "ok",
+        "project": PROJECT_NAME,
+        "version": APP["environment"],
+    }
+@app.route("/terminal")
+def soc_terminal():
+
+    if not is_authenticated():
+        return redirect(url_for("login"))
+
+    return render_template(
+        "dashboard/soc_terminal.html",
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME
+    )
+
+# ==================================================
+# MAIN
+# ==================================================
+
+if __name__ == "__main__":
+
+    app.run(
+        host=APP["host"],
+        port=APP["port"],
+        debug=APP["debug"],
+    )

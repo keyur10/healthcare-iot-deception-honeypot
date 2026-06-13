@@ -6,259 +6,727 @@
     href="{{ url_for('static', filename='css/dashboard.css') }}"
 >
 {% endblock %}
+
 {% block content %}
+
 <div class="dashboard-container">
+
+    <!-- HEADER -->
 
     <div class="dashboard-header">
 
         <div>
-            <h1>Healthcare IoT Deception Honeypot Network</h1>
-            <p>Security Operations Center Dashboard</p>
+
+            <h1>
+                Healthcare IoT Deception Honeypot Network
+            </h1>
+
+            <p>
+                Security Operations Center Dashboard
+            </p>
+
         </div>
 
         <div class="dashboard-status">
 
             <span class="status-dot"></span>
 
-            System Healthy
+            System Operational
 
         </div>
 
     </div>
 
-<div class="stats-grid">
+    <!-- LIVE STATISTICS -->
 
-    <div
-        class="stat-card clickable-card"
-        onclick="window.location='/honeypots'"
-    >
-        <h3>Active Honeypots</h3>
-        <span>24</span>
-        <small>View & Manage Honeypots</small>
-    </div>
+    <div class="stats-grid">
 
-    <div
-        class="stat-card clickable-card"
-        onclick="window.location='/attack-logs'"
-    >
-        <h3>Live Attacks</h3>
-        <span>12</span>
-        <small>Investigate Attacks</small>
-    </div>
-
-    <div
-        class="stat-card clickable-card"
-        onclick="window.location='/ioc'"
-    >
-        <h3>IOC Center</h3>
-        <span>309</span>
-        <small>Indicators of Compromise</small>
-    </div>
-
-    <div
-        class="stat-card clickable-card"
-        onclick="window.location='/devices'"
-    >
-        <h3>Connected Devices</h3>
-        <span>98</span>
-        <small>View Device Inventory</small>
-    </div>
-<div
-    class="stat-card clickable-card"
-    onclick="window.location='/mitre'"
->
-    <h3>MITRE ATT&CK</h3>
-
-    <span>
-        37
-    </span>
-
-    <small>
-        Threat Techniques
-    </small>
-</div>
-</div>
-
-<div class="dashboard-row">
-
-    <div class="dashboard-panel">
-        <h2>Recent Attacks</h2>
-
-        <table class="attack-table">
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Source IP</th>
-                    <th>Attack</th>
-                    <th>Target</th>
-                    <th>Risk</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td>Now</td>
-                    <td>192.168.1.50</td>
-                    <td>Brute Force</td>
-                    <td>Ventilator</td>
-                    <td>High</td>
-                </tr>
-
-                <tr>
-                    <td>2 min</td>
-                    <td>45.33.12.88</td>
-                    <td>Recon</td>
-                    <td>Patient Monitor</td>
-                    <td>Medium</td>
-                </tr>
-
-                <tr>
-                    <td>4 min</td>
-                    <td>85.12.4.22</td>
-                    <td>Exploit</td>
-                    <td>Infusion Pump</td>
-                    <td>High</td>
-                </tr>
-
-                <tr>
-                    <td>7 min</td>
-                    <td>66.81.21.17</td>
-                    <td>Malware</td>
-                    <td>MRI System</td>
-                    <td>Critical</td>
-                </tr>
-
-                <tr>
-                    <td>11 min</td>
-                    <td>102.44.8.99</td>
-                    <td>Scan</td>
-                    <td>ECG Monitor</td>
-                    <td>Low</td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
-
-    <div class="dashboard-panel">
-
-    <h2>WHOIS Lookup</h2>
-
-    <form
-        action="/whois"
-        method="POST"
-        class="whois-form"
-    >
-
-        <input
-            type="text"
-            name="ip"
-            placeholder="Enter IP Address..."
-            required
+        <div
+            class="stat-card clickable-card"
+            onclick="window.location='{{ url_for('honeypots') }}'"
         >
 
-        <button type="submit">
+            <h3>
+                Active Honeypots
+            </h3>
 
-            Lookup
+            <span id="activeHoneypots">
 
-        </button>
+                {{ active_honeypots }}
 
-    </form>
+            </span>
+
+            <small>
+                View & Manage Honeypots
+            </small>
+
+        </div>
+
+        <div
+            class="stat-card clickable-card"
+            onclick="window.location='{{ url_for('attack_logs') }}'"
+        >
+
+            <h3>
+                Total Attacks
+            </h3>
+
+            <span id="totalAttacks">
+
+                {{ total_attacks }}
+
+            </span>
+
+            <small>
+                Investigate Attack Activity
+            </small>
+
+        </div>
+
+        <div
+            class="stat-card clickable-card critical-card"
+            onclick="window.location='{{ url_for('alerts') }}'"
+        >
+
+            <h3>
+                Critical Attacks
+            </h3>
+
+            <span id="criticalAttacks">
+
+                {{ critical_attacks }}
+
+            </span>
+
+            <small>
+                Immediate Investigation Required
+            </small>
+
+        </div>
+
+        <div
+            class="stat-card clickable-card"
+            onclick="window.location='{{ url_for('user_management') }}'"
+        >
+
+            <h3>
+                SOC Users
+            </h3>
+
+            <span>
+
+                {{ total_users }}
+
+            </span>
+
+            <small>
+                Registered Analysts
+            </small>
+
+        </div>
+
+        <div
+            class="stat-card clickable-card"
+            onclick="window.location='{{ url_for('devices') }}'"
+        >
+
+            <h3>
+                Connected Devices
+            </h3>
+
+            <span>
+
+                {{ connected_devices }}
+
+            </span>
+
+            <small>
+                Healthcare IoT Assets
+            </small>
+
+        </div>
+
+    </div>
+
+    <!-- QUICK ACCESS -->
+
+    <div class="dashboard-panel">
+
+        <h2>
+            Quick Access Center
+        </h2>
+
+        <div class="quick-grid">
+
+            <div
+                class="quick-card"
+                onclick="window.location='{{ url_for('ioc') }}'"
+            >
+
+                <h3>
+                    IOC Center
+                </h3>
+
+                <p>
+                    Indicators of Compromise
+                </p>
+
+            </div>
+
+            <div
+                class="quick-card"
+                onclick="window.location='{{ url_for('mitre') }}'"
+            >
+
+                <h3>
+                    MITRE ATT&CK
+                </h3>
+
+                <p>
+                    Threat Mapping
+                </p>
+
+            </div>
+
+            <div
+                class="quick-card"
+                onclick="window.location='{{ url_for('threat_hunting') }}'"
+            >
+
+                <h3>
+                    Threat Hunting
+                </h3>
+
+                <p>
+                    Investigate Suspicious Activity
+                </p>
+
+            </div>
+
+            <div
+                class="quick-card"
+                onclick="window.location='{{ url_for('reports') }}'"
+            >
+
+                <h3>
+                    Reports
+                </h3>
+
+                <p>
+                    Generate Intelligence Reports
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RECENT ATTACKS + WHOIS -->
+
+    <div class="dashboard-split">
+
+        <div class="dashboard-panel">
+
+            <h2>
+                Recent Attacks
+            </h2>
+
+            <table class="attack-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Time</th>
+                        <th>Source IP</th>
+                        <th>Attack Type</th>
+                        <th>Risk</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for attack in attacks[:10] %}
+
+                    <tr
+                        class="clickable-row"
+                        onclick="window.location='{{ url_for('attack_logs') }}'"
+                    >
+
+                        <td>
+
+                            {{ attack.get('time','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ attack.get('ip','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ attack.get('attack_type','Unknown') }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="risk-{{ attack.get('risk','Low')|lower }}">
+
+                                {{ attack.get('risk','Low') }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="dashboard-panel">
+
+    <h2>
+    WHOIS Lookup
+</h2>
+
+<form
+    class="whois-form"
+    method="POST"
+    action="{{ url_for('whois_lookup') }}"
+>
+
+    <input
+        type="text"
+        id="whoisIP"
+        name="ip"
+        placeholder="Enter Public IP Address..."
+        required
+    >
+
+    <button
+        type="submit"
+    >
+
+        Lookup
+
+    </button>
+
+</form>
+
+<div
+    id="whoisResult"
+    class="whois-result"
+>
 
     {% if whois_result %}
 
-    <div class="whois-result">
+        <div class="whois-card">
 
-        <div>
+            <h4>
+                WHOIS Result
+            </h4>
 
-            <strong>IP:</strong>
+            <p>
 
-            {{ whois_result.ip }}
+                <strong>IP:</strong>
 
-        </div>
+                {{ whois_result.ip }}
 
-        <div>
+            </p>
 
-            <strong>Country:</strong>
+            <p>
 
-            {{ whois_result.country }}
+                <strong>Country:</strong>
 
-        </div>
+                {{ whois_result.country }}
 
-        <div>
+            </p>
 
-            <strong>ASN:</strong>
+            <p>
 
-            {{ whois_result.asn }}
+                <strong>ASN:</strong>
 
-        </div>
+                {{ whois_result.asn }}
 
-        <div>
+            </p>
 
-            <strong>Provider:</strong>
+            <p>
 
-            {{ whois_result.provider }}
+                <strong>Provider:</strong>
 
-        </div>
+                {{ whois_result.provider }}
 
-        <div>
-
-            <strong>City:</strong>
-
-            {{ whois_result.city }}
+            </p>
 
         </div>
 
-    </div>
+    {% else %}
+
+        <div class="whois-placeholder">
+
+            Enter an IP Address to begin investigation.
+
+        </div>
 
     {% endif %}
 
 </div>
+    <!-- LIVE THREAT FEED + TOP ATTACKERS -->
 
-<div class="dashboard-row">
+    <div class="dashboard-split">
 
-    <div class="dashboard-panel">
+        <div class="dashboard-panel">
 
-        <h2>VirusTotal Intelligence</h2>
+            <h2>
+                Live Threat Feed
+            </h2>
 
-        <div class="mitre-grid">
+            <div
+                class="feed-box"
+                id="liveThreatFeed"
+            >
 
-            <div class="mitre-card">
-                Malicious IPs
-                <h3>32</h3>
+                {% if attacks %}
+
+                    {% for attack in attacks[:10] %}
+
+                    <div class="feed-item">
+
+                        <span
+                            class="feed-risk risk-{{ attack.get('risk','Low')|lower }}"
+                        >
+
+                            [{{ attack.get('risk','Low') }}]
+
+                        </span>
+
+                        {{ attack.get('attack_type','Unknown') }}
+
+                        -
+
+                        {{ attack.get('ip','N/A') }}
+
+                    </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="feed-item">
+
+                        No Threat Activity Available
+
+                    </div>
+
+                {% endif %}
+
             </div>
 
-            <div class="mitre-card">
-                Suspicious URLs
-                <h3>18</h3>
-            </div>
+        </div>
 
-            <div class="mitre-card">
-                Malware Hashes
-                <h3>41</h3>
-            </div>
+        <div class="dashboard-panel">
 
-            <div class="mitre-card">
-                Clean Samples
-                <h3>312</h3>
+            <h2>
+                Top Attacker IPs
+            </h2>
+
+            <div class="feed-box">
+
+                {% if attacks %}
+
+                    {% for attack in attacks[:10] %}
+
+                    <div class="attacker-item">
+
+                        <strong>
+
+                            {{ attack.get('ip','N/A') }}
+
+                        </strong>
+
+                        <small>
+
+                            {{ attack.get('attack_type','Unknown') }}
+
+                        </small>
+
+                    </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div>
+
+                        No Attack Sources Found
+
+                    </div>
+
+                {% endif %}
+
             </div>
 
         </div>
 
     </div>
 
+    <!-- ATTACK STATISTICS -->
+
     <div class="dashboard-panel">
 
-        <h2>Threat Feed</h2>
+        <h2>
+            Attack Statistics
+        </h2>
 
-        <div id="threatFeed">
+        <div class="quick-grid">
 
-            <p>[INFO] Honeypot Monitoring Active</p>
-            <p>[INFO] Device Inventory Updated</p>
-            <p>[WARNING] Brute Force Detected</p>
-            <p>[CRITICAL] Ventilator Exploit Attempt</p>
-            <p>[INFO] MITRE Mapping Updated</p>
+            <div class="quick-card">
+
+                <h3>
+                    Total Events
+                </h3>
+
+                <p>
+
+                    {{ total_attacks }}
+
+                </p>
+
+            </div>
+
+            <div class="quick-card">
+
+                <h3>
+                    Critical Events
+                </h3>
+
+                <p>
+
+                    {{ critical_attacks }}
+
+                </p>
+
+            </div>
+
+            <div class="quick-card">
+
+                <h3>
+                    Active Honeypots
+                </h3>
+
+                <p>
+
+                    {{ active_honeypots }}
+
+                </p>
+
+            </div>
+
+            <div class="quick-card">
+
+                <h3>
+                    Connected Devices
+                </h3>
+
+                <p>
+
+                    {{ connected_devices }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- HONEYPOT HEALTH -->
+
+    <div class="dashboard-panel">
+
+        <h2>
+            Honeypot Health Status
+        </h2>
+
+        <div class="quick-grid">
+
+            <div class="quick-card">
+
+                <h3>
+                    SSH Honeypot
+                </h3>
+
+                <p class="status-online">
+
+                    Running
+
+                </p>
+
+            </div>
+
+            <div class="quick-card">
+
+                <h3>
+                    MQTT Honeypot
+                </h3>
+
+                <p class="status-online">
+
+                    Running
+
+                </p>
+
+            </div>
+
+            <div class="quick-card">
+
+                <h3>
+                    HTTP Honeypot
+                </h3>
+
+                <p class="status-online">
+
+                    Running
+
+                </p>
+
+            </div>
+
+            <div class="quick-card">
+
+                <h3>
+                    Modbus Honeypot
+                </h3>
+
+                <p class="status-online">
+
+                    Running
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOP ATTACK TYPES -->
+
+    <div class="dashboard-panel">
+
+        <h2>
+            Most Targeted Services
+        </h2>
+
+        <div class="quick-grid">
+
+            <div class="quick-card">
+
+                <h3>
+                    SSH
+                </h3>
+
+                <p>
+
+                    Brute Force Attempts
+
+                </p>
+
+            </div>
+
+            <div class="quick-card">
+
+                <h3>
+                    MQTT
+                </h3>
+
+                <p>
+
+                    IoT Reconnaissance
+
+                </p>
+
+            </div>
+
+            <div class="quick-card">
+
+                <h3>
+                    HTTP
+                </h3>
+
+                <p>
+
+                    Web Exploitation
+
+                </p>
+
+            </div>
+
+            <div class="quick-card">
+
+                <h3>
+                    Modbus
+                </h3>
+
+                <p>
+
+                    ICS Attacks
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- LIVE SOC ACTIVITY -->
+
+    <div class="dashboard-panel">
+
+        <h2>
+            SOC Activity Stream
+        </h2>
+
+        <div
+            class="feed-box"
+            id="socActivity"
+        >
+
+            <div>
+
+                [SYSTEM] Dashboard Initialized
+
+            </div>
+
+            <div>
+
+                [INFO] Threat Monitoring Active
+
+            </div>
+
+            <div>
+
+                [INFO] Honeypots Online
+
+            </div>
+
+            <div>
+
+                [INFO] IOC Feed Connected
+
+            </div>
 
         </div>
 
@@ -266,72 +734,12 @@
 
 </div>
 
-<div class="dashboard-row">
+{% endblock %}
 
-    <div class="dashboard-panel">
+{% block extra_js %}
 
-        <h2>Top Targeted Medical Devices</h2>
-
-        <div class="mitre-grid">
-
-            <div class="mitre-card">
-                Ventilator
-                <h3>19</h3>
-            </div>
-
-            <div class="mitre-card">
-                Infusion Pump
-                <h3>14</h3>
-            </div>
-
-            <div class="mitre-card">
-                Patient Monitor
-                <h3>12</h3>
-            </div>
-
-            <div class="mitre-card">
-                ECG System
-                <h3>9</h3>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div class="dashboard-row">
-
-    <div class="dashboard-panel">
-
-        <h2>MITRE ATT&CK Mapping</h2>
-
-        <div class="mitre-grid">
-
-            <div class="mitre-card">
-                Initial Access
-                <h3>37</h3>
-            </div>
-
-            <div class="mitre-card">
-                Execution
-                <h3>21</h3>
-            </div>
-
-            <div class="mitre-card">
-                Persistence
-                <h3>11</h3>
-            </div>
-
-            <div class="mitre-card">
-                Discovery
-                <h3>16</h3>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
+<script
+src="{{ url_for('static', filename='js/dashboard.js') }}"
+></script>
 
 {% endblock %}

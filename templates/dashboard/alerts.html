@@ -11,55 +11,163 @@
 
 <div class="alerts-container">
 
+    <!-- HEADER -->
+
     <div class="page-header">
 
-        <h1>Security Alerts Center</h1>
+        <div>
 
-        <p>
-            Real-time Healthcare IoT Threat Monitoring
-        </p>
+            <h1>
+                Security Alerts Center
+            </h1>
+
+            <p>
+                Real-Time Healthcare IoT Threat Monitoring & Incident Response
+            </p>
+
+        </div>
+
+        <div class="alert-status">
+
+            <span class="status-dot"></span>
+
+            Monitoring Active
+
+        </div>
 
     </div>
+
+    <!-- SUMMARY -->
 
     <div class="alert-summary-grid">
 
         <div class="summary-card critical">
 
-            <h3>Critical</h3>
+            <h3>Critical Alerts</h3>
 
-            <span>4</span>
+            <span>
+
+                {{ critical_count }}
+
+            </span>
 
         </div>
 
         <div class="summary-card high">
 
-            <h3>High</h3>
+            <h3>High Alerts</h3>
 
-            <span>12</span>
+            <span>
+
+                {{ high_count }}
+
+            </span>
 
         </div>
 
         <div class="summary-card medium">
 
-            <h3>Medium</h3>
+            <h3>Medium Alerts</h3>
 
-            <span>18</span>
+            <span>
+
+                {{ medium_count }}
+
+            </span>
 
         </div>
 
         <div class="summary-card low">
 
-            <h3>Low</h3>
+            <h3>Low Alerts</h3>
 
-            <span>34</span>
+            <span>
+
+                {{ low_count }}
+
+            </span>
 
         </div>
 
     </div>
 
+    <!-- SOC OVERVIEW -->
+
     <div class="alerts-panel">
 
-        <h2>Live Security Alerts</h2>
+        <h2>
+            Security Operations Overview
+        </h2>
+
+        <div class="overview-grid">
+
+            <div class="overview-card">
+
+                <h3>
+                    Active Alerts
+                </h3>
+
+                <span>
+
+                    {{ alerts|length }}
+
+                </span>
+
+            </div>
+
+            <div class="overview-card">
+
+                <h3>
+                    Open Incidents
+                </h3>
+
+                <span>
+
+                    {{ incidents|length }}
+
+                </span>
+
+            </div>
+
+            <div class="overview-card">
+
+                <h3>
+                    Analyst
+                </h3>
+
+                <span>
+
+                    {{ username }}
+
+                </span>
+
+            </div>
+
+            <div class="overview-card">
+
+                <h3>
+                    Role
+                </h3>
+
+                <span>
+
+                    {{ role }}
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- LIVE ALERTS -->
+
+    <div class="alerts-panel">
+
+        <h2>
+            Live Security Alerts
+        </h2>
 
         <table class="alerts-table">
 
@@ -67,6 +175,7 @@
 
                 <tr>
 
+                    <th>ID</th>
                     <th>Time</th>
                     <th>Severity</th>
                     <th>Source IP</th>
@@ -78,40 +187,77 @@
 
             </thead>
 
-            <tbody>
+            <tbody id="alertsTable">
 
-                <tr>
+                {% if alerts %}
 
-                    <td>Now</td>
-                    <td class="critical-text">CRITICAL</td>
-                    <td>45.33.12.88</td>
-                    <td>Ventilator</td>
-                    <td>Exploit Attempt</td>
-                    <td>Open</td>
+                    {% for alert in alerts %}
 
-                </tr>
+                    <tr>
 
-                <tr>
+                        <td>
 
-                    <td>2 min ago</td>
-                    <td class="high-text">HIGH</td>
-                    <td>66.81.21.17</td>
-                    <td>Patient Monitor</td>
-                    <td>Malware Traffic</td>
-                    <td>Investigating</td>
+                            {{ alert.id }}
 
-                </tr>
+                        </td>
 
-                <tr>
+                        <td>
 
-                    <td>5 min ago</td>
-                    <td class="medium-text">MEDIUM</td>
-                    <td>102.44.8.99</td>
-                    <td>ECG Monitor</td>
-                    <td>Recon Activity</td>
-                    <td>Open</td>
+                            {{ alert.time }}
 
-                </tr>
+                        </td>
+
+                        <td class="{{ alert.severity|lower }}-text">
+
+                            {{ alert.severity }}
+
+                        </td>
+
+                        <td>
+
+                            {{ alert.source_ip }}
+
+                        </td>
+
+                        <td>
+
+                            {{ alert.target_device }}
+
+                        </td>
+
+                        <td>
+
+                            {{ alert.alert_type }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="status-badge">
+
+                                {{ alert.status }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="7">
+
+                            No Active Alerts Found
+
+                        </td>
+
+                    </tr>
+
+                {% endif %}
 
             </tbody>
 
@@ -119,46 +265,478 @@
 
     </div>
 
+    <!-- RESPONSE ACTIONS -->
+
+    <div class="alerts-panel">
+
+        <h2>
+            Incident Response Actions
+        </h2>
+
+        {% if alerts %}
+
+        <div class="action-grid">
+
+            <button
+                class="action-btn danger"
+                onclick="responseAction(
+                'block_ip',
+                '{{ alerts[0].source_ip }}'
+                )"
+            >
+                Block IP
+            </button>
+
+            <button
+                class="action-btn warning"
+                onclick="responseAction(
+                'isolate_device',
+                '{{ alerts[0].target_device }}'
+                )"
+            >
+                Isolate Device
+            </button>
+
+            <button
+                class="action-btn info"
+                onclick="responseAction(
+                'create_incident',
+                '{{ alerts[0].source_ip }}'
+                )"
+            >
+                Create Incident
+            </button>
+
+            <button
+                class="action-btn warning"
+                onclick="responseAction(
+                'escalate',
+                '{{ alerts[0].source_ip }}'
+                )"
+            >
+                Escalate Alert
+            </button>
+
+            <button
+                class="action-btn success"
+                onclick="responseAction(
+                'resolve',
+                '{{ alerts[0].source_ip }}'
+                )"
+            >
+                Resolve Alert
+            </button>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+    <!-- ALERT DETAILS + THREAT FEED -->
+
     <div class="alerts-bottom-grid">
+
+        <!-- ALERT DETAILS -->
 
         <div class="alerts-panel">
 
-            <h2>Alert Details</h2>
+            <h2>
+                Latest Alert Details
+            </h2>
 
             <div class="detail-box">
 
-                Selected Alert Information
+                {% if alerts %}
+
+                    <p>
+
+                        <strong>
+                            Alert ID:
+                        </strong>
+
+                        {{ alerts[0].id }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+                            Source IP:
+                        </strong>
+
+                        {{ alerts[0].source_ip }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+                            Target Device:
+                        </strong>
+
+                        {{ alerts[0].target_device }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+                            Alert Type:
+                        </strong>
+
+                        {{ alerts[0].alert_type }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+                            Severity:
+                        </strong>
+
+                        {{ alerts[0].severity }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+                            Status:
+                        </strong>
+
+                        {{ alerts[0].status }}
+
+                    </p>
+
+                {% else %}
+
+                    No Alert Selected
+
+                {% endif %}
 
             </div>
 
         </div>
 
+        <!-- THREAT FEED -->
+
         <div class="alerts-panel">
 
-            <h2>Response Actions</h2>
+            <h2>
+                Live Threat Intelligence Feed
+            </h2>
 
-            <button class="action-btn">
+            <div
+                class="feed-box"
+                id="threatFeed"
+            >
 
-                Block IP
+                {% if alerts %}
 
-            </button>
+                    {% for alert in alerts[:20] %}
 
-            <button class="action-btn">
+                    <p>
 
-                Isolate Device
+                        [{{ alert.severity }}]
 
-            </button>
+                        {{ alert.alert_type }}
 
-            <button class="action-btn">
+                        -
 
-                Create Incident
+                        {{ alert.source_ip }}
 
-            </button>
+                    </p>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <p>
+
+                        No Threat Data Available
+
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ANALYST TIMELINE -->
+
+    <div class="alerts-panel">
+
+        <h2>
+            Analyst Investigation Timeline
+        </h2>
+
+        <div class="timeline">
+
+            {% if alerts %}
+
+                {% for alert in alerts[:10] %}
+
+                <div class="timeline-item">
+
+                    <div class="timeline-time">
+
+                        {{ alert.time }}
+
+                    </div>
+
+                    <div class="timeline-event">
+
+                        {{ alert.alert_type }}
+
+                    </div>
+
+                    <div class="timeline-ip">
+
+                        {{ alert.source_ip }}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="timeline-item">
+
+                    No Timeline Available
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- ACTIVE ATTACK SOURCES -->
+
+    <div class="alerts-panel">
+
+        <h2>
+            Active Attack Sources
+        </h2>
+
+        <div class="attacker-grid">
+
+            {% if alerts %}
+
+                {% for alert in alerts[:8] %}
+
+                <div class="attacker-card">
+
+                    <h3>
+
+                        {{ alert.source_ip }}
+
+                    </h3>
+
+                    <p>
+
+                        {{ alert.alert_type }}
+
+                    </p>
+
+                    <span>
+
+                        {{ alert.severity }}
+
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="attacker-card">
+
+                    No Active Sources
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- RECENT INCIDENTS -->
+
+    <div class="alerts-panel">
+
+        <h2>
+            Recent Incidents
+        </h2>
+
+        <table class="alerts-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Incident ID
+                    </th>
+
+                    <th>
+                        Time
+                    </th>
+
+                    <th>
+                        Severity
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% if incidents %}
+
+                    {% for incident in incidents %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ incident.id }}
+
+                        </td>
+
+                        <td>
+
+                            {{ incident.time }}
+
+                        </td>
+
+                        <td>
+
+                            {{ incident.severity }}
+
+                        </td>
+
+                        <td>
+
+                            {{ incident.status }}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="4">
+
+                            No Incidents Available
+
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- SESSION INFORMATION -->
+
+    <div class="alerts-panel">
+
+        <h2>
+            Session Information
+        </h2>
+
+        <div class="overview-grid">
+
+            <div class="overview-card">
+
+                <h3>
+                    User
+                </h3>
+
+                <span>
+
+                    {{ username }}
+
+                </span>
+
+            </div>
+
+            <div class="overview-card">
+
+                <h3>
+                    Role
+                </h3>
+
+                <span>
+
+                    {{ role }}
+
+                </span>
+
+            </div>
+
+            <div class="overview-card">
+
+                <h3>
+                    Project
+                </h3>
+
+                <span>
+
+                    HIDHN
+
+                </span>
+
+            </div>
+
+            <div class="overview-card">
+
+                <h3>
+                    Total Alerts
+                </h3>
+
+                <span>
+
+                    {{ alerts|length }}
+
+                </span>
+
+            </div>
 
         </div>
 
     </div>
 
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script
+    src="{{ url_for('static', filename='js/alerts.js') }}"
+></script>
 
 {% endblock %}

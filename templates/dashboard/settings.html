@@ -1,0 +1,365 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/settings.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="settings-container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>System Settings Center</h1>
+
+            <p>
+                Security Controls, API Integrations, Backup and System Configuration
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- SECURITY SETTINGS -->
+
+    <div class="settings-panel">
+
+        <h2>Security Settings</h2>
+
+        <form
+            action="{{ url_for('save_system_settings') }}"
+            method="POST"
+        >
+
+            <div class="settings-grid">
+
+                <div class="setting-card">
+
+                    <label>
+
+                        Password Length
+
+                    </label>
+
+                    <input
+                        type="number"
+                        name="password_length"
+                        value="{{ settings.get('security', {}).get('password_length', 12) }}"
+                        min="8"
+                        max="64"
+                        {% if role != "Administrator" %}
+                        readonly
+                        {% endif %}
+                    >
+
+                </div>
+
+                <div class="setting-card">
+
+                    <label>
+
+                        Session Timeout (Minutes)
+
+                    </label>
+
+                    <input
+                        type="number"
+                        name="session_timeout"
+                        value="{{ settings.get('security', {}).get('session_timeout', 30) }}"
+                        min="5"
+                        max="1440"
+                        {% if role != "Administrator" %}
+                        readonly
+                        {% endif %}
+                    >
+
+                </div>
+
+                <div class="setting-card">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="two_factor"
+                            {% if settings.get('security', {}).get('two_factor', False) %}
+                            checked
+                            {% endif %}
+                            {% if role != "Administrator" %}
+                            disabled
+                            {% endif %}
+                        >
+
+                        Enable Two-Factor Authentication
+
+                    </label>
+
+                </div>
+
+                <div class="setting-card">
+
+                    <label>
+
+                        Account Lockout Attempts
+
+                    </label>
+
+                    <input
+                        type="number"
+                        name="lockout_attempts"
+                        value="{{ settings.get('security', {}).get('lockout_attempts', 5) }}"
+                        min="1"
+                        max="20"
+                        {% if role != "Administrator" %}
+                        readonly
+                        {% endif %}
+                    >
+
+                </div>
+
+            </div>
+
+            {% if role == "Administrator" %}
+
+            <button
+                type="submit"
+                class="save-btn"
+            >
+                Save Security Settings
+            </button>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+    <!-- API SETTINGS -->
+
+    <div class="settings-panel">
+
+        <h2>Threat Intelligence API Keys</h2>
+
+        <form
+            action="{{ url_for('save_system_settings') }}"
+            method="POST"
+        >
+
+            <div class="settings-grid">
+
+                <div class="setting-card">
+
+                    <label>
+                        VirusTotal API Key
+                    </label>
+
+                    <input
+                        type="text"
+                        name="virustotal"
+                        value="{{ settings.get('api_keys', {}).get('virustotal', '') }}"
+                        placeholder="Enter VirusTotal API Key"
+                    >
+
+                </div>
+
+                <div class="setting-card">
+
+                    <label>
+                        AbuseIPDB API Key
+                    </label>
+
+                    <input
+                        type="text"
+                        name="abuseipdb"
+                        value="{{ settings.get('api_keys', {}).get('abuseipdb', '') }}"
+                        placeholder="Enter AbuseIPDB API Key"
+                    >
+
+                </div>
+
+                <div class="setting-card">
+
+                    <label>
+                        Shodan API Key
+                    </label>
+
+                    <input
+                        type="text"
+                        name="shodan"
+                        value="{{ settings.get('api_keys', {}).get('shodan', '') }}"
+                        placeholder="Enter Shodan API Key"
+                    >
+
+                </div>
+
+                <div class="setting-card">
+
+                    <label>
+                        AlienVault OTX API Key
+                    </label>
+
+                    <input
+                        type="text"
+                        name="otx"
+                        value="{{ settings.get('api_keys', {}).get('otx', '') }}"
+                        placeholder="Enter AlienVault OTX API Key"
+                    >
+
+                </div>
+
+            </div>
+
+            {% if role == "Administrator" %}
+
+            <button
+                type="submit"
+                class="save-btn"
+            >
+                Save API Keys
+            </button>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+    <!-- BACKUP & RECOVERY -->
+
+    <div class="settings-panel">
+
+        <h2>Backup & Recovery</h2>
+
+        <div class="backup-grid">
+
+            <div class="setting-card">
+
+                <h3>Create Backup</h3>
+
+                <p>
+                    Backup users, attacks, honeypots, settings and threat intelligence data.
+                </p>
+
+                {% if role == "Administrator" %}
+
+                <a
+                    href="{{ url_for('create_backup') }}"
+                    class="save-btn"
+                >
+                    Create Backup
+                </a>
+
+                {% else %}
+
+                <button
+                    class="save-btn"
+                    disabled
+                >
+                    Read Only
+                </button>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SYSTEM INFORMATION -->
+
+    <div class="settings-panel">
+
+        <h2>System Information</h2>
+
+        <div class="settings-grid">
+
+            <div class="setting-card">
+
+                <h3>Total Users</h3>
+
+                <span>
+
+                    {{ users|length }}
+
+                </span>
+
+            </div>
+
+            <div class="setting-card">
+
+                <h3>Current User</h3>
+
+                <span>
+
+                    {{ username }}
+
+                </span>
+
+            </div>
+
+            <div class="setting-card">
+
+                <h3>Role</h3>
+
+                <span>
+
+                    {{ role }}
+
+                </span>
+
+            </div>
+
+            <div class="setting-card">
+
+                <h3>Platform</h3>
+
+                <span>
+
+                    Healthcare IoT Deception Honeypot Network
+
+                </span>
+
+            </div>
+
+            <div class="setting-card">
+
+                <h3>System Status</h3>
+
+                <span>
+
+                    Operational
+
+                </span>
+
+            </div>
+
+            <div class="setting-card">
+
+                <h3>Version</h3>
+
+                <span>
+
+                    v2.0
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script
+    src="{{ url_for('static', filename='js/settings.js') }}"
+></script>
+{% endblock %}

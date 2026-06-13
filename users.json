@@ -3,7 +3,7 @@
         "username": "admin",
         "password": "admin123",
         "role": "Administrator",
-        "status": "Active",
+        "status": "Disabled",
         "permissions": {
             "dashboard": true,
             "attack_logs": true,
@@ -21,7 +21,7 @@
     },
     {
         "username": "analyst1",
-        "password": "keyur123",
+        "password": "123",
         "role": "Threat Analyst",
         "status": "Active",
         "permissions": {

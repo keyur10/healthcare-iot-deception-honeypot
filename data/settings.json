@@ -1,0 +1,14 @@
+{
+    "security": {
+        "password_length": 8,
+        "session_timeout": 30,
+        "two_factor": true
+    },
+
+    "api_keys": {
+        "virustotal": "",
+        "abuseipdb": "",
+        "shodan": "",
+        "otx": ""
+    }
+}

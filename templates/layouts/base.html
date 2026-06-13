@@ -20,6 +20,7 @@
     </title>
 
     <!-- Fonts -->
+
     <link
         rel="preconnect"
         href="https://fonts.googleapis.com"
@@ -37,12 +38,14 @@
     >
 
     <!-- Font Awesome -->
+
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
 
-    <!-- Core CSS -->
+    <!-- Global CSS -->
+
     <link
         rel="stylesheet"
         href="{{ url_for('static', filename='css/core.css') }}"
@@ -55,23 +58,12 @@
 
     <link
         rel="stylesheet"
-        href="{{ url_for('static', filename='css/dashboard.css') }}"
-    >
-    <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/login.css') }}"
-    >
-
-    <link
-        rel="stylesheet"
         href="{{ url_for('static', filename='css/theme.css') }}"
     >
 
-    <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/attack_logs.css') }}"
-    >
-    {% block styles %}
+    <!-- Page Specific CSS -->
+
+    {% block extra_css %}
     {% endblock %}
 
 </head>
@@ -80,60 +72,62 @@
 
     <div class="app-container">
 
-        <!-- Sidebar -->
-
-        {% if request.endpoint != 'login' %}
-    {% include 'components/sidebar.html' %}
-{% endif %}
-
-        <!-- Main Area -->
+        {% if request.endpoint != "login" %}
+            {% include "components/sidebar.html" %}
+        {% endif %}
 
         <div class="main-container">
 
-            <!-- Top Navbar -->
-
-            {% if request.endpoint != 'login' %}
-    {% include 'components/navbar.html' %}
-{% endif %}
-
-            <!-- Flash Messages -->
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-
-                {% if messages %}
-
-                    <div class="flash-container">
-
-                        {% for category, message in messages %}
-
-                            <div class="flash-message flash-{{ category }}">
-
-                                {{ message }}
-
-                            </div>
-
-                        {% endfor %}
-
-                    </div>
-
-                {% endif %}
-
-            {% endwith %}
+            {% if request.endpoint != "login" %}
+                {% include "components/navbar.html" %}
+            {% endif %}
 
             <!-- Main Content -->
 
             <main class="content-area">
+
+                <!-- Flash Messages -->
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+
+                    {% if messages %}
+
+                        <div id="flash-container">
+
+                            {% for category, message in messages %}
+
+                                <div
+                                    class="flash-message flash-{{ category }}"
+                                >
+
+                                    <span>{{ message }}</span>
+
+                                    <button
+                                        type="button"
+                                        class="flash-close"
+                                        onclick="this.parentElement.remove();"
+                                    >
+                                        ×
+                                    </button>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                {% endwith %}
 
                 {% block content %}
                 {% endblock %}
 
             </main>
 
-            <!-- Footer -->
-
-            {% if request.endpoint != 'login' %}
-    {% include 'components/footer.html' %}
-{% endif %}
+            {% if request.endpoint != "login" %}
+                {% include "components/footer.html" %}
+            {% endif %}
 
         </div>
 
@@ -176,16 +170,53 @@
 
     </script>
 
-    <!-- Core JS -->
+    <!-- Global JavaScript -->
 
-    {% if request.path == '/dashboard' %}
+    <script
+        src="{{ url_for('static', filename='js/main.js') }}"
+    ></script>
 
-<script src="{{ url_for('static',
-filename='js/dashboard.js') }}"></script>
+    <!-- Dashboard JavaScript -->
 
-{% endif %}
+    {% if request.path == "/dashboard" %}
 
-    {% block scripts %}
+        <script
+            src="{{ url_for('static', filename='js/dashboard.js') }}"
+        ></script>
+
+    {% endif %}
+
+    <!-- Auto Hide Flash Messages -->
+
+    <script>
+
+        setTimeout(() => {
+
+            document
+                .querySelectorAll(".flash-message")
+                .forEach(message => {
+
+                    message.style.transition = "all 0.5s ease";
+
+                    message.style.opacity = "0";
+
+                    message.style.transform = "translateX(50px)";
+
+                    setTimeout(() => {
+
+                        message.remove();
+
+                    }, 500);
+
+                });
+
+        }, 4000);
+
+    </script>
+
+    <!-- Page Specific JS -->
+
+    {% block extra_js %}
     {% endblock %}
 
 </body>

@@ -1,0 +1,495 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/ioc.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="ioc-container">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>
+                IOC Extraction & Threat Intelligence Center
+            </h1>
+
+            <p>
+                Real-Time Indicators of Compromise Analysis Platform
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('export_ioc') }}"
+            class="export-btn"
+        >
+
+            <i class="fa-solid fa-download"></i>
+
+            Export IOC Report
+
+        </a>
+
+    </div>
+
+    <!-- IOC SUMMARY -->
+
+    <div class="ioc-summary">
+
+        <div class="ioc-card">
+
+            <h3>
+                Total IOCs
+            </h3>
+
+            <span>
+
+                {{ iocs|length }}
+
+            </span>
+
+        </div>
+
+        <div class="ioc-card critical-card">
+
+            <h3>
+                Critical IOCs
+            </h3>
+
+            <span>
+
+                {% set critical = namespace(count=0) %}
+
+                {% for ioc in iocs %}
+                    {% if ioc.get('risk','') == 'Critical' %}
+                        {% set critical.count = critical.count + 1 %}
+                    {% endif %}
+                {% endfor %}
+
+                {{ critical.count }}
+
+            </span>
+
+        </div>
+
+        <div class="ioc-card high-card">
+
+            <h3>
+                High Risk
+            </h3>
+
+            <span>
+
+                {% set high = namespace(count=0) %}
+
+                {% for ioc in iocs %}
+                    {% if ioc.get('risk','') == 'High' %}
+                        {% set high.count = high.count + 1 %}
+                    {% endif %}
+                {% endfor %}
+
+                {{ high.count }}
+
+            </span>
+
+        </div>
+
+        <div class="ioc-card">
+
+            <h3>
+                Current User
+            </h3>
+
+            <span>
+
+                {{ username }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- SEARCH + FILTER -->
+
+    <div class="ioc-panel">
+
+        <div class="panel-header">
+
+            <h2>
+                IOC Search & Filtering
+            </h2>
+
+        </div>
+
+        <div class="ioc-search">
+
+            <input
+                type="text"
+                id="iocSearch"
+                placeholder="Search IOC, IP, Username, Domain..."
+            >
+
+            <select id="iocFilter">
+
+                <option value="">
+                    All Types
+                </option>
+
+                <option value="IP Address">
+                    IP Address
+                </option>
+
+                <option value="Username">
+                    Username
+                </option>
+
+                <option value="Domain">
+                    Domain
+                </option>
+
+                <option value="Hash">
+                    Hash
+                </option>
+
+            </select>
+
+            <button id="searchBtn">
+
+                Search
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- IOC TABLE -->
+
+    <div class="ioc-panel">
+
+        <h2>
+            Detected Indicators of Compromise
+        </h2>
+
+        <table class="ioc-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>IOC Type</th>
+
+                    <th>IOC Value</th>
+
+                    <th>Risk</th>
+
+                    <th>Source</th>
+
+                    <th>Time</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="iocTable">
+
+                {% if iocs %}
+
+                    {% for ioc in iocs %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ ioc.get('ioc_type','Unknown') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ ioc.get('value','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="risk-{{ ioc.get('risk','Low')|lower }}">
+
+                                {{ ioc.get('risk','Low') }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {{ ioc.get('source','Honeypot') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ ioc.get('time','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="investigate-btn"
+                            >
+
+                                Investigate
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="6">
+
+                            No IOC Data Available
+
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+    <!-- THREAT INTELLIGENCE -->
+
+    <div class="ioc-panel">
+
+        <h2>
+            Threat Intelligence Dashboard
+        </h2>
+
+        <div class="intel-grid">
+
+            <div class="intel-box">
+
+                <h3>
+                    Latest IOC
+                </h3>
+
+                <p>
+
+                    {% if iocs %}
+
+                        {{ iocs[0].get('value','N/A') }}
+
+                    {% else %}
+
+                        No Data
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+            <div class="intel-box">
+
+                <h3>
+                    Current User
+                </h3>
+
+                <p>
+
+                    {{ username }}
+
+                </p>
+
+            </div>
+
+            <div class="intel-box">
+
+                <h3>
+                    Role
+                </h3>
+
+                <p>
+
+                    {{ role }}
+
+                </p>
+
+            </div>
+
+            <div class="intel-box">
+
+                <h3>
+                    Project
+                </h3>
+
+                <p>
+
+                    HIDHN
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- LIVE IOC FEED -->
+
+    <div class="ioc-panel">
+
+        <h2>
+            Live IOC Feed
+        </h2>
+
+        <div
+            class="live-feed"
+            id="iocFeed"
+        >
+
+            {% if iocs %}
+
+                {% for ioc in iocs[:15] %}
+
+                <div class="feed-item">
+
+                    <span class="feed-time">
+
+                        {{ ioc.get('time','N/A') }}
+
+                    </span>
+
+                    -
+
+                    <strong>
+
+                        {{ ioc.get('ioc_type','IOC') }}
+
+                    </strong>
+
+                    :
+
+                    {{ ioc.get('value','N/A') }}
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="feed-item">
+
+                    No IOC Activity Available
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- SOC ANALYST INFORMATION -->
+
+    <div class="ioc-panel">
+
+        <h2>
+            Analyst Session Information
+        </h2>
+
+        <div class="intel-grid">
+
+            <div class="intel-box">
+
+                <h3>
+                    Analyst
+                </h3>
+
+                <p>
+
+                    {{ username }}
+
+                </p>
+
+            </div>
+
+            <div class="intel-box">
+
+                <h3>
+                    Role
+                </h3>
+
+                <p>
+
+                    {{ role }}
+
+                </p>
+
+            </div>
+
+            <div class="intel-box">
+
+                <h3>
+                    IOC Records
+                </h3>
+
+                <p>
+
+                    {{ iocs|length }}
+
+                </p>
+
+            </div>
+
+            <div class="intel-box">
+
+                <h3>
+                    Status
+                </h3>
+
+                <p class="online-status">
+
+                    Monitoring Active
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script
+src="{{ url_for('static', filename='js/ioc.js') }}"
+></script>
+
+{% endblock %}

@@ -1,11 +1,11 @@
 <aside class="sidebar">
 
+    <!-- Logo -->
+
     <div class="sidebar-header">
 
         <div class="logo-icon">
-
             <i class="fa-solid fa-shield-halved"></i>
-
         </div>
 
         <div class="logo-text">
@@ -13,7 +13,7 @@
             <h2>HIDHN</h2>
 
             <span>
-                Healthcare SOC
+                Healthcare IoT Defense Network
             </span>
 
         </div>
@@ -22,157 +22,242 @@
 
     <div class="sidebar-divider"></div>
 
+    <!-- Navigation -->
+
     <nav class="sidebar-nav">
 
-        <ul>
-
-            <li>
-
-                <a href="/dashboard">
-
-                    <i class="fa-solid fa-chart-line"></i>
-
-                    <span>Dashboard</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="/attack-logs">
-
-                    <i class="fa-solid fa-bug"></i>
-
-                    <span>Attack Logs</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="/alerts">
-
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-
-                    <span>Alerts</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="/timeline">
-
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-
-                    <span>Attack Timeline</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="/geolocation">
-
-                    <i class="fa-solid fa-earth-americas"></i>
-
-                    <span>Geo Location</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="/mitre-mapping">
-
-                    <i class="fa-solid fa-network-wired"></i>
-
-                    <span>MITRE ATT&CK</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="/ioc-extraction">
-
-                    <i class="fa-solid fa-fingerprint"></i>
-
-                    <span>IOC Extraction</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="/threat-hunting">
-
-                    <i class="fa-solid fa-magnifying-glass"></i>
-
-                    <span>Threat Hunting</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="/terminal">
-
-                    <i class="fa-solid fa-terminal"></i>
-
-                    <span>SOC Terminal</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="/reports">
-
-                    <i class="fa-solid fa-file-lines"></i>
-
-                    <span>Reports</span>
-
-                </a>
-
-            </li>
-
-            <li>
-
-                <a href="/settings">
-
-                    <i class="fa-solid fa-gear"></i>
-
-                    <span>Settings</span>
-
-                </a>
-
-            </li>
-
-        </ul>
+        <!-- OVERVIEW -->
+
+        <div class="menu-section">
+
+            <div class="menu-section-title">
+                OVERVIEW
+            </div>
+
+            <ul>
+
+                {% if role == "Administrator" or permissions.dashboard %}
+                <li>
+                    <a href="{{ url_for('dashboard') }}"
+                       class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if role == "Administrator" or permissions.reports %}
+                <li>
+                    <a href="{{ url_for('reports') }}"
+                       class="{% if request.endpoint == 'reports' %}active{% endif %}">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+        <!-- THREAT DETECTION -->
+
+        <div class="menu-section">
+
+            <div class="menu-section-title">
+                THREAT DETECTION
+            </div>
+
+            <ul>
+
+                {% if role == "Administrator" or permissions.alerts %}
+                <li>
+                    <a href="{{ url_for('alerts') }}"
+                       class="{% if request.endpoint == 'alerts' %}active{% endif %}">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Alerts</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if role == "Administrator" or permissions.attack_logs %}
+                <li>
+                    <a href="{{ url_for('attack_logs') }}"
+                       class="{% if request.endpoint == 'attack_logs' %}active{% endif %}">
+                        <i class="fa-solid fa-bug"></i>
+                        <span>Attack Logs</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if role == "Administrator" or permissions.timeline %}
+                <li>
+                    <a href="{{ url_for('timeline') }}"
+                       class="{% if request.endpoint == 'timeline' %}active{% endif %}">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>Attack Timeline</span>
+                    </a>
+                </li>
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+        <!-- THREAT INTELLIGENCE -->
+
+        <div class="menu-section">
+
+            <div class="menu-section-title">
+                THREAT INTELLIGENCE
+            </div>
+
+            <ul>
+
+                {% if role == "Administrator" or permissions.mitre %}
+                <li>
+                    <a href="{{ url_for('mitre') }}"
+                       class="{% if request.endpoint == 'mitre' %}active{% endif %}">
+                        <i class="fa-solid fa-network-wired"></i>
+                        <span>MITRE ATT&CK</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if role == "Administrator" or permissions.ioc %}
+                <li>
+                    <a href="{{ url_for('ioc') }}"
+                       class="{% if request.endpoint == 'ioc' %}active{% endif %}">
+                        <i class="fa-solid fa-fingerprint"></i>
+                        <span>IOC Extraction</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if role == "Administrator" or permissions.threat_hunting %}
+                <li>
+                    <a href="{{ url_for('threat_hunting') }}"
+                       class="{% if request.endpoint == 'threat_hunting' %}active{% endif %}">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Threat Hunting</span>
+                    </a>
+                </li>
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+        <!-- OPERATIONS -->
+
+        <div class="menu-section">
+
+            <div class="menu-section-title">
+                OPERATIONS
+            </div>
+
+            <ul>
+
+                {% if role == "Administrator" or permissions.geolocation %}
+                <li>
+                    <a href="{{ url_for('geolocation') }}"
+                       class="{% if request.endpoint == 'geolocation' %}active{% endif %}">
+                        <i class="fa-solid fa-earth-americas"></i>
+                        <span>Geo Location</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if role == "Administrator" or permissions.soc_terminal %}
+                <li>
+                    <a href="{{ url_for('soc_terminal') }}"
+                       class="{% if request.endpoint == 'soc_terminal' %}active{% endif %}">
+                        <i class="fa-solid fa-terminal"></i>
+                        <span>SOC Terminal</span>
+                    </a>
+                </li>
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+        <!-- ADMINISTRATION -->
+
+        <div class="menu-section">
+
+            <div class="menu-section-title">
+                ADMINISTRATION
+            </div>
+
+            <ul>
+
+                {% if role == "Administrator" or permissions.settings %}
+                <li>
+                    <a href="{{ url_for('settings') }}"
+                       class="{% if request.endpoint == 'settings' %}active{% endif %}">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if role == "Administrator" %}
+                <li>
+                    <a href="{{ url_for('user_management') }}"
+                       class="{% if request.endpoint == 'user_management' %}active{% endif %}">
+                        <i class="fa-solid fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                <li>
+                    <a href="{{ url_for('logout') }}">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
 
     </nav>
 
+    <!-- Footer -->
+
     <div class="sidebar-footer">
 
-        <div class="system-status">
+        <div class="soc-status-card">
 
-            <div class="status-dot"></div>
+            <div class="status-row">
+                <span>System</span>
+                <span class="status-online">
+                    ONLINE
+                </span>
+            </div>
 
-            <span>
+            <div class="status-row">
+                <span>Threat Level</span>
+                <span class="status-low">
+                    LOW
+                </span>
+            </div>
 
-                System Operational
+            <div class="status-row">
+                <span>User</span>
+                <span>
+                    {{ username }}
+                </span>
+            </div>
 
-            </span>
+            <div class="status-row">
+                <span>Role</span>
+                <span>
+                    {{ role }}
+                </span>
+            </div>
 
         </div>
 
