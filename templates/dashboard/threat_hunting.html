@@ -1,80 +1,500 @@
 {% extends "layouts/base.html" %}
 
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/threat_hunting.css') }}"
+>
+{% endblock %}
+
 {% block content %}
+<div class="threat-container">
 
-<div class="dashboard-container">
+    <!-- Page Header -->
 
-<h1>🎯 Threat Hunting Center</h1>
+    <div class="page-header">
 
-<div class="dashboard-row">
+        <div>
 
-<div class="dashboard-panel">
+            <h1>Threat Hunting Center</h1>
 
-<h2>Threat Statistics</h2>
+            <p>
+                Search, Correlate and Investigate Threat Indicators Across Healthcare Infrastructure
+            </p>
 
-<p>Total Events:
-<strong>{{ threat_hunt.total_hunts }}</strong></p>
+        </div>
+
+        <div class="hunt-status">
+
+            <span class="status-dot"></span>
+
+            Hunting Active
+
+        </div>
+
+    </div>
+
+    <!-- Threat Statistics -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card critical">
+
+            <h3>Critical Threats</h3>
+
+            <span>
+
+                {{ hunt_results|length }}
+
+            </span>
+
+            <small>
+                Active Critical Events
+            </small>
+
+        </div>
+
+        <div class="stat-card high">
+
+            <h3>High Severity</h3>
+
+            <span>
+
+                {{ hunt_results|length }}
+
+            </span>
+
+            <small>
+                Under Investigation
+            </small>
+
+        </div>
+
+        <div class="stat-card info">
+
+            <h3>IOC Matches</h3>
+
+            <span>
+
+                {{ hunt_results|length }}
+
+            </span>
+
+            <small>
+                Indicators Correlated
+            </small>
+
+        </div>
+
+        <div class="stat-card success">
+
+            <h3>Active Hunts</h3>
+
+            <span>
+
+                24
+
+            </span>
+
+            <small>
+                Running Queries
+            </small>
+
+        </div>
+
+    </div>
+
+    <!-- Advanced Hunt Search -->
+
+    <div class="panel">
+
+        <h2>Threat Hunt Search</h2>
+
+        <div class="hunt-search-grid">
+
+            <input
+                type="text"
+                id="huntQuery"
+                placeholder="Search IP Address..."
+            >
+
+            <input
+                type="text"
+                placeholder="Search Domain..."
+            >
+
+            <input
+                type="text"
+                placeholder="Search Hash..."
+            >
+
+            <input
+                type="text"
+                placeholder="Search Username..."
+            >
+
+            <input
+                type="text"
+                placeholder="Search Password..."
+            >
+
+            <input
+                type="text"
+                placeholder="Search Attack Type..."
+            >
+
+        </div>
+
+        <div style="margin-top:15px;">
+
+            <button
+                class="btn btn-primary"
+                onclick="huntIOC()"
+            >
+
+                Start Threat Hunt
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- IOC Intelligence -->
+
+    <div class="panel">
+
+        <h2>IOC Intelligence Dashboard</h2>
+
+        <div class="mitre-grid">
+
+            <div class="mitre-card">
+
+                <span>Malicious IPs</span>
+
+                <h3>32</h3>
+
+            </div>
+
+            <div class="mitre-card">
+
+                <span>Suspicious Domains</span>
+
+                <h3>18</h3>
+
+            </div>
+
+            <div class="mitre-card">
+
+                <span>Malware Hashes</span>
+
+                <h3>41</h3>
+
+            </div>
+
+            <div class="mitre-card">
+
+                <span>Compromised Accounts</span>
+
+                <h3>14</h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Live Threat Feed -->
+
+    <div class="panel">
+
+        <h2>Live Threat Feed</h2>
+
+        <div class="feed-box">
+
+            <p>
+                [CRITICAL] Ventilator exploit attempt detected
+            </p>
+
+            <p>
+                [HIGH] Brute force attack against SSH service
+            </p>
+
+            <p>
+                [HIGH] Malware communication detected
+            </p>
+
+            <p>
+                [MEDIUM] Reconnaissance scan identified
+            </p>
+
+            <p>
+                [INFO] IOC database synchronized successfully
+            </p>
+
+            <p>
+                [INFO] Threat intelligence feeds updated
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Threat Hunting Results -->
+
+    <div class="panel">
+
+        <h2>Threat Hunting Results</h2>
+
+        <table class="hunt-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Time</th>
+                    <th>Source IP</th>
+                    <th>Attack Type</th>
+                    <th>Target</th>
+                    <th>Risk</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="huntResults">
+
+                {% if hunt_results %}
+
+                    {% for result in hunt_results %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ result.get('time','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ result.get('source_ip','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ result.get('attack_type','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ result.get('target','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ result.get('risk','Low') }}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="5">
+
+                            No threat hunting results available
+
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- MITRE ATT&CK Correlation -->
+
+    <div class="panel">
+
+        <h2>MITRE ATT&CK Correlation</h2>
+
+        <div class="mitre-grid">
+
+            <div class="mitre-card">
+
+                <span>Initial Access</span>
+
+                <h3>37</h3>
+
+            </div>
+
+            <div class="mitre-card">
+
+                <span>Execution</span>
+
+                <h3>21</h3>
+
+            </div>
+
+            <div class="mitre-card">
+
+                <span>Persistence</span>
+
+                <h3>11</h3>
+
+            </div>
+
+            <div class="mitre-card">
+
+                <span>Discovery</span>
+
+                <h3>16</h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Investigation Center -->
+
+    <div class="panel">
+
+        <h2>Investigation Center</h2>
+
+        <div class="mitre-grid">
+
+            <div class="mitre-card">
+
+                <span>Open Cases</span>
+
+                <h3>12</h3>
+
+            </div>
+
+            <div class="mitre-card">
+
+                <span>Under Investigation</span>
+
+                <h3>8</h3>
+
+            </div>
+
+            <div class="mitre-card">
+
+                <span>Resolved</span>
+
+                <h3>24</h3>
+
+            </div>
+
+            <div class="mitre-card">
+
+                <span>Escalated</span>
+
+                <h3>4</h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Recent Critical Events -->
+
+    <div class="panel">
+
+        <h2>Recent Critical Events</h2>
+
+        <table class="attack-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Time</th>
+                    <th>Source IP</th>
+                    <th>Target</th>
+                    <th>Risk</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% if hunt_results %}
+
+                    {% for result in hunt_results[:10] %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ result.get('time','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ result.get('source_ip','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ result.get('target','N/A') }}
+
+                        </td>
+
+                        <td>
+
+                            {{ result.get('risk','Low') }}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="4">
+
+                            No critical events available
+
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
-</div>
+{% endblock %}
 
-<div class="dashboard-row">
-
-<div class="dashboard-panel">
-
-<h2>Top Suspicious IPs</h2>
-
-<table class="attack-table">
-
-<tr>
-<th>IP Address</th>
-<th>Hits</th>
-</tr>
-
-{% for ip,count in threat_hunt.top_ips %}
-
-<tr>
-<td>{{ ip }}</td>
-<td>{{ count }}</td>
-</tr>
-
-{% endfor %}
-
-</table>
-
-</div>
-
-</div>
-
-<div class="dashboard-row">
-
-<div class="dashboard-panel">
-
-<h2>Most Attempted Passwords</h2>
-
-<table class="attack-table">
-
-<tr>
-<th>Password</th>
-<th>Attempts</th>
-</tr>
-
-{% for password,count in threat_hunt.top_passwords %}
-
-<tr>
-<td>{{ password }}</td>
-<td>{{ count }}</td>
-</tr>
-
-{% endfor %}
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
+{% block extra_js %}
+<script
+    src="{{ url_for('static', filename='js/threat_hunting.js') }}"
+></script>
 {% endblock %}

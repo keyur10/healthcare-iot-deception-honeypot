@@ -1,68 +1,400 @@
 {% extends "layouts/base.html" %}
 
+{% block extra_css %}
+<link
+rel="stylesheet"
+href="{{ url_for('static', filename='css/devices.css') }}"
+>
+{% endblock %}
+
 {% block content %}
 
-<div class="dashboard-container">
+<div class="devices-container">
 
-    <h1>Connected Medical Devices</h1>
+    <!-- PAGE HEADER -->
 
-    <table class="attack-table">
+    <div class="page-header">
 
-        <thead>
+        <div>
 
-            <tr>
+            <h1>
+                Healthcare IoT Device Management Center
+            </h1>
 
-                <th>Device</th>
-                <th>IP</th>
-                <th>Status</th>
-                <th>Firmware</th>
+            <p>
+                Monitor, Manage and Secure Connected Medical Devices
+            </p>
 
-            </tr>
+        </div>
 
-        </thead>
+        <button
+            class="add-device-btn"
+            onclick="window.location='{{ url_for('add_device') }}'"
+        >
+            <i class="fa-solid fa-plus"></i>
+            Add Device
+        </button>
 
-        <tbody>
+    </div>
 
-            <tr>
+    <!-- STATISTICS -->
 
-                <td>Ventilator</td>
-                <td>10.0.0.10</td>
-                <td>Online</td>
-                <td>v2.3</td>
+    <div class="stats-grid">
 
-            </tr>
+        <div class="stat-card">
 
-            <tr>
+            <h3>Total Devices</h3>
 
-                <td>Patient Monitor</td>
-                <td>10.0.0.11</td>
-                <td>Online</td>
-                <td>v1.8</td>
+            <span>
+                {{ total_devices }}
+            </span>
 
-            </tr>
+        </div>
 
-            <tr>
+        <div class="stat-card online-card">
 
-                <td>Infusion Pump</td>
-                <td>10.0.0.12</td>
-                <td>Online</td>
-                <td>v3.1</td>
+            <h3>Online Devices</h3>
 
-            </tr>
+            <span>
+                {{ online_count }}
+            </span>
 
-            <tr>
+        </div>
 
-                <td>ECG Monitor</td>
-                <td>10.0.0.13</td>
-                <td>Online</td>
-                <td>v2.1</td>
+        <div class="stat-card offline-card">
 
-            </tr>
+            <h3>Offline Devices</h3>
 
-        </tbody>
+            <span>
+                {{ offline_count }}
+            </span>
 
-    </table>
+        </div>
+
+        <div class="stat-card risk-card">
+
+            <h3>High Risk</h3>
+
+            <span>
+                {{ high_risk_count|default(0) }}
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="dashboard-panel">
+
+        <div class="panel-header">
+
+            <h2>
+                Registered Healthcare Devices
+            </h2>
+
+            <input
+                type="text"
+                id="deviceSearch"
+                placeholder="Search Device..."
+            >
+
+        </div>
+
+        <!-- DEVICE TABLE -->
+
+        <table class="device-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Device</th>
+                    <th>Location</th>
+                    <th>IP Address</th>
+                    <th>Status</th>
+                    <th>Risk</th>
+                    <th>Last Seen</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="deviceTable">
+
+            {% for device in devices %}
+
+                <tr>
+
+                    <td>
+
+                        <div class="device-info">
+
+                            <div class="device-icon">
+
+                                {% if device.type == "Patient Monitor" %}
+
+                                    <i class="fa-solid fa-heart-pulse"></i>
+
+                                {% elif device.type == "Ventilator" %}
+
+                                    <i class="fa-solid fa-lungs"></i>
+
+                                {% elif device.type == "MRI Scanner" %}
+
+                                    <i class="fa-solid fa-magnet"></i>
+
+                                {% elif device.type == "CT Scanner" %}
+
+                                    <i class="fa-solid fa-x-ray"></i>
+
+                                {% elif device.type == "DICOM Server" %}
+
+                                    <i class="fa-solid fa-server"></i>
+
+                                {% else %}
+
+                                    <i class="fa-solid fa-microchip"></i>
+
+                                {% endif %}
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+
+                                    {{ device.name }}
+
+                                </strong>
+
+                                <br>
+
+                                <small>
+
+                                    {{ device.type }}
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        {{ device.location|default("Hospital Network") }}
+
+                    </td>
+
+                    <td>
+
+                        {{ device.ip }}
+
+                    </td>
+
+                    <td>
+
+                        {% if device.status == "Online" %}
+
+                        <span class="status-online">
+
+                            ONLINE
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="status-offline">
+
+                            OFFLINE
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <span class="risk-{{ device.risk|lower }}">
+
+                            {{ device.risk }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        {{ device.last_seen }}
+
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="{{ url_for('view_device', device_id=device.id) }}"
+                            class="view-btn"
+                        >
+
+                            View
+
+                        </a>
+
+                        <a
+                            href="{{ url_for('delete_device', device_id=device.id) }}"
+                            class="delete-btn"
+                        >
+
+                            Delete
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- DEVICE HEALTH -->
+
+    <div class="dashboard-panel">
+
+        <h2>
+            Device Security Overview
+        </h2>
+
+        <div class="health-grid">
+
+            <div class="health-card">
+
+                <h3>
+                    Patient Monitors
+                </h3>
+
+                <span>
+                    Active Monitoring
+                </span>
+
+            </div>
+
+            <div class="health-card">
+
+                <h3>
+                    Ventilators
+                </h3>
+
+                <span>
+                    Operational
+                </span>
+
+            </div>
+
+            <div class="health-card">
+
+                <h3>
+                    MRI Systems
+                </h3>
+
+                <span>
+                    Secure
+                </span>
+
+            </div>
+
+            <div class="health-card">
+
+                <h3>
+                    DICOM Servers
+                </h3>
+
+                <span>
+                    Protected
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RECENT DEVICE EVENTS -->
+
+    <div class="dashboard-panel">
+
+        <h2>
+            Recent Device Events
+        </h2>
+
+        <div class="event-feed">
+
+            <div>
+                [INFO] Patient Monitor Connected
+            </div>
+
+            <div>
+                [INFO] Ventilator Status Updated
+            </div>
+
+            <div>
+                [WARNING] Device Login Attempt Detected
+            </div>
+
+            <div>
+                [INFO] MRI Scanner Heartbeat Received
+            </div>
+
+            <div>
+                [CRITICAL] Suspicious Access Attempt Logged
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
+
+<script>
+
+document
+.getElementById(
+    "deviceSearch"
+)
+.addEventListener(
+    "keyup",
+    function() {
+
+        let value =
+            this.value.toLowerCase();
+
+        let rows =
+            document.querySelectorAll(
+                "#deviceTable tr"
+            );
+
+        rows.forEach(row => {
+
+            row.style.display =
+                row.innerText
+                .toLowerCase()
+                .includes(value)
+                ? ""
+                : "none";
+
+        });
+
+    }
+);
+
+</script>
 
 {% endblock %}

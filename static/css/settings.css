@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 css
 .save-btn{
 
@@ -60,3 +61,213 @@ margin-bottom:10px;
 min-height:300px;
 
 }
+=======
+/* ==========================================
+   SETTINGS PAGE
+========================================== */
+
+.settings-container{
+    padding:25px;
+}
+
+.page-header{
+    margin-bottom:25px;
+}
+
+.page-header h1{
+    color:#ffffff;
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.page-header p{
+    color:#8aa3c1;
+    font-size:15px;
+}
+
+/* ==========================================
+   PANELS
+========================================== */
+
+.settings-panel{
+    background:#071321;
+    border:1px solid rgba(0,212,255,.15);
+    border-radius:15px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:
+        0 0 20px rgba(0,212,255,.04);
+}
+
+.settings-panel h2{
+    color:#00d4ff;
+    margin-bottom:20px;
+    font-size:22px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    padding-bottom:12px;
+}
+
+/* ==========================================
+   GRID
+========================================== */
+
+.settings-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.backup-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(350px,1fr));
+    gap:20px;
+}
+
+/* ==========================================
+   CARDS
+========================================== */
+
+.setting-card{
+    background:#0b1b2d;
+    border:1px solid rgba(0,212,255,.12);
+    border-radius:12px;
+    padding:20px;
+    transition:.3s;
+}
+
+.setting-card:hover{
+    border-color:rgba(0,212,255,.4);
+    transform:translateY(-2px);
+}
+
+.setting-card h3{
+    color:#ffffff;
+    margin-bottom:10px;
+}
+
+.setting-card p{
+    color:#9cb2cc;
+    line-height:1.6;
+}
+
+.setting-card span{
+    display:block;
+    margin-top:10px;
+    color:#00d4ff;
+    font-size:20px;
+    font-weight:700;
+}
+
+/* ==========================================
+   LABELS
+========================================== */
+
+.setting-card label{
+    display:block;
+    color:#cdd9e5;
+    margin-bottom:10px;
+    font-weight:500;
+}
+/* ==========================================
+   INPUTS
+========================================== */
+
+.setting-card input[type="text"],
+.setting-card input[type="number"]{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid rgba(0,212,255,.15);
+    background:#071321;
+    color:#ffffff;
+    font-size:14px;
+    outline:none;
+    transition:.3s;
+}
+
+.setting-card input:focus{
+    border-color:#00d4ff;
+    box-shadow:
+        0 0 15px rgba(0,212,255,.2);
+}
+
+.setting-card input::placeholder{
+    color:#6f8aa8;
+}
+
+.setting-card input[type="checkbox"]{
+    margin-right:10px;
+    transform:scale(1.2);
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.save-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 24px;
+    background:#00d4ff;
+    color:#04101d;
+    border:none;
+    border-radius:8px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.save-btn:hover{
+    background:#00b8e6;
+    transform:translateY(-2px);
+}
+
+.save-btn:disabled{
+    background:#4f6378;
+    cursor:not-allowed;
+}
+
+/* ==========================================
+   SYSTEM INFO CARDS
+========================================== */
+
+.setting-card span{
+    word-break:break-word;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:992px){
+
+    .settings-grid{
+        grid-template-columns:1fr;
+    }
+
+    .backup-grid{
+        grid-template-columns:1fr;
+    }
+
+    .settings-container{
+        padding:15px;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .page-header h1{
+        font-size:24px;
+    }
+
+    .settings-panel{
+        padding:18px;
+    }
+
+}
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283

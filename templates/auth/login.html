@@ -1,7 +1,14 @@
 {% extends "layouts/base.html" %}
 
-{% block content %}
+{% block extra_css %}
 
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/login.css') }}"
+>
+
+{% endblock %}
+{% block content %}
 <div class="cyber-background">
 
     <div class="network-grid"></div>

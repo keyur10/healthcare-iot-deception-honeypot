@@ -1,5 +1,12 @@
 {% extends "layouts/base.html" %}
 
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/attack_logs.css') }}"
+>
+{% endblock %}
+
 {% block content %}
 
 <div class="attack-logs-container">
@@ -8,500 +15,373 @@
 
         <div>
 
-            <h1>Attack Investigation Center</h1>
+            <h1>Attack Logs Center</h1>
 
             <p>
-                Healthcare IoT Threat Monitoring & Analysis
+                Healthcare IoT Threat Monitoring & Attack Intelligence
             </p>
 
         </div>
 
-        <div class="page-actions">
+        <div class="status-badge">
 
-            <button class="btn btn-primary">
-                Export CSV
-            </button>
+            <span class="status-dot"></span>
 
-            <button class="btn btn-danger">
-                Export PDF
-            </button>
+            Monitoring Active
 
         </div>
 
     </div>
 
-    <!-- STATS -->
+    <!-- Statistics -->
 
     <div class="stats-grid">
 
+        <div class="stat-card">
+
+            <h3>Total Attacks</h3>
+
+            <span>
+
+                {{ total_attacks }}
+
+            </span>
+
+        </div>
+
         <div class="stat-card critical">
 
-            <span class="stat-title">
-                Total Attacks
-            </span>
+            <h3>Critical Threats</h3>
 
-            <h2>
-                1,248
-            </h2>
+            <span>
+
+                {{ critical_threats }}
+
+            </span>
 
         </div>
 
-        <div class="stat-card warning">
+        <div class="stat-card">
 
-            <span class="stat-title">
-                Critical Threats
+            <h3>Current User</h3>
+
+            <span>
+
+                {{ username }}
+
             </span>
-
-            <h2>
-                87
-            </h2>
 
         </div>
 
-        <div class="stat-card info">
+        <div class="stat-card">
 
-            <span class="stat-title">
-                Unique Attackers
+            <h3>User Role</h3>
+
+            <span>
+
+                {{ role }}
+
             </span>
-
-            <h2>
-                352
-            </h2>
-
-        </div>
-
-        <div class="stat-card success">
-
-            <span class="stat-title">
-                Countries Detected
-            </span>
-
-            <h2>
-                18
-            </h2>
 
         </div>
 
     </div>
 
-    <!-- FILTERS -->
+    <!-- Search -->
 
     <div class="panel">
 
-        <div class="panel-header">
+        <h2>Search Attack Logs</h2>
 
-            <h2>
-                Search & Filters
-            </h2>
+        <input
+            type="text"
+            id="attackSearch"
+            class="search-input"
+            placeholder="Search IP, Username, Password, Attack Type..."
+        >
 
-        </div>
+    </div>
 
-        <div class="filters-grid">
+    <!-- Attack Logs Table -->
 
-            <input
-                type="text"
-                placeholder="Search IP Address..."
-            >
+    <div class="panel">
 
-            <select>
+        <h2>Captured Attack Logs</h2>
 
-                <option>
-                    All Attack Types
-                </option>
+        <table class="attack-table">
 
-                <option>
-                    Brute Force
-                </option>
+            <thead>
 
-                <option>
-                    Exploit Attempt
-                </option>
+                <tr>
 
-                <option>
-                    Reconnaissance
-                </option>
+                    <th>Time</th>
+                    <th>Source IP</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Attack Type</th>
+                    <th>Risk</th>
 
-            </select>
+                </tr>
 
-            <select>
+            </thead>
 
-                <option>
-                    All Risk Levels
-                </option>
+            <tbody>
+{% if attacks %}
 
-                <option>
+    {% for attack in attacks %}
+
+    <tr>
+
+        <td>
+
+            {{ attack.get('time','N/A') }}
+
+        </td>
+
+        <td>
+
+            {{ attack.get('ip','N/A') }}
+
+        </td>
+
+        <td>
+
+            {{ attack.get('username','N/A') }}
+
+        </td>
+
+        <td>
+
+            {{ attack.get('password','N/A') }}
+
+        </td>
+
+        <td>
+
+            {{ attack.get('attack_type','Unknown') }}
+
+        </td>
+
+        <td>
+
+            {% if attack.get('risk','Low') == 'Critical' %}
+
+                <span class="risk-critical">
+
                     Critical
-                </option>
 
-                <option>
+                </span>
+
+            {% elif attack.get('risk','Low') == 'High' %}
+
+                <span class="risk-high">
+
                     High
-                </option>
 
-                <option>
+                </span>
+
+            {% elif attack.get('risk','Low') == 'Medium' %}
+
+                <span class="risk-medium">
+
                     Medium
-                </option>
 
-                <option>
+                </span>
+
+            {% else %}
+
+                <span class="risk-low">
+
                     Low
-                </option>
 
-            </select>
+                </span>
 
-            <select>
+            {% endif %}
 
-                <option>
-                    All Devices
-                </option>
+        </td>
 
-                <option>
-                    Ventilator
-                </option>
+    </tr>
 
-                <option>
-                    ECG
-                </option>
+    {% endfor %}
 
-                <option>
-                    Patient Monitor
-                </option>
+{% else %}
 
-            </select>
+    <tr>
 
-            <button class="btn btn-primary">
+        <td colspan="6">
 
-                Apply Filters
+            No Attack Logs Available
 
-            </button>
+        </td>
+
+    </tr>
+
+{% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- Threat Intelligence -->
+
+    <div class="panel">
+
+        <h2>Threat Intelligence</h2>
+
+        <div class="intel-grid">
+
+            <div class="intel-card">
+
+                <h3>
+
+                    {{ total_attacks }}
+
+                </h3>
+
+                <p>
+                    Total Events
+                </p>
+
+            </div>
+
+            <div class="intel-card">
+
+                <h3>
+
+                    {{ critical_threats }}
+
+                </h3>
+
+                <p>
+                    Critical Threats
+                </p>
+
+            </div>
+
+            <div class="intel-card">
+
+                <h3>
+
+                    {{ username }}
+
+                </h3>
+
+                <p>
+                    Logged User
+                </p>
+
+            </div>
+
+            <div class="intel-card">
+
+                <h3>
+
+                    {{ role }}
+
+                </h3>
+
+                <p>
+                    Access Level
+                </p>
+
+            </div>
 
         </div>
 
     </div>
 
-    <!-- MAIN GRID -->
+    <!-- Recent Attack Sources -->
 
-    <div class="attack-layout">
+    <div class="panel">
 
-        <!-- LEFT -->
+        <h2>Recent Attack Sources</h2>
 
-        <div class="attack-main">
+        <div class="source-grid">
 
-            <div class="panel">
+            {% if attacks %}
 
-                <div class="panel-header">
+                {% for attack in attacks[:12] %}
 
-                    <h2>
-                        Recent Attack Activity
-                    </h2>
+                <div class="source-card">
 
-                </div>
+                    <h3>
 
-                <table class="attack-table">
+                        {{ attack.get('ip','N/A') }}
 
-                    <thead>
+                    </h3>
 
-                        <tr>
+                    <p>
 
-                            <th>Time</th>
-                            <th>Source IP</th>
-                            <th>Country</th>
-                            <th>Target Device</th>
-                            <th>Attack</th>
-                            <th>Risk</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                        {{ attack.get('attack_type','Unknown') }}
 
-                        </tr>
+                    </p>
 
-                    </thead>
+                    <span>
 
-                    <tbody>
+                        {{ attack.get('risk','Low') }}
 
-                        <tr>
-
-                            <td>04:10</td>
-                            <td>185.45.23.11</td>
-                            <td>Russia</td>
-                            <td>Ventilator-01</td>
-                            <td>Brute Force</td>
-                            <td>
-                                <span class="badge danger">
-                                    Critical
-                                </span>
-                            </td>
-                            <td>Open</td>
-
-                            <td>
-
-                                <button class="btn btn-small">
-
-                                    View
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>04:12</td>
-                            <td>91.22.55.18</td>
-                            <td>China</td>
-                            <td>ECG-02</td>
-                            <td>MQTT Probe</td>
-                            <td>
-                                <span class="badge warning">
-                                    High
-                                </span>
-                            </td>
-                            <td>Investigating</td>
-
-                            <td>
-
-                                <button class="btn btn-small">
-
-                                    View
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>04:15</td>
-                            <td>102.17.44.10</td>
-                            <td>Iran</td>
-                            <td>Patient Monitor</td>
-                            <td>Exploit Attempt</td>
-                            <td>
-                                <span class="badge info">
-                                    Medium
-                                </span>
-                            </td>
-                            <td>Open</td>
-
-                            <td>
-
-                                <button class="btn btn-small">
-
-                                    View
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            <!-- ATTACK DETAILS -->
-
-            <div class="panel">
-
-                <div class="panel-header">
-
-                    <h2>
-                        Selected Attack Details
-                    </h2>
+                    </span>
 
                 </div>
 
-                <div class="details-grid">
+                {% endfor %}
 
-                    <div>
-
-                        <strong>
-                            Attack ID:
-                        </strong>
-
-                        ATT-2025-00124
-
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Source:
-                        </strong>
-
-                        185.45.23.11
-
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Country:
-                        </strong>
-
-                        Russia
-
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Target:
-                        </strong>
-
-                        Ventilator-01
-
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            MITRE:
-                        </strong>
-
-                        T1110
-
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Risk:
-                        </strong>
-
-                        Critical
-
-                    </div>
-
-                </div>
-
-                <div class="payload-box">
-
-                    POST /login
-
-                    username=admin
-
-                    password=123456
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- RIGHT -->
-
-        <div class="attack-sidebar">
-
-            <div class="panel">
-
-                <div class="panel-header">
-
-                    <h2>
-                        Live Threat Feed
-                    </h2>
-
-                </div>
-
-                <div class="feed">
-
-                    <div>
-                        [INFO] Ventilator honeypot online
-                    </div>
-
-                    <div>
-                        [WARNING] Brute force detected
-                    </div>
-
-                    <div>
-                        [ALERT] Exploit attempt detected
-                    </div>
-
-                    <div>
-                        [INFO] IOC added
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="panel">
-
-                <div class="panel-header">
-
-                    <h2>
-                        Top Attacker Countries
-                    </h2>
-
-                </div>
-
-                <ul class="country-list">
-
-                    <li>
-                        Russia (41)
-                    </li>
-
-                    <li>
-                        China (32)
-                    </li>
-
-                    <li>
-                        Iran (17)
-                    </li>
-
-                    <li>
-                        Germany (11)
-                    </li>
-
-                    <li>
-                        USA (8)
-                    </li>
-
-                </ul>
-
-            </div>
-
-            <div class="panel">
-
-                <div class="panel-header">
-
-                    <h2>
-                        Attack Types
-                    </h2>
-
-                </div>
-
-                <ul class="country-list">
-
-                    <li>
-                        Brute Force
-                    </li>
-
-                    <li>
-                        Reconnaissance
-                    </li>
-
-                    <li>
-                        MQTT Abuse
-                    </li>
-
-                    <li>
-                        Web Exploitation
-                    </li>
-
-                    <li>
-                        Credential Stuffing
-                    </li>
-
-                </ul>
-
-            </div>
+            {% endif %}
 
         </div>
 
     </div>
 
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+
+document
+    .getElementById(
+        "attackSearch"
+    )
+    .addEventListener(
+        "keyup",
+        function() {
+
+            let filter =
+                this.value.toLowerCase();
+
+            let rows =
+                document.querySelectorAll(
+                    ".attack-table tbody tr"
+                );
+
+            rows.forEach(
+                function(row) {
+
+                    if (
+                        row.innerText
+                            .toLowerCase()
+                            .includes(filter)
+                    ) {
+
+                        row.style.display = "";
+
+                    } else {
+
+                        row.style.display =
+                            "none";
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+</script>
 
 {% endblock %}

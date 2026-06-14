@@ -1,189 +1,271 @@
-.alerts-container {
+/* ==========================================
+   ALERTS CONTAINER
+========================================== */
 
-    padding: 30px;
+.alerts-container{
+    padding:25px;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.page-header h1{
+    color:#ffffff;
+    font-size:32px;
+    margin-bottom:5px;
+}
+
+.page-header p{
+    color:#9db3c9;
+}
+
+.alert-status{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#071d13;
+    padding:12px 20px;
+    border-radius:12px;
+    border:1px solid rgba(0,255,136,.2);
+    color:#00ff88;
+    font-weight:600;
+}
+
+.status-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#00ff88;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+
+    0%{
+        box-shadow:0 0 0 0 rgba(0,255,136,.8);
+    }
+
+    100%{
+        box-shadow:0 0 0 12px rgba(0,255,136,0);
+    }
 
 }
 
-.page-header {
+/* ==========================================
+   SUMMARY CARDS
+========================================== */
 
-    margin-bottom: 25px;
-
+.alert-summary-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    margin-bottom:25px;
 }
 
-.page-header h1 {
-
-    color: white;
-
-    margin-bottom: 5px;
-
+.summary-card{
+    background:#071321;
+    border:1px solid rgba(0,212,255,.15);
+    border-radius:15px;
+    padding:25px;
+    text-align:center;
 }
 
-.page-header p {
-
-    color: #8fb3d9;
-
+.summary-card h3{
+    color:#b8c7d8;
+    margin-bottom:10px;
 }
 
-.alert-summary-grid {
-
-    display: grid;
-
-    grid-template-columns: repeat(4,1fr);
-
-    gap: 20px;
-
-    margin-bottom: 25px;
-
+.summary-card span{
+    font-size:40px;
+    font-weight:700;
 }
 
-.summary-card {
-
-    background: rgba(11,22,47,.9);
-
-    border: 1px solid rgba(0,217,255,.25);
-
-    border-radius: 16px;
-
-    padding: 20px;
-
+.critical span{
+    color:#ff4d4f;
 }
 
-.summary-card span {
-
-    font-size: 34px;
-
-    font-weight: 700;
-
+.high span{
+    color:#ffb020;
 }
 
-.critical span {
-
-    color: #ff3b5c;
-
+.medium span{
+    color:#ffd666;
 }
 
-.high span {
-
-    color: #ff8c00;
-
+.low span{
+    color:#00ff88;
 }
 
-.medium span {
+/* ==========================================
+   PANELS
+========================================== */
 
-    color: #ffd166;
-
+.alerts-panel{
+    background:#071321;
+    border:1px solid rgba(0,212,255,.15);
+    border-radius:15px;
+    padding:25px;
+    margin-bottom:25px;
 }
 
-.low span {
-
-    color: #00d9ff;
-
+.alerts-panel h2{
+    color:#ffffff;
+    margin-bottom:20px;
 }
 
-.alerts-panel {
+/* ==========================================
+   OVERVIEW GRID
+========================================== */
 
-    background: rgba(11,22,47,.9);
-
-    border: 1px solid rgba(0,217,255,.25);
-
-    border-radius: 16px;
-
-    padding: 20px;
-
-    margin-bottom: 20px;
-
+.overview-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
 }
 
-.alerts-table {
-
-    width: 100%;
-
-    border-collapse: collapse;
-
+.overview-card{
+    background:#081321;
+    border:1px solid rgba(0,212,255,.12);
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
 }
 
-.alerts-table th {
-
-    color: #00d9ff;
-
-    text-align: left;
-
-    padding: 12px;
-
+.overview-card h3{
+    color:#9db3c9;
 }
 
-.alerts-table td {
+.overview-card span{
+    display:block;
+    margin-top:10px;
+    font-size:26px;
+    color:#00d4ff;
+    font-weight:700;
+}
+/* ==========================================
+   ALERT TABLE
+========================================== */
 
-    padding: 12px;
-
-    border-top: 1px solid rgba(255,255,255,.08);
-
+.alerts-table{
+    width:100%;
+    border-collapse:collapse;
 }
 
-.critical-text {
-
-    color: #ff3b5c;
-
-    font-weight: 700;
-
+.alerts-table th{
+    background:#081321;
+    color:#00d4ff;
+    padding:15px;
+    text-align:left;
 }
 
-.high-text {
-
-    color: #ff8c00;
-
-    font-weight: 700;
-
+.alerts-table td{
+    padding:15px;
+    border-bottom:1px solid rgba(255,255,255,.05);
+    color:#d7e5f3;
 }
 
-.medium-text {
-
-    color: #ffd166;
-
-    font-weight: 700;
-
+.alerts-table tr:hover{
+    background:#0c1a2e;
 }
 
-.alerts-bottom-grid {
-
-    display: grid;
-
-    grid-template-columns: 2fr 1fr;
-
-    gap: 20px;
-
+.status-badge{
+    padding:5px 12px;
+    border-radius:20px;
+    background:#00ff88;
+    color:#04111d;
+    font-weight:700;
 }
 
-.detail-box {
+/* ==========================================
+   SEVERITY COLORS
+========================================== */
 
-    min-height: 220px;
-
-    border: 1px solid rgba(0,217,255,.2);
-
-    border-radius: 12px;
-
-    padding: 20px;
-
+.critical-text{
+    color:#ff4d4f;
+    font-weight:700;
 }
 
-.action-btn {
+.high-text{
+    color:#ffb020;
+    font-weight:700;
+}
 
-    width: 100%;
+.medium-text{
+    color:#ffd666;
+    font-weight:700;
+}
 
-    margin-bottom: 12px;
+.low-text{
+    color:#00ff88;
+    font-weight:700;
+}
 
-    padding: 14px;
+/* ==========================================
+   RESPONSE BUTTONS
+========================================== */
 
-    border: none;
+.action-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+}
 
-    border-radius: 10px;
+.action-btn{
+    border:none;
+    padding:14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.3s;
+}
 
-    background: #00d9ff;
+.action-btn:hover{
+    transform:translateY(-3px);
+}
 
-    color: #00111f;
+.action-btn.danger{
+    background:#ff4d4f;
+    color:white;
+}
 
-    font-weight: 700;
+.action-btn.warning{
+    background:#ffb020;
+    color:black;
+}
 
-    cursor: pointer;
+.action-btn.info{
+    background:#00d4ff;
+    color:black;
+}
 
+.action-btn.success{
+    background:#00ff88;
+    color:black;
+}
+
+.action-btn.secondary{
+    background:#6c757d;
+    color:white;
+}
+
+/* ==========================================
+   DETAILS BOX
+========================================== */
+
+.detail-box{
+    background:#081321;
+    padding:20px;
+    border-radius:12px;
+}
+
+.detail-box p{
+    margin-bottom:12px;
+    color:#d7e5f3;
 }

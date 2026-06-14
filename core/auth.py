@@ -38,52 +38,40 @@ def is_authenticated() -> bool:
     )
 
 
-def login_user(
-    username: str,
-    password: str,
+def has_permission(
+    permission: str,
 ) -> bool:
-    """
-    Authenticate user.
-    """
+
+    if (
+        current_role()
+        == "Administrator"
+    ):
+        return True
 
     users = load_users()
+
+    current = current_user()
 
     for user in users:
 
         if (
-            user.get("username")
-            == username
+            isinstance(
+                user,
+                dict,
+            )
             and
-            user.get("password")
-            == password
+            user.get(
+                "username"
+            ) == current
         ):
 
-            session["username"] = username
-
-            session["role"] = user.get(
-                "role",
-                "user",
+            return user.get(
+                "permissions",
+                {}
+            ).get(
+                permission,
+                False
             )
-
-            log_event(
-                event_type="LOGIN",
-                user=username,
-                severity="INFO",
-                message=(
-                    "User logged in"
-                ),
-            )
-
-            return True
-
-    log_event(
-        event_type="LOGIN_FAILED",
-        user=username,
-        severity="WARNING",
-        message=(
-            "Invalid credentials"
-        ),
-    )
 
     return False
 
@@ -102,13 +90,42 @@ def logout_user() -> None:
         event_type="LOGOUT",
         user=username,
         severity="INFO",
-        message=(
-            "User logged out"
-        ),
+        message="User logged out",
     )
 
     session.clear()
 
+
 def get_all_users():
 
     return load_users()
+def login_user(username, password):
+
+    users = load_users()
+
+    for user in users:
+
+        if (
+            user.get("username") == username
+            and
+            user.get("password") == password
+            and
+            user.get("status", "Active") == "Active"
+        ):
+
+            session["username"] = username
+            session["role"] = user.get(
+                "role",
+                "Threat Analyst"
+            )
+
+            log_event(
+                event_type="LOGIN",
+                user=username,
+                severity="INFO",
+                message="User logged in"
+            )
+
+            return True
+
+    return False

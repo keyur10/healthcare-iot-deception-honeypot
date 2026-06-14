@@ -58,6 +58,50 @@ def save_users(
         users,
     )
 
+# ==================================================
+# HONEYPOTS
+# ==================================================
+
+def load_honeypots() -> list:
+
+    return load_data(
+        "honeypots",
+        [],
+    )
+
+
+def save_honeypots(
+    honeypots: list,
+) -> bool:
+
+    return save_data(
+        "honeypots",
+        honeypots,
+    )
+# ==================================================
+# SETTINGS
+# ==================================================
+
+# ==================================================
+# SETTINGS
+# ==================================================
+
+def load_settings():
+
+    return load_data(
+        "settings",
+        {}
+    )
+
+
+def save_settings(
+    settings
+):
+
+    return save_data(
+        "settings",
+        settings
+    )
 
 # ==================================================
 # PERMISSIONS
@@ -112,7 +156,20 @@ def append_attack(
     save_attacks(
         attacks
     )
+def load_settings():
 
+    return load_data(
+        "settings",
+        {}
+    )
+
+
+def save_settings(settings):
+
+    return save_data(
+        "settings",
+        settings
+    )
 
 # ==================================================
 # AUDIT LOGS
@@ -203,6 +260,7 @@ def ensure_data_files() -> None:
         "audit_logs": [],
         "threat_feed": [],
         "dashboard_cache": {},
+        "honeypots": [],
     }
 
     for key, file_path in DATA_FILES.items():

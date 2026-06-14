@@ -1,113 +1,231 @@
 {% extends "layouts/base.html" %}
 
 {% block extra_css %}
+
 <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/geolocation.css') }}"
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<link
+rel="stylesheet"
+href="{{ url_for('static', filename='css/geolocation.css') }}"
 >
+
 {% endblock %}
 
 {% block content %}
 
 <div class="geo-container">
 
+    <!-- HEADER -->
+
     <div class="page-header">
 
-        <h1>Threat Geolocation Center</h1>
+        <div>
 
-        <p>
-            Attack Source Intelligence & Geographic Tracking
-        </p>
+            <h1>
+                Threat Geolocation Center
+            </h1>
+
+            <p>
+                Real-Time Attack Source Intelligence & Geographic Tracking
+            </p>
+
+        </div>
+
+        <div class="geo-status">
+
+            <span class="status-dot"></span>
+
+            Live Tracking Active
+
+        </div>
 
     </div>
+
+    <!-- STATS -->
 
     <div class="geo-stats">
 
         <div class="geo-card">
 
-            <h3>Total Countries</h3>
+            <h3>Total Attacks</h3>
 
-            <span>27</span>
+            <span>
 
-        </div>
+                {{ attacks|length }}
 
-        <div class="geo-card">
-
-            <h3>Tracked IPs</h3>
-
-            <span>154</span>
-
-        </div>
-
-        <div class="geo-card">
-
-            <h3>High Risk Nations</h3>
-
-            <span class="danger">
-                8
             </span>
 
         </div>
 
         <div class="geo-card">
 
-            <h3>Live Connections</h3>
+            <h3>Tracked Sources</h3>
 
             <span>
-                41
+
+                {{ attacks|length }}
+
+            </span>
+
+        </div>
+
+        <div class="geo-card">
+
+            <h3>Current User</h3>
+
+            <span>
+
+                {{ username }}
+
+            </span>
+
+        </div>
+
+        <div class="geo-card">
+
+            <h3>Threat Level</h3>
+
+            <span class="critical">
+
+                LOW
+
             </span>
 
         </div>
 
     </div>
+
+    <!-- LOOKUP + MAP -->
 
     <div class="geo-grid">
 
         <div class="geo-panel">
 
-            <h2>IP Geolocation Lookup</h2>
+            <h2>
+                IP Geolocation Lookup
+            </h2>
 
-            <form>
+            <form
+                class="lookup-form"
+                id="lookupForm"
+            >
 
                 <input
                     type="text"
-                    placeholder="Enter IP Address..."
+                    id="ipLookup"
+                    placeholder="Enter IP Address (Example: 8.8.8.8)"
                 >
 
-                <button>
+                <button
+                    type="button"
+                    id="lookupBtn"
+                >
+
                     Lookup
+
                 </button>
 
             </form>
 
-            <div class="lookup-result">
+            <div
+                class="lookup-result"
+                id="lookupResult"
+            >
 
-                <div>Country: Russia</div>
-                <div>City: Moscow</div>
-                <div>ASN: AS12345</div>
-                <div>ISP: Example ISP</div>
+                Waiting for lookup request...
+
+            </div>
+
+            <div class="geo-info-box">
+
+                <div>
+
+                    <strong>Country:</strong>
+
+                    <span id="country">
+
+                        -
+
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <strong>City:</strong>
+
+                    <span id="city">
+
+                        -
+
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <strong>ISP:</strong>
+
+                    <span id="isp">
+
+                        -
+
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <strong>Latitude:</strong>
+
+                    <span id="lat">
+
+                        -
+
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <strong>Longitude:</strong>
+
+                    <span id="lon">
+
+                        -
+
+                    </span>
+
+                </div>
 
             </div>
 
         </div>
 
+        <!-- LIVE MAP -->
+
         <div class="geo-panel">
 
-            <h2>Attack Heat Map</h2>
+            <h2>
+                Live Global Attack Map
+            </h2>
 
-            <div class="map-placeholder">
-
-                🌍 World Threat Map
-
-            </div>
+            <div id="attackMap"></div>
 
         </div>
 
     </div>
 
+    <!-- ATTACK SOURCES TABLE -->
+
     <div class="geo-panel">
 
-        <h2>Top Attack Origins</h2>
+        <h2>
+            Live Attack Sources
+        </h2>
 
         <table class="geo-table">
 
@@ -115,8 +233,10 @@
 
                 <tr>
 
-                    <th>Country</th>
-                    <th>Attacks</th>
+                    <th>Time</th>
+                    <th>Source IP</th>
+                    <th>Username</th>
+                    <th>Attack Type</th>
                     <th>Risk</th>
 
                 </tr>
@@ -125,36 +245,197 @@
 
             <tbody>
 
-                <tr>
-                    <td>Russia</td>
-                    <td>58</td>
-                    <td>Critical</td>
-                </tr>
+            {% if attacks %}
+
+                {% for attack in attacks %}
 
                 <tr>
-                    <td>China</td>
-                    <td>43</td>
-                    <td>High</td>
+
+                    <td>
+
+                        {{ attack.get('time','N/A') }}
+
+                    </td>
+
+                    <td class="source-ip">
+
+                        {{ attack.get('ip','N/A') }}
+
+                    </td>
+
+                    <td>
+
+                        {{ attack.get('username','N/A') }}
+
+                    </td>
+
+                    <td>
+
+                        {{ attack.get('attack_type','Unknown') }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="risk-{{ attack.get('risk','Low')|lower }}">
+
+                            {{ attack.get('risk','Low') }}
+
+                        </span>
+
+                    </td>
+
                 </tr>
 
-                <tr>
-                    <td>North Korea</td>
-                    <td>17</td>
-                    <td>High</td>
-                </tr>
+                {% endfor %}
+
+            {% else %}
 
                 <tr>
-                    <td>Iran</td>
-                    <td>12</td>
-                    <td>Medium</td>
+
+                    <td colspan="5">
+
+                        No Attack Data Available
+
+                    </td>
+
                 </tr>
+
+            {% endif %}
 
             </tbody>
 
         </table>
 
     </div>
+    <!-- RECENT THREAT SOURCES -->
+
+    <div class="geo-panel">
+
+        <h2>
+            Recent Threat Sources
+        </h2>
+
+        <div class="geo-source-grid">
+
+            {% if attacks %}
+
+                {% for attack in attacks[:12] %}
+
+                <div class="source-card">
+
+                    <h3>
+
+                        {{ attack.get('ip','N/A') }}
+
+                    </h3>
+
+                    <p>
+
+                        {{ attack.get('attack_type','Unknown') }}
+
+                    </p>
+
+                    <span>
+
+                        Risk:
+
+                        {{ attack.get('risk','Low') }}
+
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="source-card">
+
+                    No Threat Sources Found
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- SESSION INFO -->
+
+    <div class="geo-panel">
+
+        <h2>
+            Session Information
+        </h2>
+
+        <div class="geo-stats">
+
+            <div class="geo-card">
+
+                <h3>User</h3>
+
+                <span>
+
+                    {{ username }}
+
+                </span>
+
+            </div>
+
+            <div class="geo-card">
+
+                <h3>Role</h3>
+
+                <span>
+
+                    {{ role }}
+
+                </span>
+
+            </div>
+
+            <div class="geo-card">
+
+                <h3>Project</h3>
+
+                <span>
+
+                    HIDHN
+
+                </span>
+
+            </div>
+
+            <div class="geo-card">
+
+                <h3>Total Records</h3>
+
+                <span>
+
+                    {{ attacks|length }}
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+></script>
+
+<script
+src="{{ url_for('static', filename='js/geolocation.js') }}"
+></script>
 
 {% endblock %}

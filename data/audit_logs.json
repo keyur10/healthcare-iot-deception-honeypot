@@ -1,7 +1,7 @@
 [
     {
-        "id": "6790ba92-2357-4b58-bd46-603c29d39861",
-        "timestamp": "2026-06-06T08:20:38.557593+00:00",
+        "id": "0f6b4b4e-d30c-498f-84dd-02db88932bca",
+        "timestamp": "2026-06-11T01:02:17.771528+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -9,8 +9,8 @@
         "metadata": {}
     },
     {
-        "id": "aca66e77-dbc9-49e6-8557-44522ac5ad0e",
-        "timestamp": "2026-06-06T08:20:38.887170+00:00",
+        "id": "bfbb8a3e-d052-4fee-a34f-81834382f3eb",
+        "timestamp": "2026-06-11T01:09:19.261378+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -18,8 +18,8 @@
         "metadata": {}
     },
     {
-        "id": "07e59a74-e52d-494d-b797-2939360b4f83",
-        "timestamp": "2026-06-06T09:25:29.004451+00:00",
+        "id": "f731acfe-d057-4c0e-9147-f1dc72d35805",
+        "timestamp": "2026-06-11T01:32:03.261980+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -27,8 +27,8 @@
         "metadata": {}
     },
     {
-        "id": "c9b74e82-a537-42a5-9dac-1ce7f9a1263f",
-        "timestamp": "2026-06-06T09:25:30.485450+00:00",
+        "id": "30cb8edf-5208-4732-8acc-d99f903440c8",
+        "timestamp": "2026-06-11T01:34:25.142828+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -36,8 +36,8 @@
         "metadata": {}
     },
     {
-        "id": "77100411-feb1-47eb-8bdb-48f1063af9ca",
-        "timestamp": "2026-06-06T09:27:55.471354+00:00",
+        "id": "e91aa507-5070-47e7-81c1-ec6ebad07ba3",
+        "timestamp": "2026-06-11T01:34:25.594372+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -45,44 +45,8 @@
         "metadata": {}
     },
     {
-        "id": "065bcf16-9a8b-49ae-bc21-beffea8c83d1",
-        "timestamp": "2026-06-06T09:29:16.660868+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "3fca882f-041a-4414-a1f8-7b6ed68791fb",
-        "timestamp": "2026-06-06T09:32:01.382850+00:00",
-        "event_type": "LOGOUT",
-        "user": "unknown",
-        "severity": "INFO",
-        "message": "User logged out",
-        "metadata": {}
-    },
-    {
-        "id": "15c34e04-d1c5-49dc-a0a7-02e814f86a1b",
-        "timestamp": "2026-06-06T09:32:02.133497+00:00",
-        "event_type": "LOGOUT",
-        "user": "unknown",
-        "severity": "INFO",
-        "message": "User logged out",
-        "metadata": {}
-    },
-    {
-        "id": "e8fee06d-3655-41aa-8beb-0fd293657e3f",
-        "timestamp": "2026-06-06T09:32:02.572018+00:00",
-        "event_type": "LOGOUT",
-        "user": "unknown",
-        "severity": "INFO",
-        "message": "User logged out",
-        "metadata": {}
-    },
-    {
-        "id": "dd120891-4924-4960-af84-492d9c716b26",
-        "timestamp": "2026-06-06T09:50:56.086749+00:00",
+        "id": "eb74ed59-cabb-41c0-86d0-fe25f2ca197a",
+        "timestamp": "2026-06-11T01:34:42.826177+00:00",
         "event_type": "LOGIN",
         "user": "admin",
         "severity": "INFO",
@@ -90,8 +54,188 @@
         "metadata": {}
     },
     {
-        "id": "e2bdc861-19ab-48a2-8786-c82b30f22644",
-        "timestamp": "2026-06-06T12:15:02.970556+00:00",
+        "id": "7c12ba4c-7261-40ee-8400-21efac7bcd91",
+        "timestamp": "2026-06-11T01:36:44.172152+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "81ae73d0-e232-474f-b0ff-becb1a52ab89",
+        "timestamp": "2026-06-11T02:06:47.654935+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "4db66582-d5e8-4052-8059-68d7f8ffc26e",
+        "timestamp": "2026-06-11T02:08:09.372326+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "11161bcb-839a-4a00-88a2-16f33757b108",
+        "timestamp": "2026-06-11T02:08:09.778669+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "cb75465c-7156-410e-98e0-5de6f2289707",
+        "timestamp": "2026-06-11T02:15:12.492931+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "595514e4-4e57-4fab-954a-8579424e8ed8",
+        "timestamp": "2026-06-11T02:18:07.845809+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "ead82562-208c-4959-9c8b-6e05135e4f3e",
+        "timestamp": "2026-06-11T02:21:47.703919+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "55543ca7-f5da-4260-9260-8dde0b78df07",
+        "timestamp": "2026-06-11T02:22:06.444195+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "4f42a2cb-1a7f-4869-82f1-a90430e25772",
+        "timestamp": "2026-06-11T02:43:11.934343+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "70c41d33-1be1-4280-afd8-8f0397355e00",
+        "timestamp": "2026-06-11T03:00:58.100901+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "d491f57a-882b-4101-8f87-202cf1528581",
+        "timestamp": "2026-06-11T03:01:37.158905+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "23b536d5-83f1-4516-8237-c19057f38e37",
+        "timestamp": "2026-06-11T03:52:00.145744+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "d8964b21-a1f5-4f95-9a46-e0df25ff5f19",
+        "timestamp": "2026-06-11T03:53:38.425831+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "f22e4c9f-52db-43db-b614-de3be60f7005",
+        "timestamp": "2026-06-11T03:53:38.825626+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "f9339e51-3769-47a2-8205-7314801c8f1b",
+        "timestamp": "2026-06-11T03:56:40.183948+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "07881f11-92b2-4d8a-941a-4641629c5f7c",
+        "timestamp": "2026-06-11T04:06:27.854770+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "66431152-cb3e-4790-af7a-3796556c4ed8",
+        "timestamp": "2026-06-11T04:06:50.415631+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "bdd601c7-3369-409d-bf27-30b37a2d1db8",
+        "timestamp": "2026-06-12T00:23:48.681448+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "5308f1af-1592-456a-93ca-0d36c3bee549",
+        "timestamp": "2026-06-12T00:26:30.977685+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "b0695d80-f44d-40d5-a760-58ef47ba4d7e",
+        "timestamp": "2026-06-12T00:26:31.390918+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "5073dd15-b42f-4e81-aa10-b3b70e9fa344",
+        "timestamp": "2026-06-12T00:26:46.172636+00:00",
         "event_type": "LOGIN",
         "user": "admin",
         "severity": "INFO",
@@ -99,8 +243,8 @@
         "metadata": {}
     },
     {
-        "id": "5289fb00-e61b-4821-a612-862722b170d4",
-        "timestamp": "2026-06-06T12:33:08.676693+00:00",
+        "id": "160bedc3-1a84-48ea-805c-7c71380ab5e5",
+        "timestamp": "2026-06-12T00:48:53.099124+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -108,8 +252,8 @@
         "metadata": {}
     },
     {
-        "id": "dd51391e-8c6f-4a19-a5f4-dd330a16eb88",
-        "timestamp": "2026-06-06T12:33:09.127278+00:00",
+        "id": "502c6077-8461-4573-b337-1b1819694aa8",
+        "timestamp": "2026-06-12T01:00:47.458238+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -117,8 +261,8 @@
         "metadata": {}
     },
     {
-        "id": "a85805d2-1754-4861-a24d-918db5be8f0c",
-        "timestamp": "2026-06-06T22:13:04.178770+00:00",
+        "id": "4e2026b6-efa9-4b67-a8c0-9fad7da51876",
+        "timestamp": "2026-06-12T01:07:46.150106+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -126,8 +270,8 @@
         "metadata": {}
     },
     {
-        "id": "fd54ee3d-8100-448f-a8b5-bb107e52d3a7",
-        "timestamp": "2026-06-06T22:13:05.483233+00:00",
+        "id": "d8e0f1db-dd74-4b23-a46d-bc169759469d",
+        "timestamp": "2026-06-12T01:08:30.420268+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -135,8 +279,8 @@
         "metadata": {}
     },
     {
-        "id": "32da1b30-8bde-4069-9ad7-fb38cf8efd0c",
-        "timestamp": "2026-06-06T22:13:06.834577+00:00",
+        "id": "1d7ebd1f-a2a7-44e2-b958-ea1e54afab2c",
+        "timestamp": "2026-06-12T01:15:35.730489+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -144,8 +288,8 @@
         "metadata": {}
     },
     {
-        "id": "24543011-f281-4762-8e0e-9f99ef0a6402",
-        "timestamp": "2026-06-06T22:13:07.324494+00:00",
+        "id": "932ed8bc-7313-4e59-a665-43137958270a",
+        "timestamp": "2026-06-12T01:24:50.212284+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -153,26 +297,8 @@
         "metadata": {}
     },
     {
-        "id": "ed5e0607-281f-45eb-a112-94630ec14e2c",
-        "timestamp": "2026-06-06T22:19:09.011037+00:00",
-        "event_type": "LOGIN",
-        "user": "admin",
-        "severity": "INFO",
-        "message": "User logged in",
-        "metadata": {}
-    },
-    {
-        "id": "cde1b2f0-05c2-48d6-b91a-c639c43ee726",
-        "timestamp": "2026-06-06T22:23:02.290375+00:00",
-        "event_type": "LOGIN",
-        "user": "admin",
-        "severity": "INFO",
-        "message": "User logged in",
-        "metadata": {}
-    },
-    {
-        "id": "32f42993-5b9f-4b35-b324-155025f8359f",
-        "timestamp": "2026-06-08T05:25:48.266705+00:00",
+        "id": "9387a8e5-2bed-44d5-a941-d9fb69658ac3",
+        "timestamp": "2026-06-12T01:24:54.284818+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -180,8 +306,8 @@
         "metadata": {}
     },
     {
-        "id": "b552596f-74d6-4b8a-ad4f-552a5deb19db",
-        "timestamp": "2026-06-08T05:25:49.085452+00:00",
+        "id": "4a6f0544-f508-40a2-b1b0-0957b116753b",
+        "timestamp": "2026-06-12T01:53:14.831470+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -189,17 +315,8 @@
         "metadata": {}
     },
     {
-        "id": "4d82b376-2c4e-40e2-b441-8ca0a9c546aa",
-        "timestamp": "2026-06-08T05:26:03.915884+00:00",
-        "event_type": "LOGIN",
-        "user": "admin",
-        "severity": "INFO",
-        "message": "User logged in",
-        "metadata": {}
-    },
-    {
-        "id": "b80bf4e4-93ff-4461-bfd6-d3af617742c3",
-        "timestamp": "2026-06-08T05:31:33.911509+00:00",
+        "id": "90bc6ce2-4eea-477f-836d-82a82447bf8e",
+        "timestamp": "2026-06-12T01:53:15.691610+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -207,8 +324,8 @@
         "metadata": {}
     },
     {
-        "id": "1e5210af-988d-4c40-8a60-c13b23acd1ec",
-        "timestamp": "2026-06-08T05:31:42.347631+00:00",
+        "id": "211b941f-6bda-437f-b6e5-35d4351890fc",
+        "timestamp": "2026-06-12T01:56:24.374347+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -216,8 +333,8 @@
         "metadata": {}
     },
     {
-        "id": "199b623a-d2bd-4b44-833d-410ab31ccda8",
-        "timestamp": "2026-06-08T05:31:42.701423+00:00",
+        "id": "42abc01e-089d-4cbc-86d4-8bee5f2c301d",
+        "timestamp": "2026-06-12T01:56:25.346351+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -225,8 +342,8 @@
         "metadata": {}
     },
     {
-        "id": "9443eb6b-0c0a-447a-8c78-80fbd6be4916",
-        "timestamp": "2026-06-08T05:33:46.389047+00:00",
+        "id": "38128996-08da-4d6d-a33b-57e54c3ebbc0",
+        "timestamp": "2026-06-12T03:33:52.490469+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -234,8 +351,8 @@
         "metadata": {}
     },
     {
-        "id": "7581efb4-1f6e-49c6-a025-3bfed565db44",
-        "timestamp": "2026-06-08T05:35:00.537648+00:00",
+        "id": "edf580cb-dc5e-497b-8fd5-5eec32f126f9",
+        "timestamp": "2026-06-12T03:41:56.315405+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -243,8 +360,8 @@
         "metadata": {}
     },
     {
-        "id": "3faa2087-aa23-404a-8391-b36a8db449b9",
-        "timestamp": "2026-06-08T05:35:02.105369+00:00",
+        "id": "595db20d-7492-47ac-a812-44c40fc8a652",
+        "timestamp": "2026-06-12T03:43:17.721210+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -252,8 +369,8 @@
         "metadata": {}
     },
     {
-        "id": "edf490f9-f746-43c5-849b-8226327f7bfa",
-        "timestamp": "2026-06-08T09:28:05.049300+00:00",
+        "id": "6c42f5f0-82f7-47fb-8075-64a187700f37",
+        "timestamp": "2026-06-12T03:43:18.578598+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -261,8 +378,8 @@
         "metadata": {}
     },
     {
-        "id": "04665f3f-e1af-4c1f-af7a-4da732e00630",
-        "timestamp": "2026-06-08T09:28:12.083471+00:00",
+        "id": "779a0159-d43b-4dc1-8b12-e89c4aa0e512",
+        "timestamp": "2026-06-12T03:44:13.183427+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -270,8 +387,8 @@
         "metadata": {}
     },
     {
-        "id": "5e4fd87d-4f9a-4683-87b5-667a78db1c55",
-        "timestamp": "2026-06-08T09:28:46.654848+00:00",
+        "id": "aa967a69-c31c-44ff-9893-1e835b62153b",
+        "timestamp": "2026-06-12T03:44:13.955429+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -279,8 +396,8 @@
         "metadata": {}
     },
     {
-        "id": "039c7926-58e0-4f5f-ad1c-f0c5e302b3ff",
-        "timestamp": "2026-06-08T09:28:46.991346+00:00",
+        "id": "4558c2a7-31de-4168-a7c9-58c2ead758f8",
+        "timestamp": "2026-06-12T03:44:33.055367+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -288,8 +405,8 @@
         "metadata": {}
     },
     {
-        "id": "bb040505-c6fa-413b-8a0a-208ec1a6719e",
-        "timestamp": "2026-06-08T09:29:25.659046+00:00",
+        "id": "2cb8f28b-4037-4e2c-9e82-844530ce5b92",
+        "timestamp": "2026-06-12T04:10:32.582865+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -297,8 +414,8 @@
         "metadata": {}
     },
     {
-        "id": "015f2c44-d9a3-413c-8e00-755f3857f776",
-        "timestamp": "2026-06-08T09:34:50.259299+00:00",
+        "id": "e3eba80b-00ed-4ba6-b7f9-c3e983479a8d",
+        "timestamp": "2026-06-12T04:11:05.850886+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -306,8 +423,8 @@
         "metadata": {}
     },
     {
-        "id": "1eaf2028-ab4b-4003-a0a7-7f6114338989",
-        "timestamp": "2026-06-08T09:34:50.570424+00:00",
+        "id": "02f7c671-32e3-4afc-9a88-31dc057bf625",
+        "timestamp": "2026-06-12T04:12:25.089935+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -315,8 +432,8 @@
         "metadata": {}
     },
     {
-        "id": "0a794898-07a0-4a61-9f85-ccdc454339f0",
-        "timestamp": "2026-06-08T09:36:36.683945+00:00",
+        "id": "e400392a-9b7c-44b1-b043-c661e43e5b1d",
+        "timestamp": "2026-06-12T04:13:16.581179+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -324,8 +441,8 @@
         "metadata": {}
     },
     {
-        "id": "210570c2-e1d8-45a7-b2cf-93351816c182",
-        "timestamp": "2026-06-08T09:36:45.380934+00:00",
+        "id": "9564ffac-1ff4-4cc2-a8c1-3aafdf5994b9",
+        "timestamp": "2026-06-13T00:51:38.255093+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -333,8 +450,8 @@
         "metadata": {}
     },
     {
-        "id": "b5acc85f-ec24-4362-88d1-50d8f932eafb",
-        "timestamp": "2026-06-08T09:36:45.695966+00:00",
+        "id": "a392254c-6b6a-40e3-b20f-5f9dca51953c",
+        "timestamp": "2026-06-13T00:53:00.549086+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -342,26 +459,8 @@
         "metadata": {}
     },
     {
-        "id": "c202b29b-b556-4c02-9788-1c0f77b3a091",
-        "timestamp": "2026-06-08T09:43:08.756797+00:00",
-        "event_type": "LOGOUT",
-        "user": "admin",
-        "severity": "INFO",
-        "message": "User logged out",
-        "metadata": {}
-    },
-    {
-        "id": "c9ac1d44-e62e-41d1-8a31-dd2c10694143",
-        "timestamp": "2026-06-08T09:43:12.319503+00:00",
-        "event_type": "LOGIN",
-        "user": "admin",
-        "severity": "INFO",
-        "message": "User logged in",
-        "metadata": {}
-    },
-    {
-        "id": "1c6f499a-df92-4ee5-a4c7-9aefb99a69a4",
-        "timestamp": "2026-06-08T09:45:31.915745+00:00",
+        "id": "6e895f61-e941-443c-abbe-111afed434d9",
+        "timestamp": "2026-06-13T00:53:01.429197+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -369,8 +468,8 @@
         "metadata": {}
     },
     {
-        "id": "e1b0135f-fa48-430a-b414-68d634c55370",
-        "timestamp": "2026-06-08T09:47:05.989714+00:00",
+        "id": "d5efdcd9-057d-4590-947f-a2d60926468d",
+        "timestamp": "2026-06-13T01:30:40.585179+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -378,8 +477,8 @@
         "metadata": {}
     },
     {
-        "id": "3f44b457-1280-4298-80f5-033379f67f60",
-        "timestamp": "2026-06-08T09:54:38.686632+00:00",
+        "id": "acaf06fb-7f29-4358-8291-e10fe0fde68b",
+        "timestamp": "2026-06-13T01:46:41.253928+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -387,8 +486,8 @@
         "metadata": {}
     },
     {
-        "id": "190f031e-94e5-4eeb-9643-496bea427741",
-        "timestamp": "2026-06-08T09:55:40.586064+00:00",
+        "id": "8e7fae11-5434-43f5-9245-b1f0fe95c817",
+        "timestamp": "2026-06-13T02:46:32.519335+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -396,8 +495,8 @@
         "metadata": {}
     },
     {
-        "id": "06aa6b3f-0054-4eff-8588-5c0d21d4bbdf",
-        "timestamp": "2026-06-08T10:03:04.223462+00:00",
+        "id": "c9039ae8-f02f-43be-8176-0609332ea112",
+        "timestamp": "2026-06-13T02:46:33.480854+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -405,8 +504,8 @@
         "metadata": {}
     },
     {
-        "id": "8d22ed83-3105-4d4d-b058-3c0006a6db57",
-        "timestamp": "2026-06-08T10:03:04.633756+00:00",
+        "id": "48b82531-0c81-4eef-bd1b-f0a47262ea46",
+        "timestamp": "2026-06-13T02:51:01.040803+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -414,8 +513,8 @@
         "metadata": {}
     },
     {
-        "id": "16bc2115-9ddc-46e2-87e4-39329dbc577d",
-        "timestamp": "2026-06-08T10:15:08.657791+00:00",
+        "id": "89f0aeab-036a-44df-991c-1b92d4b1e7fd",
+        "timestamp": "2026-06-13T02:51:02.098033+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -423,206 +522,8 @@
         "metadata": {}
     },
     {
-        "id": "81ec9f07-d751-4f7e-b83f-70af2d19ef71",
-        "timestamp": "2026-06-08T10:15:11.527684+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "bef24fe3-b17b-4435-97d7-62c1129f56e5",
-        "timestamp": "2026-06-08T10:15:11.936836+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "fba51e8d-5103-49fd-a475-ed954abb062c",
-        "timestamp": "2026-06-08T10:16:43.024475+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "7554a66e-61ae-438e-bc93-4d4dcb44b26a",
-        "timestamp": "2026-06-08T10:19:29.144308+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "30a8e2d2-3574-4148-821e-77014bd2bd27",
-        "timestamp": "2026-06-08T10:25:40.634421+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "4b91530c-2481-43c9-8b1a-9f4452d2b42c",
-        "timestamp": "2026-06-08T10:27:11.831228+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "e544ee4d-c8b1-4e20-be7f-98fef9213e7e",
-        "timestamp": "2026-06-08T10:40:28.303601+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "e7c7db94-7f46-4014-97aa-8310700d2160",
-        "timestamp": "2026-06-08T10:40:28.710536+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "16a609da-01f1-4f90-9b06-ba6146625425",
-        "timestamp": "2026-06-08T15:33:00.351736+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "00e0c8a0-113e-42c5-af1e-61e679baef01",
-        "timestamp": "2026-06-08T15:33:02.393282+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "edcbb037-7de7-4d57-bdee-dc34a02ffb71",
-        "timestamp": "2026-06-08T15:36:06.652824+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "21079d75-1cdc-4db4-a788-c4f0b942991f",
-        "timestamp": "2026-06-08T15:37:21.542325+00:00",
-        "event_type": "LOGIN_FAILED",
-        "user": "admin",
-        "severity": "WARNING",
-        "message": "Invalid credentials",
-        "metadata": {}
-    },
-    {
-        "id": "2327ce0c-93c3-46cc-b813-83691eebe740",
-        "timestamp": "2026-06-08T15:37:31.480658+00:00",
-        "event_type": "LOGIN",
-        "user": "admin",
-        "severity": "INFO",
-        "message": "User logged in",
-        "metadata": {}
-    },
-    {
-        "id": "bd4b5daf-a44d-4742-bfbd-ec60e9c540f4",
-        "timestamp": "2026-06-08T15:43:02.166348+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "096d7428-381c-406d-a727-a6e2cf692de6",
-        "timestamp": "2026-06-08T15:43:04.199979+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "5b0c4556-b54d-4493-a05e-1a4ffa5634ce",
-        "timestamp": "2026-06-08T16:09:38.222615+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "ff3d6d80-4fe7-422f-8b53-5f4fa8be0877",
-        "timestamp": "2026-06-08T16:10:02.129962+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "815f68f1-eacb-491d-8a2d-4257af5adea6",
-        "timestamp": "2026-06-08T16:14:11.604088+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "caf104f3-d2de-454a-b7f1-049e10bad4ed",
-        "timestamp": "2026-06-08T16:28:36.634760+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "0d389514-0203-4b1b-aafd-9e0c60b999aa",
-        "timestamp": "2026-06-08T16:28:38.653467+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "75066edc-76a3-4400-92af-5f3353c4cea3",
-        "timestamp": "2026-06-08T16:29:41.163190+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "6cd9e126-e71f-4279-ab06-849c5a161d10",
-        "timestamp": "2026-06-08T16:29:43.206490+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "6956dc13-c06d-44f1-b9ad-5da954c0209d",
-        "timestamp": "2026-06-08T16:30:14.372965+00:00",
+        "id": "8697bd3b-88eb-4e3b-9283-46564174c7f4",
+        "timestamp": "2026-06-13T04:15:05.081422+00:00",
         "event_type": "LOGOUT",
         "user": "admin",
         "severity": "INFO",
@@ -630,17 +531,8 @@
         "metadata": {}
     },
     {
-        "id": "45ab3273-9299-4889-90e4-46c1761080ed",
-        "timestamp": "2026-06-08T16:30:30.633717+00:00",
-        "event_type": "LOGIN_FAILED",
-        "user": "akhilesh",
-        "severity": "WARNING",
-        "message": "Invalid credentials",
-        "metadata": {}
-    },
-    {
-        "id": "3b7c9906-17be-4af8-9b73-71a3e73e1ac6",
-        "timestamp": "2026-06-08T16:30:41.734606+00:00",
+        "id": "1fdcb506-9ccd-44e9-a644-5e5b392d1735",
+        "timestamp": "2026-06-13T04:37:33.540669+00:00",
         "event_type": "LOGIN",
         "user": "admin",
         "severity": "INFO",
@@ -648,8 +540,8 @@
         "metadata": {}
     },
     {
-        "id": "5e66e6dc-7acd-424b-9e1c-4b9de82ffcd8",
-        "timestamp": "2026-06-08T16:30:58.544668+00:00",
+        "id": "59d942d5-6c71-4c82-af10-0bfa6e95bafc",
+        "timestamp": "2026-06-13T04:48:02.251014+00:00",
         "event_type": "LOGOUT",
         "user": "admin",
         "severity": "INFO",
@@ -657,35 +549,8 @@
         "metadata": {}
     },
     {
-        "id": "c33889dc-a4af-4ea5-9e46-4722a8007a62",
-        "timestamp": "2026-06-09T12:13:45.457235+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "7eb4e4ac-5bc9-411c-9f5d-10c1b0311437",
-        "timestamp": "2026-06-09T12:13:51.560463+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "2dbc3b36-b75e-468f-8525-4b292624e45b",
-        "timestamp": "2026-06-09T12:13:58.599079+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "526f7087-d24e-4ec0-95f0-b7276ed1dc6c",
-        "timestamp": "2026-06-09T12:14:10.280178+00:00",
+        "id": "e1242171-cd08-4d4a-891c-d02b2bbc53d3",
+        "timestamp": "2026-06-13T04:48:09.766461+00:00",
         "event_type": "LOGIN",
         "user": "admin",
         "severity": "INFO",
@@ -693,8 +558,8 @@
         "metadata": {}
     },
     {
-        "id": "9800ce9f-c17e-4712-a9b8-1e3d9fc3e31c",
-        "timestamp": "2026-06-09T12:15:44.650950+00:00",
+        "id": "4fea7f6c-a2f0-4d89-9b7b-86920ec97671",
+        "timestamp": "2026-06-13T04:57:35.572267+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -702,8 +567,8 @@
         "metadata": {}
     },
     {
-        "id": "f076c2d1-bd05-4f3a-8c7b-8c3d73849e40",
-        "timestamp": "2026-06-09T12:15:58.377319+00:00",
+        "id": "aa3ba0d2-531d-412c-afb8-4018ee707412",
+        "timestamp": "2026-06-13T05:00:16.807806+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -711,8 +576,53 @@
         "metadata": {}
     },
     {
-        "id": "d1506832-71fb-4794-9049-c7f012b74920",
-        "timestamp": "2026-06-09T12:18:14.942650+00:00",
+        "id": "8543f1a4-7999-4da6-ac30-20f0d36efdb3",
+        "timestamp": "2026-06-13T05:16:23.582176+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "ef7ee222-cc18-448b-9e38-d87374704df0",
+        "timestamp": "2026-06-13T05:18:20.547469+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "3685edbc-eedf-4528-9655-28c7f5f6b18f",
+        "timestamp": "2026-06-13T05:18:27.496159+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "7de70c61-6449-4547-b2b7-86afea806607",
+        "timestamp": "2026-06-13T05:18:28.321070+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "20669345-88bd-434c-b965-036024000df7",
+        "timestamp": "2026-06-13T05:20:24.945650+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "bf158336-007f-4ce8-84f4-d060b3f6449d",
+        "timestamp": "2026-06-13T08:21:37.758933+00:00",
         "event_type": "LOGOUT",
         "user": "admin",
         "severity": "INFO",
@@ -720,35 +630,26 @@
         "metadata": {}
     },
     {
-        "id": "64dbb62d-897c-49fc-80f4-21efe6215030",
-        "timestamp": "2026-06-09T12:23:42.404146+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
+        "id": "cbe0150e-9309-4425-8145-ebbd39470ec6",
+        "timestamp": "2026-06-13T08:21:45.142429+00:00",
+        "event_type": "LOGIN",
+        "user": "analyst1",
         "severity": "INFO",
-        "message": "Application started",
+        "message": "User logged in",
         "metadata": {}
     },
     {
-        "id": "f3ecadb7-c03c-4359-87a4-fb7634f1ba3e",
-        "timestamp": "2026-06-09T12:25:04.437115+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
+        "id": "e352ca8d-faec-4e27-a9a0-a86b3fd379b6",
+        "timestamp": "2026-06-13T08:22:43.301981+00:00",
+        "event_type": "LOGOUT",
+        "user": "analyst1",
         "severity": "INFO",
-        "message": "Application started",
+        "message": "User logged out",
         "metadata": {}
     },
     {
-        "id": "93d0c771-35a9-4248-8c3a-a8b8a826bc77",
-        "timestamp": "2026-06-09T12:25:18.041529+00:00",
-        "event_type": "SYSTEM",
-        "user": "system",
-        "severity": "INFO",
-        "message": "Application started",
-        "metadata": {}
-    },
-    {
-        "id": "5892d3bc-ae14-4e73-b5ab-3af6a486c1dc",
-        "timestamp": "2026-06-09T12:25:53.447605+00:00",
+        "id": "cd5e5877-c25e-4f21-a147-9375dc0448af",
+        "timestamp": "2026-06-13T08:22:49.318383+00:00",
         "event_type": "LOGIN",
         "user": "admin",
         "severity": "INFO",
@@ -756,8 +657,8 @@
         "metadata": {}
     },
     {
-        "id": "51f89708-0b37-4047-ac24-d2216a53fd51",
-        "timestamp": "2026-06-09T12:54:48.538776+00:00",
+        "id": "bd782286-b19d-4c2d-9f57-e71bfa260834",
+        "timestamp": "2026-06-13T19:44:54.913415+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -765,8 +666,8 @@
         "metadata": {}
     },
     {
-        "id": "9183d058-649f-4506-bc87-e68969901cb0",
-        "timestamp": "2026-06-09T12:54:50.739885+00:00",
+        "id": "842b7a3d-7236-41c8-82db-2569ff6dd3ec",
+        "timestamp": "2026-06-13T19:45:01.638683+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -774,8 +675,17 @@
         "metadata": {}
     },
     {
-        "id": "128d7ab8-4603-401b-bfd4-5500f5202ab6",
-        "timestamp": "2026-06-09T13:08:35.516712+00:00",
+        "id": "e62a8267-2801-4ef0-a586-ad9796f037af",
+        "timestamp": "2026-06-13T19:45:40.151767+00:00",
+        "event_type": "LOGIN",
+        "user": "admin",
+        "severity": "INFO",
+        "message": "User logged in",
+        "metadata": {}
+    },
+    {
+        "id": "2a36c8b1-f48f-479b-b729-d6074cbb0dea",
+        "timestamp": "2026-06-13T20:01:14.206313+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -783,8 +693,8 @@
         "metadata": {}
     },
     {
-        "id": "7a22769c-fbf6-4602-ba35-df1a313255c4",
-        "timestamp": "2026-06-09T13:08:37.420998+00:00",
+        "id": "b20902db-279a-4767-a42e-741d20640aa5",
+        "timestamp": "2026-06-13T20:01:15.352845+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -792,8 +702,8 @@
         "metadata": {}
     },
     {
-        "id": "1f9ee184-8474-4642-bb5e-ac8bc35a15f5",
-        "timestamp": "2026-06-09T13:19:40.924556+00:00",
+        "id": "a66eec57-7439-466e-b810-f3d29af1f0c0",
+        "timestamp": "2026-06-13T20:16:42.267762+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -801,8 +711,8 @@
         "metadata": {}
     },
     {
-        "id": "4d771f42-20d2-47eb-a3d2-5613a3b3e6b0",
-        "timestamp": "2026-06-09T13:19:42.893206+00:00",
+        "id": "f40c8dfc-d7df-484a-b644-39744926251d",
+        "timestamp": "2026-06-13T20:17:24.199657+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -810,8 +720,8 @@
         "metadata": {}
     },
     {
-        "id": "f681b97d-2b14-4120-8336-39e647cabfac",
-        "timestamp": "2026-06-09T13:19:59.228323+00:00",
+        "id": "e3163c65-4a2a-4b51-8143-3dcf9b1bf6a9",
+        "timestamp": "2026-06-13T20:17:25.244202+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -819,8 +729,8 @@
         "metadata": {}
     },
     {
-        "id": "bd3f57e4-9164-46d3-9ed9-72ea1e6789e8",
-        "timestamp": "2026-06-09T13:28:33.114901+00:00",
+        "id": "5c2f17bd-f49f-475f-b2ed-0cd7044b21f3",
+        "timestamp": "2026-06-13T20:20:49.463312+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -828,8 +738,8 @@
         "metadata": {}
     },
     {
-        "id": "07338eab-7731-427c-8cff-1295f9235861",
-        "timestamp": "2026-06-09T13:28:35.035545+00:00",
+        "id": "a2019bc6-14ff-4326-952a-a5aae9478de0",
+        "timestamp": "2026-06-13T20:21:11.195860+00:00",
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -837,8 +747,13 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "e89628cd-ac33-4d9b-9240-84ea32a52f85",
         "timestamp": "2026-06-11T09:15:51.911269+00:00",
+=======
+        "id": "697e7034-77bc-4251-82a9-f2dd53948405",
+        "timestamp": "2026-06-13T20:24:55.352221+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -846,8 +761,13 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "0edccf7c-33e6-4c58-9726-92e33dd802f4",
         "timestamp": "2026-06-11T09:15:52.739718+00:00",
+=======
+        "id": "71c907a6-00de-4839-8b2d-f5d57fa8c1d6",
+        "timestamp": "2026-06-13T20:24:56.558026+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -855,8 +775,13 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "7b5f3bb1-6ec0-46ba-9b1e-837c361c2d2c",
         "timestamp": "2026-06-11T09:16:00.916589+00:00",
+=======
+        "id": "980ecb87-f77b-4ff0-b7bb-a3e6f8bfef20",
+        "timestamp": "2026-06-13T20:28:10.992724+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -864,8 +789,13 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "a1a29975-9a24-46a8-9f26-305565d14d32",
         "timestamp": "2026-06-11T09:17:31.798314+00:00",
+=======
+        "id": "695d4df6-f164-4681-9f40-15fa6080ca92",
+        "timestamp": "2026-06-13T20:47:45.292540+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -873,8 +803,13 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "920b27ec-c8fd-4d9a-8b68-18917dfce5d6",
         "timestamp": "2026-06-11T09:17:43.199842+00:00",
+=======
+        "id": "78ce77c1-fe75-444c-b9eb-93dcbb72e26c",
+        "timestamp": "2026-06-13T20:48:07.028863+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -882,6 +817,7 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "fe6ee8f0-4a65-4531-8907-99bcc94d82c9",
         "timestamp": "2026-06-11T09:18:14.298006+00:00",
         "event_type": "LOGIN",
@@ -893,6 +829,10 @@
     {
         "id": "aea72ccb-1215-4114-9529-e11abaee39d6",
         "timestamp": "2026-06-11T09:38:30.227922+00:00",
+=======
+        "id": "8a28b044-bbbd-4dd4-9b34-3cba7f24751a",
+        "timestamp": "2026-06-13T20:48:18.484242+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -900,8 +840,13 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "3bfb4f2b-c3cd-49af-b9b6-e29a4d7753e2",
         "timestamp": "2026-06-11T09:38:36.310592+00:00",
+=======
+        "id": "d7729516-c6b9-4ac1-b64f-c2e545bc21bc",
+        "timestamp": "2026-06-13T21:04:52.878342+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -909,6 +854,7 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "e694e1b0-418f-40e2-9a73-bce24e3f78ca",
         "timestamp": "2026-06-11T09:38:50.161315+00:00",
         "event_type": "LOGIN",
@@ -920,6 +866,10 @@
     {
         "id": "5d82d96b-d948-4ee0-8df7-2289e1f307b1",
         "timestamp": "2026-06-11T09:38:54.642663+00:00",
+=======
+        "id": "fdb82b85-1b31-489c-bc4e-851134da9398",
+        "timestamp": "2026-06-13T21:04:53.857663+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -927,8 +877,13 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "d6c15ea6-fb5d-4158-a0f2-ba6a9fc8d654",
         "timestamp": "2026-06-11T09:42:01.612181+00:00",
+=======
+        "id": "6797ef81-178c-4a78-907c-ab935401e9bc",
+        "timestamp": "2026-06-13T21:11:46.890811+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -936,8 +891,13 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "a4278f26-1d3f-4c79-9308-d82f0e9834ea",
         "timestamp": "2026-06-11T09:42:03.547233+00:00",
+=======
+        "id": "64b85f59-ab99-4b4e-819c-0656816f8cda",
+        "timestamp": "2026-06-13T21:17:30.696505+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -945,8 +905,13 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "d360d92e-9cda-4614-9637-5a0766dde568",
         "timestamp": "2026-06-11T14:58:26.746505+00:00",
+=======
+        "id": "da8ad9fd-b683-4b0d-a34b-8d3864f65183",
+        "timestamp": "2026-06-13T21:17:31.738548+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "SYSTEM",
         "user": "system",
         "severity": "INFO",
@@ -954,6 +919,7 @@
         "metadata": {}
     },
     {
+<<<<<<< HEAD
         "id": "29839a98-1b10-4f55-9595-c653d517c3a8",
         "timestamp": "2026-06-11T14:58:31.861693+00:00",
         "event_type": "SYSTEM",
@@ -1001,11 +967,16 @@
     {
         "id": "fa5cfa07-62d9-445a-b39c-511212d74129",
         "timestamp": "2026-06-11T15:01:38.835633+00:00",
+=======
+        "id": "d692209a-24a2-4676-98fb-293057caba3f",
+        "timestamp": "2026-06-13T21:20:54.467909+00:00",
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
         "event_type": "LOGOUT",
         "user": "admin",
         "severity": "INFO",
         "message": "User logged out",
         "metadata": {}
+<<<<<<< HEAD
     },
     {
         "id": "33747be6-bde4-4551-a8c9-4b3aeb632ecf",
@@ -1222,5 +1193,7 @@
         "severity": "INFO",
         "message": "Application started",
         "metadata": {}
+=======
+>>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
     }
 ]

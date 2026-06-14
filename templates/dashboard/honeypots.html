@@ -1,68 +1,332 @@
 {% extends "layouts/base.html" %}
 
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/honeypots.css') }}"
+>
+{% endblock %}
+
 {% block content %}
 
-<div class="dashboard-container">
+<div class="honeypots-container">
 
-    <h1>Connected Medical Devices</h1>
+    <div class="page-header">
 
-    <table class="attack-table">
+        <div>
 
-        <thead>
+            <h1>Honeypot Management Center</h1>
 
-            <tr>
+            <p>
+                Manage Healthcare IoT Honeypots, Services and Attack Collection
+            </p>
 
-                <th>Device</th>
-                <th>IP</th>
-                <th>Status</th>
-                <th>Firmware</th>
+        </div>
 
-            </tr>
+        <button
+            class="add-btn"
+            onclick="document.getElementById('addHoneypotModal').style.display='flex'"
+        >
+            + Add Honeypot
+        </button>
 
-        </thead>
+    </div>
 
-        <tbody>
+    <div class="stats-grid">
 
-            <tr>
+        <div class="stat-card">
 
-                <td>Ventilator</td>
-                <td>10.0.0.10</td>
-                <td>Online</td>
-                <td>v2.3</td>
+            <h3>Total Honeypots</h3>
 
-            </tr>
+            <span>
+                {{ honeypots|length }}
+            </span>
 
-            <tr>
+        </div>
 
-                <td>Patient Monitor</td>
-                <td>10.0.0.11</td>
-                <td>Online</td>
-                <td>v1.8</td>
+        <div class="stat-card">
 
-            </tr>
+            <h3>Running</h3>
 
-            <tr>
+            <span>
+                {{ running_count }}
+            </span>
 
-                <td>Infusion Pump</td>
-                <td>10.0.0.12</td>
-                <td>Online</td>
-                <td>v3.1</td>
+        </div>
 
-            </tr>
+        <div class="stat-card">
 
-            <tr>
+            <h3>Stopped</h3>
 
-                <td>ECG Monitor</td>
-                <td>10.0.0.13</td>
-                <td>Online</td>
-                <td>v2.1</td>
+            <span>
+                {{ stopped_count }}
+            </span>
 
-            </tr>
+        </div>
 
-        </tbody>
+        <div class="stat-card">
 
-    </table>
+            <h3>Total Attacks</h3>
+
+            <span>
+                {{ total_attacks }}
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h2>Active Honeypots</h2>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search Honeypot..."
+            >
+
+        </div>
+
+        <table class="honeypot-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>IP Address</th>
+                    <th>Port</th>
+                    <th>Status</th>
+                    <th>Attacks</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="honeypotTable">
+
+                {% for hp in honeypots %}
+
+                <tr>
+
+                    <td>{{ hp.name }}</td>
+
+                    <td>{{ hp.type }}</td>
+
+                    <td>{{ hp.ip }}</td>
+
+                    <td>{{ hp.port }}</td>
+
+                    <td>
+
+                        {% if hp.status == "Running" %}
+
+                        <span class="status-running">
+                            Running
+                        </span>
+
+                        {% else %}
+
+                        <span class="status-stopped">
+                            Stopped
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ hp.attacks }}
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="/view-honeypot/{{ hp.id }}"
+                            class="view-btn"
+                        >
+                            View
+                        </a>
+
+                        <a
+                            href="/start-honeypot/{{ hp.id }}"
+                            class="start-btn"
+                        >
+                            Start
+                        </a>
+
+                        <a
+                            href="/stop-honeypot/{{ hp.id }}"
+                            class="stop-btn"
+                        >
+                            Stop
+                        </a>
+
+                        <a
+                            href="/delete-honeypot/{{ hp.id }}"
+                            class="delete-btn"
+                        >
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>Live Honeypot Events</h2>
+
+        <div class="event-feed">
+
+            <p>[INFO] SSH Honeypot Started</p>
+
+            <p>[INFO] MQTT Connection Detected</p>
+
+            <p>[WARNING] Telnet Login Attempt</p>
+
+            <p>[CRITICAL] Modbus Exploit Attempt</p>
+
+            <p>[INFO] DICOM Scan Detected</p>
+
+        </div>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>Captured Credentials</h2>
+
+        <table class="honeypot-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Time</th>
+                    <th>Honeypot</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Source IP</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>15:32</td>
+                    <td>SSH-HP01</td>
+                    <td>admin</td>
+                    <td>123456</td>
+                    <td>185.45.23.11</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
+<div
+    id="addHoneypotModal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>Add Honeypot</h2>
+
+            <span
+                class="close-btn"
+                onclick="document.getElementById('addHoneypotModal').style.display='none'"
+            >
+                ×
+            </span>
+
+        </div>
+
+        <form
+            action="/add-honeypot"
+            method="POST"
+        >
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Honeypot Name"
+                required
+            >
+
+            <select name="type">
+
+                <option>SSH</option>
+
+                <option>HTTP</option>
+
+                <option>HTTPS</option>
+
+                <option>MQTT</option>
+
+                <option>Telnet</option>
+
+                <option>DICOM</option>
+
+                <option>Modbus</option>
+
+                <option>HL7</option>
+
+            </select>
+
+            <input
+                type="text"
+                name="ip"
+                placeholder="IP Address"
+                required
+            >
+
+            <input
+                type="number"
+                name="port"
+                placeholder="Port"
+                required
+            >
+
+            <button
+                type="submit"
+                class="save-btn"
+            >
+                Create Honeypot
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/honeypots.js') }}"></script>
 {% endblock %}

@@ -13,11 +13,23 @@
 
     <div class="page-header">
 
-        <h1>Attack Timeline Analysis</h1>
+        <div>
 
-        <p>
-            Chronological view of attacker activity
-        </p>
+            <h1>Attack Timeline Analysis</h1>
+
+            <p>
+                Chronological View of Attacker Activity
+            </p>
+
+        </div>
+
+        <div class="timeline-status">
+
+            <span class="status-dot"></span>
+
+            Live Monitoring
+
+        </div>
 
     </div>
 
@@ -27,36 +39,46 @@
 
             <h3>Total Events</h3>
 
-            <span>247</span>
+            <span>
+
+                {{ attacks|length }}
+
+            </span>
 
         </div>
 
-        <div class="summary-card">
+        <div class="summary-card critical-card">
 
             <h3>Critical Events</h3>
 
-            <span class="critical">
-                12
+            <span>
+
+                {{ critical_events }}
+
             </span>
 
         </div>
 
         <div class="summary-card">
 
-            <h3>Unique Attackers</h3>
+            <h3>User</h3>
 
             <span>
-                43
+
+                {{ username }}
+
             </span>
 
         </div>
 
         <div class="summary-card">
 
-            <h3>Compromised Devices</h3>
+            <h3>Role</h3>
 
             <span>
-                8
+
+                {{ role }}
+
             </span>
 
         </div>
@@ -69,105 +91,83 @@
 
         <div class="timeline">
 
-            <div class="timeline-item critical">
+            {% if attacks %}
 
-                <div class="timeline-time">
-                    14:32
-                </div>
+                {% for attack in attacks|reverse %}
 
-                <div class="timeline-content">
+                <div class="timeline-item">
 
-                    <h3>
-                        Ventilator Exploit Attempt
-                    </h3>
+                    <div class="timeline-time">
 
-                    <p>
-                        Source IP: 45.33.12.88
-                    </p>
+                        {{ attack.get('time','Unknown') }}
 
-                </div>
+                    </div>
 
-            </div>
+                    <div class="timeline-content">
 
-            <div class="timeline-item high">
+                        <h3>
 
-                <div class="timeline-time">
-                    14:28
-                </div>
+                            {{ attack.get('attack_type','Unknown Attack') }}
 
-                <div class="timeline-content">
+                        </h3>
 
-                    <h3>
-                        Malware Communication
-                    </h3>
+                        <p>
 
-                    <p>
-                        Target: Patient Monitor
-                    </p>
+                            Source IP:
+                            {{ attack.get('ip','Unknown') }}
 
-                </div>
+                        </p>
 
-            </div>
+                        <p>
 
-            <div class="timeline-item medium">
+                            Username:
+                            {{ attack.get('username','N/A') }}
 
-                <div class="timeline-time">
-                    14:22
-                </div>
+                        </p>
 
-                <div class="timeline-content">
+                        <p>
 
-                    <h3>
-                        Reconnaissance Scan
-                    </h3>
+                            Target:
+                            {{ attack.get('target','Unknown') }}
 
-                    <p>
-                        Port Scan Detected
-                    </p>
+                        </p>
+
+                        <p>
+
+                            Risk:
+                            <strong>
+
+                                {{ attack.get('risk','Low') }}
+
+                            </strong>
+
+                        </p>
+
+                    </div>
 
                 </div>
 
-            </div>
+                {% endfor %}
 
-            <div class="timeline-item low">
+            {% else %}
 
-                <div class="timeline-time">
-                    14:15
-                </div>
+                <div class="timeline-item">
 
-                <div class="timeline-content">
+                    <div class="timeline-content">
 
-                    <h3>
-                        Device Discovery
-                    </h3>
+                        <h3>
+                            No Events Found
+                        </h3>
 
-                    <p>
-                        Infusion Pump Enumeration
-                    </p>
+                        <p>
+                            Waiting for attack data...
+                        </p>
 
-                </div>
-
-            </div>
-
-            <div class="timeline-item critical">
-
-                <div class="timeline-time">
-                    14:10
-                </div>
-
-                <div class="timeline-content">
-
-                    <h3>
-                        Credential Stuffing
-                    </h3>
-
-                    <p>
-                        Multiple Login Attempts
-                    </p>
+                    </div>
 
                 </div>
 
-            </div>
+            {% endif %}
 
         </div>
 
@@ -180,7 +180,7 @@
         <div class="attack-chain">
 
             <div class="chain-box">
-                Recon
+                Reconnaissance
             </div>
 
             <div class="chain-arrow">
@@ -188,7 +188,15 @@
             </div>
 
             <div class="chain-box">
-                Exploit
+                Initial Access
+            </div>
+
+            <div class="chain-arrow">
+                →
+            </div>
+
+            <div class="chain-box">
+                Exploitation
             </div>
 
             <div class="chain-arrow">

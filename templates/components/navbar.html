@@ -1,11 +1,13 @@
 <header class="navbar">
 
+    <!-- Left Section -->
+
     <div class="navbar-left">
 
         <div class="page-title">
 
             <h3>
-                Healthcare IoT Deception Honeypot Network
+                {{ project_name }}
             </h3>
 
             <span>
@@ -16,6 +18,8 @@
 
     </div>
 
+    <!-- Center Section -->
+
     <div class="navbar-center">
 
         <div class="search-box">
@@ -24,24 +28,31 @@
 
             <input
                 type="text"
-                placeholder="Search IP, IOC, Device, Alert..."
+                id="globalSearch"
+                placeholder="Search IP, IOC, CVE, Device, Username..."
             >
 
         </div>
 
     </div>
 
+    <!-- Right Section -->
+
     <div class="navbar-right">
 
-        <div class="health-status">
+        <!-- SOC Status -->
 
-            <span class="health-dot"></span>
+        <div class="soc-status">
+
+            <span class="status-dot"></span>
 
             <span>
-                Healthy
+                Monitoring Active
             </span>
 
         </div>
+
+        <!-- Clock -->
 
         <div class="live-clock">
 
@@ -55,23 +66,62 @@
 
         </div>
 
-        <div class="notification-btn">
+        <!-- Notifications -->
 
-            <i class="fa-regular fa-bell"></i>
+        <div class="notification-wrapper">
 
-            <span class="notification-count">
+            <button
+                type="button"
+                class="notification-btn"
+                id="notificationBtn"
+            >
 
-                0
+                <i class="fa-regular fa-bell"></i>
 
-            </span>
+                <span class="notification-count">
+
+                    {% if critical_attacks is defined %}
+                        {{ critical_attacks }}
+                    {% else %}
+                        0
+                    {% endif %}
+
+                </span>
+
+            </button>
+
+            <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+            >
+
+                <div class="notification-header">
+
+                    Security Alerts
+
+                </div>
+
+                <div class="notification-item">
+
+                    No Critical Alerts
+
+                </div>
+
+            </div>
 
         </div>
 
-        <div class="user-info">
+        <!-- User -->
+
+        <div class="user-profile">
 
             <div class="user-avatar">
 
-                <i class="fa-solid fa-user-shield"></i>
+                {% if username %}
+                    {{ username[0]|upper }}
+                {% else %}
+                    A
+                {% endif %}
 
             </div>
 
@@ -93,36 +143,6 @@
 
         </div>
 
-        <a
-            href="/logout"
-            class="logout-btn"
-        >
-
-            <i class="fa-solid fa-right-from-bracket"></i>
-
-        </a>
-
     </div>
 
 </header>
-
-<script>
-
-function updateClock() {
-
-    const now = new Date();
-
-    document.getElementById(
-        "live-clock"
-    ).textContent = now.toLocaleTimeString();
-
-}
-
-setInterval(
-    updateClock,
-    1000
-);
-
-updateClock();
-
-</script>
