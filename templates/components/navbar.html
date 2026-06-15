@@ -1,147 +1,69 @@
 <header class="navbar">
 
-    <!-- Left Section -->
-
     <div class="navbar-left">
-
         <div class="page-title">
-
-            <h3>
-                {{ project_name }}
-            </h3>
-
-            <span>
-                Security Operations Center
-            </span>
-
+            <h3>{{ project_name }}</h3>
+            <span>Security Operations Center</span>
         </div>
-
     </div>
 
-    <!-- Center Section -->
-
     <div class="navbar-center">
-
         <div class="search-box">
-
             <i class="fa-solid fa-magnifying-glass"></i>
-
             <input
                 type="text"
                 id="globalSearch"
                 placeholder="Search IP, IOC, CVE, Device, Username..."
             >
-
         </div>
-
     </div>
-
-    <!-- Right Section -->
 
     <div class="navbar-right">
 
-        <!-- SOC Status -->
-
         <div class="soc-status">
-
             <span class="status-dot"></span>
-
-            <span>
-                Monitoring Active
-            </span>
-
+            <span>Monitoring Active</span>
         </div>
-
-        <!-- Clock -->
 
         <div class="live-clock">
-
             <i class="fa-regular fa-clock"></i>
-
-            <span id="live-clock">
-
-                --:--:--
-
-            </span>
-
+            <span id="live-clock">--:--:--</span>
         </div>
 
-        <!-- Notifications -->
-
         <div class="notification-wrapper">
-
-            <button
-                type="button"
-                class="notification-btn"
-                id="notificationBtn"
-            >
-
+            <button type="button" class="notification-btn" id="notificationBtn">
                 <i class="fa-regular fa-bell"></i>
-
                 <span class="notification-count">
-
                     {% if critical_attacks is defined %}
                         {{ critical_attacks }}
                     {% else %}
                         0
                     {% endif %}
-
                 </span>
-
             </button>
-
-            <div
-                class="notification-dropdown"
-                id="notificationDropdown"
-            >
-
-                <div class="notification-header">
-
-                    Security Alerts
-
-                </div>
-
-                <div class="notification-item">
-
-                    No Critical Alerts
-
-                </div>
-
+            <div class="notification-dropdown" id="notificationDropdown">
+                <div class="notification-header">Security Alerts</div>
+                <div class="notification-item">No Critical Alerts</div>
             </div>
-
         </div>
 
-        <!-- User -->
-
         <div class="user-profile">
-
             <div class="user-avatar">
-
                 {% if username %}
                     {{ username[0]|upper }}
                 {% else %}
                     A
                 {% endif %}
-
             </div>
-
             <div class="user-details">
-
-                <span class="username">
-
-                    {{ username if username else "Admin" }}
-
-                </span>
-
-                <span class="role">
-
-                    {{ role if role else "Administrator" }}
-
-                </span>
-
+                <span class="username">{{ username if username else "Admin" }}</span>
+                <span class="role">{{ role if role else "Administrator" }}</span>
             </div>
-
         </div>
+
+        <a href="{{ url_for('logout') }}" class="nav-logout-btn" style="color: #ef4444; font-size: 1.2rem; margin-left: 15px; text-decoration: none;" title="Logout">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
 
     </div>
 

@@ -72,52 +72,35 @@
 
     <div class="app-container">
 
-        {% if request.endpoint != "login" %}
+        {% if request.endpoint != "login" and request.path != "/" %}
             {% include "components/sidebar.html" %}
         {% endif %}
 
-        <div class="main-container">
+        <div class="main-container" 
+             {% if request.endpoint == 'login' or request.path == '/' %} 
+             style="margin-left: 0 !important; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden;" 
+             {% endif %}>
 
-            {% if request.endpoint != "login" %}
+            {% if request.endpoint != "login" and request.path != "/" %}
                 {% include "components/navbar.html" %}
             {% endif %}
 
-            <!-- Main Content -->
-
-            <main class="content-area">
-
-                <!-- Flash Messages -->
+            <main class="content-area" 
+                  {% if request.endpoint == 'login' or request.path == '/' %} 
+                  style="width: 100%; display: flex; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; margin-top: -15vh;" 
+                  {% endif %}>
 
                 {% with messages = get_flashed_messages(with_categories=true) %}
-
                     {% if messages %}
-
-                        <div id="flash-container">
-
+                        <div id="flash-container" {% if request.endpoint == 'login' or request.path == '/' %} style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;" {% endif %}>
                             {% for category, message in messages %}
-
-                                <div
-                                    class="flash-message flash-{{ category }}"
-                                >
-
+                                <div class="flash-message flash-{{ category }}">
                                     <span>{{ message }}</span>
-
-                                    <button
-                                        type="button"
-                                        class="flash-close"
-                                        onclick="this.parentElement.remove();"
-                                    >
-                                        ×
-                                    </button>
-
+                                    <button type="button" class="flash-close" onclick="this.parentElement.remove();">×</button>
                                 </div>
-
                             {% endfor %}
-
                         </div>
-
                     {% endif %}
-
                 {% endwith %}
 
                 {% block content %}
@@ -125,7 +108,7 @@
 
             </main>
 
-            {% if request.endpoint != "login" %}
+            {% if request.endpoint != "login" and request.path != "/" %}
                 {% include "components/footer.html" %}
             {% endif %}
 
@@ -133,92 +116,40 @@
 
     </div>
 
-    <!-- Loading Overlay -->
-
     <div id="loading-overlay">
-
         <div class="loader">
-
             <div class="loader-circle"></div>
-
-            <div class="loader-text">
-
-                Loading SOC Dashboard...
-
-            </div>
-
+            <div class="loader-text">Loading SOC Dashboard...</div>
         </div>
-
     </div>
 
-    <!-- Global Variables -->
-
     <script>
-
         window.APP_CONFIG = {
-
-            projectName:
-                "{{ project_name if project_name else 'Healthcare IoT Deception Honeypot Network' }}",
-
-            username:
-                "{{ username if username else '' }}",
-
-            role:
-                "{{ role if role else '' }}"
-
+            projectName: "{{ project_name if project_name else 'Healthcare IoT Deception Honeypot Network' }}",
+            username: "{{ username if username else '' }}",
+            role: "{{ role if role else '' }}"
         };
-
     </script>
 
-    <!-- Global JavaScript -->
-
-    <script
-        src="{{ url_for('static', filename='js/main.js') }}"
-    ></script>
-
-    <!-- Dashboard JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
     {% if request.path == "/dashboard" %}
-
-        <script
-            src="{{ url_for('static', filename='js/dashboard.js') }}"
-        ></script>
-
+        <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
     {% endif %}
 
-    <!-- Auto Hide Flash Messages -->
-
     <script>
-
         setTimeout(() => {
-
-            document
-                .querySelectorAll(".flash-message")
-                .forEach(message => {
-
-                    message.style.transition = "all 0.5s ease";
-
-                    message.style.opacity = "0";
-
-                    message.style.transform = "translateX(50px)";
-
-                    setTimeout(() => {
-
-                        message.remove();
-
-                    }, 500);
-
-                });
-
+            document.querySelectorAll(".flash-message").forEach(message => {
+                message.style.transition = "all 0.5s ease";
+                message.style.opacity = "0";
+                message.style.transform = "translateX(50px)";
+                setTimeout(() => { message.remove(); }, 500);
+            });
         }, 4000);
-
     </script>
-
-    <!-- Page Specific JS -->
 
     {% block extra_js %}
     {% endblock %}
 
 </body>
-
 </html>

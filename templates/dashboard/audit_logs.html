@@ -1,0 +1,156 @@
+{% extends "layouts/base.html" %}
+
+{% block extra_css %}
+<style>
+    /* SOC Audit Log Aesthetic */
+    .audit-container { padding: 20px; color: #f8fafc; font-family: 'Inter', sans-serif; }
+    
+    /* Page Header */
+    .page-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 1rem;
+    }
+    .page-header h1 { margin: 0; font-size: 1.8rem; color: #ffffff; }
+    .page-header p { color: #94a3b8; margin-top: 0.5rem; margin-bottom: 0; }
+    
+    .header-actions { display: flex; align-items: center; gap: 1rem; }
+    .log-status {
+        display: flex; align-items: center; gap: 0.5rem;
+        color: #10b981; font-weight: 600; background: rgba(16, 185, 129, 0.1);
+        padding: 0.6rem 1.2rem; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .status-dot { width: 10px; height: 10px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
+
+    /* Summary Cards */
+    .audit-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .summary-card {
+        background: #1e293b; padding: 1.5rem; border-radius: 12px;
+        border-left: 4px solid #3b82f6; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .summary-card h3 { margin: 0 0 0.5rem 0; color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .summary-card span { font-size: 2rem; font-weight: 700; color: #f8fafc; }
+    .summary-card.system { border-left-color: #8b5cf6; }
+    .summary-card.auth { border-left-color: #10b981; }
+
+    /* Main Panel & Table */
+    .audit-panel {
+        background: #1e293b; padding: 1.5rem; border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.05); overflow-x: auto;
+    }
+    .audit-table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+    .audit-table th, .audit-table td { padding: 1rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .audit-table th { color: #94a3b8; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; }
+    .audit-table tr:hover { background: rgba(255,255,255,0.02); }
+    
+    /* Formatting */
+    .log-id { font-family: 'Consolas', monospace; color: #64748b; font-size: 0.85rem; }
+    .log-time { font-family: 'Consolas', monospace; color: #94a3b8; }
+    .log-user { font-weight: 600; color: #e2e8f0; }
+
+    /* Badges */
+    .badge { padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; letter-spacing: 0.05em; display: inline-block; }
+    
+    /* Event Type Badges */
+    .event-system { background: rgba(139, 92, 246, 0.1); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.2); }
+    .event-login { background: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+    .event-logout { background: rgba(245, 158, 11, 0.1); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.2); }
+    .event-failed { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+    
+    /* Severity Badges */
+    .sev-info { color: #3b82f6; }
+    .sev-warning { color: #f59e0b; }
+    .sev-critical { color: #ef4444; font-weight: bold; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="audit-container">
+
+    <div class="page-header">
+        <div>
+            <h1>System Audit Logs</h1>
+            <p>Immutable record of system events, authentication, and administrator activity.</p>
+        </div>
+        <div class="header-actions">
+            <div class="log-status">
+                <span class="status-dot"></span> Logger Active
+            </div>
+        </div>
+    </div>
+
+    <div class="audit-summary">
+        <div class="summary-card">
+            <h3>Total Logs</h3>
+            <span>{{ logs|length }}</span>
+        </div>
+        <div class="summary-card system">
+            <h3>System Events</h3>
+            <span>
+                {% set sys = namespace(count=0) %}
+                {% for log in logs %}{% if log.event_type == 'SYSTEM' %}{% set sys.count = sys.count + 1 %}{% endif %}{% endfor %}
+                {{ sys.count }}
+            </span>
+        </div>
+        <div class="summary-card auth">
+            <h3>Auth Events</h3>
+            <span>
+                {% set auth = namespace(count=0) %}
+                {% for log in logs %}{% if log.event_type in ['LOGIN', 'LOGOUT', 'LOGIN_FAILED'] %}{% set auth.count = auth.count + 1 %}{% endif %}{% endfor %}
+                {{ auth.count }}
+            </span>
+        </div>
+    </div>
+
+    <div class="audit-panel">
+        <table class="audit-table">
+            <thead>
+                <tr>
+                    <th>Event ID</th>
+                    <th>Timestamp (UTC)</th>
+                    <th>Event Type</th>
+                    <th>User</th>
+                    <th>Severity</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if logs %}
+                    {% for log in logs|reverse %}
+                    <tr>
+                        <td class="log-id">{{ log.id[:8] }}...</td>
+                        
+                        <td class="log-time">{{ log.timestamp.split('.')[0].replace('T', ' ') }}</td>
+                        
+                        <td>
+                            <span class="badge 
+                                {% if log.event_type == 'SYSTEM' %}event-system
+                                {% elif log.event_type == 'LOGIN' %}event-login
+                                {% elif log.event_type == 'LOGOUT' %}event-logout
+                                {% elif log.event_type == 'LOGIN_FAILED' %}event-failed
+                                {% else %}event-system{% endif %}">
+                                {{ log.event_type }}
+                            </span>
+                        </td>
+                        
+                        <td class="log-user">{{ log.user }}</td>
+                        
+                        <td class="{% if log.severity == 'INFO' %}sev-info{% elif log.severity == 'WARNING' %}sev-warning{% else %}sev-critical{% endif %}">
+                            {{ log.severity }}
+                        </td>
+                        
+                        <td style="color: #cbd5e1;">{{ log.message }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 2rem; color: #94a3b8;">
+                            No Audit Logs Found
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %} 

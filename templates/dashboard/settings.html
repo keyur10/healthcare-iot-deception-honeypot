@@ -1,626 +1,125 @@
-<<<<<<< HEAD
-html
-{% extends "layouts/base.html" %}
-
-{% block content %}
-
-<div class="dashboard-container">
-
-<div class="dashboard-header">
-
-<div>
-
-<h1>System Settings</h1>
-
-<p>Healthcare IoT Deception Honeypot Configuration</p>
-
-</div>
-
-</div>
-
-<div class="dashboard-row">
-
-<div class="dashboard-panel">
-
-<h2>General Settings</h2>
-
-<form>
-
-<label>Project Name</label>
-
-<input class="dashboard-input"
-type="text"
-value="Healthcare IoT Deception Honeypot Network">
-
-<label>Organization</label>
-
-<input class="dashboard-input"
-type="text"
-value="Healthcare SOC">
-
-<label>Administrator Email</label>
-
-<input class="dashboard-input"
-type="email"
-value="admin@hospital.com">
-
-<button class="save-btn">
-
-Save Changes
-
-</button>
-
-</form>
-
-</div>
-
-<div class="dashboard-panel">
-
-<h2>Security Settings</h2>
-
-<label>
-
-<input type="checkbox" checked>
-
-Enable Threat Hunting
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox" checked>
-
-Enable IOC Collection
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox" checked>
-
-Enable MITRE Mapping
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox" checked>
-
-Enable Attack Logging
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox">
-
-Enable Email Alerts
-
-</label>
-
-</div>
-
-</div>
-
-<div class="dashboard-row">
-
-<div class="dashboard-panel">
-
-<h2>WHOIS & Threat Intelligence</h2>
-
-<label>VirusTotal API Key</label>
-
-<input class="dashboard-input"
-type="password">
-
-<label>AbuseIPDB API Key</label>
-
-<input class="dashboard-input"
-type="password">
-
-<label>OTX API Key</label>
-
-<input class="dashboard-input"
-type="password">
-
-</div>
-
-<div class="dashboard-panel">
-
-<h2>Dashboard Preferences</h2>
-
-<label>
-
-<input type="checkbox" checked>
-
-Dark Theme
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox" checked>
-
-Show Threat Feed
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox" checked>
-
-Show MITRE Statistics
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox" checked>
-
-Show Threat Hunting Panel
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox" checked>
-
-Show WHOIS Lookup
-
-</label>
-
-</div>
-
-</div>
-
-<div class="dashboard-row">
-
-<div class="dashboard-panel">
-
-<h2>Notification Settings</h2>
-
-<label>
-
-<input type="checkbox" checked>
-
-Critical Alerts
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox" checked>
-
-High Alerts
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox">
-
-Medium Alerts
-
-</label>
-
-<br><br>
-
-<label>
-
-<input type="checkbox">
-
-Low Alerts
-
-</label>
-
-</div>
-
-<div class="dashboard-panel">
-
-<h2>System Information</h2>
-
-<p>Version : 1.0</p>
-
-<p>Status : Running</p>
-
-<p>Environment : Development</p>
-
-<p>Framework : Flask</p>
-
-<p>Database : JSON Storage</p>
-
-<p>Last Update : Today</p>
-
-</div>
-
-</div>
-=======
 {% extends "layouts/base.html" %}
 
 {% block extra_css %}
-<link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/settings.css') }}"
->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
 {% endblock %}
 
 {% block content %}
-
 <div class="settings-container">
 
     <div class="page-header">
-
         <div>
-
             <h1>System Settings Center</h1>
-
-            <p>
-                Security Controls, API Integrations, Backup and System Configuration
-            </p>
-
+            <p>Security Controls, API Integrations, Backup and System Configuration</p>
         </div>
-
     </div>
 
-    <!-- SECURITY SETTINGS -->
-
     <div class="settings-panel">
-
         <h2>Security Settings</h2>
-
-        <form
-            action="{{ url_for('save_system_settings') }}"
-            method="POST"
-        >
-
+        <form action="{{ url_for('save_system_settings') }}" method="POST">
             <div class="settings-grid">
-
                 <div class="setting-card">
-
-                    <label>
-
-                        Password Length
-
-                    </label>
-
-                    <input
-                        type="number"
-                        name="password_length"
-                        value="{{ settings.get('security', {}).get('password_length', 12) }}"
-                        min="8"
-                        max="64"
-                        {% if role != "Administrator" %}
-                        readonly
-                        {% endif %}
-                    >
-
+                    <label>Password Length</label>
+                    <input type="number" name="password_length" value="{{ settings.get('security', {}).get('password_length', 12) }}" min="8" max="64" {% if role != "Administrator" %}readonly{% endif %}>
                 </div>
-
                 <div class="setting-card">
-
-                    <label>
-
-                        Session Timeout (Minutes)
-
-                    </label>
-
-                    <input
-                        type="number"
-                        name="session_timeout"
-                        value="{{ settings.get('security', {}).get('session_timeout', 30) }}"
-                        min="5"
-                        max="1440"
-                        {% if role != "Administrator" %}
-                        readonly
-                        {% endif %}
-                    >
-
+                    <label>Session Timeout (Minutes)</label>
+                    <input type="number" name="session_timeout" value="{{ settings.get('security', {}).get('session_timeout', 30) }}" min="5" max="1440" {% if role != "Administrator" %}readonly{% endif %}>
                 </div>
-
                 <div class="setting-card">
-
                     <label>
-
-                        <input
-                            type="checkbox"
-                            name="two_factor"
-                            {% if settings.get('security', {}).get('two_factor', False) %}
-                            checked
-                            {% endif %}
-                            {% if role != "Administrator" %}
-                            disabled
-                            {% endif %}
-                        >
-
+                        <input type="checkbox" name="two_factor" {% if settings.get('security', {}).get('two_factor', False) %}checked{% endif %} {% if role != "Administrator" %}disabled{% endif %}>
                         Enable Two-Factor Authentication
-
                     </label>
-
                 </div>
-
                 <div class="setting-card">
-
-                    <label>
-
-                        Account Lockout Attempts
-
-                    </label>
-
-                    <input
-                        type="number"
-                        name="lockout_attempts"
-                        value="{{ settings.get('security', {}).get('lockout_attempts', 5) }}"
-                        min="1"
-                        max="20"
-                        {% if role != "Administrator" %}
-                        readonly
-                        {% endif %}
-                    >
-
+                    <label>Account Lockout Attempts</label>
+                    <input type="number" name="lockout_attempts" value="{{ settings.get('security', {}).get('lockout_attempts', 5) }}" min="1" max="20" {% if role != "Administrator" %}readonly{% endif %}>
                 </div>
-
             </div>
 
             {% if role == "Administrator" %}
-
-            <button
-                type="submit"
-                class="save-btn"
-            >
-                Save Security Settings
-            </button>
-
+            <button type="submit" class="save-btn">Save Security Settings</button>
             {% endif %}
-
         </form>
-
     </div>
 
-    <!-- API SETTINGS -->
-
     <div class="settings-panel">
-
         <h2>Threat Intelligence API Keys</h2>
-
-        <form
-            action="{{ url_for('save_system_settings') }}"
-            method="POST"
-        >
-
+        <form action="{{ url_for('save_system_settings') }}" method="POST">
             <div class="settings-grid">
-
                 <div class="setting-card">
-
-                    <label>
-                        VirusTotal API Key
-                    </label>
-
-                    <input
-                        type="text"
-                        name="virustotal"
-                        value="{{ settings.get('api_keys', {}).get('virustotal', '') }}"
-                        placeholder="Enter VirusTotal API Key"
-                    >
-
+                    <label>VirusTotal API Key</label>
+                    <input type="text" name="virustotal" value="{{ settings.get('api_keys', {}).get('virustotal', '') }}" placeholder="Enter VirusTotal API Key">
                 </div>
-
                 <div class="setting-card">
-
-                    <label>
-                        AbuseIPDB API Key
-                    </label>
-
-                    <input
-                        type="text"
-                        name="abuseipdb"
-                        value="{{ settings.get('api_keys', {}).get('abuseipdb', '') }}"
-                        placeholder="Enter AbuseIPDB API Key"
-                    >
-
+                    <label>AbuseIPDB API Key</label>
+                    <input type="text" name="abuseipdb" value="{{ settings.get('api_keys', {}).get('abuseipdb', '') }}" placeholder="Enter AbuseIPDB API Key">
                 </div>
-
                 <div class="setting-card">
-
-                    <label>
-                        Shodan API Key
-                    </label>
-
-                    <input
-                        type="text"
-                        name="shodan"
-                        value="{{ settings.get('api_keys', {}).get('shodan', '') }}"
-                        placeholder="Enter Shodan API Key"
-                    >
-
+                    <label>Shodan API Key</label>
+                    <input type="text" name="shodan" value="{{ settings.get('api_keys', {}).get('shodan', '') }}" placeholder="Enter Shodan API Key">
                 </div>
-
                 <div class="setting-card">
-
-                    <label>
-                        AlienVault OTX API Key
-                    </label>
-
-                    <input
-                        type="text"
-                        name="otx"
-                        value="{{ settings.get('api_keys', {}).get('otx', '') }}"
-                        placeholder="Enter AlienVault OTX API Key"
-                    >
-
+                    <label>AlienVault OTX API Key</label>
+                    <input type="text" name="otx" value="{{ settings.get('api_keys', {}).get('otx', '') }}" placeholder="Enter AlienVault OTX API Key">
                 </div>
-
             </div>
 
             {% if role == "Administrator" %}
-
-            <button
-                type="submit"
-                class="save-btn"
-            >
-                Save API Keys
-            </button>
-
+            <button type="submit" class="save-btn">Save API Keys</button>
             {% endif %}
-
         </form>
-
     </div>
-    <!-- BACKUP & RECOVERY -->
 
     <div class="settings-panel">
-
         <h2>Backup & Recovery</h2>
-
         <div class="backup-grid">
-
             <div class="setting-card">
-
                 <h3>Create Backup</h3>
-
-                <p>
-                    Backup users, attacks, honeypots, settings and threat intelligence data.
-                </p>
-
+                <p>Backup users, attacks, honeypots, settings and threat intelligence data.</p>
                 {% if role == "Administrator" %}
-
-                <a
-                    href="{{ url_for('create_backup') }}"
-                    class="save-btn"
-                >
-                    Create Backup
-                </a>
-
+                <a href="{{ url_for('create_backup') }}" class="save-btn">Create Backup</a>
                 {% else %}
-
-                <button
-                    class="save-btn"
-                    disabled
-                >
-                    Read Only
-                </button>
-
+                <button class="save-btn" disabled>Read Only</button>
                 {% endif %}
-
             </div>
-
         </div>
-
     </div>
-
-    <!-- SYSTEM INFORMATION -->
 
     <div class="settings-panel">
-
         <h2>System Information</h2>
-
         <div class="settings-grid">
-
             <div class="setting-card">
-
                 <h3>Total Users</h3>
-
-                <span>
-
-                    {{ users|length }}
-
-                </span>
-
+                <span>{{ users|length }}</span>
             </div>
-
             <div class="setting-card">
-
                 <h3>Current User</h3>
-
-                <span>
-
-                    {{ username }}
-
-                </span>
-
+                <span>{{ username }}</span>
             </div>
-
             <div class="setting-card">
-
                 <h3>Role</h3>
-
-                <span>
-
-                    {{ role }}
-
-                </span>
-
+                <span>{{ role }}</span>
             </div>
-
             <div class="setting-card">
-
                 <h3>Platform</h3>
-
-                <span>
-
-                    Healthcare IoT Deception Honeypot Network
-
-                </span>
-
+                <span>Healthcare IoT Deception Honeypot Network</span>
             </div>
-
             <div class="setting-card">
-
                 <h3>System Status</h3>
-
-                <span>
-
-                    Operational
-
-                </span>
-
+                <span>Operational</span>
             </div>
-
             <div class="setting-card">
-
                 <h3>Version</h3>
-
-                <span>
-
-                    v2.0
-
-                </span>
-
+                <span>v2.0</span>
             </div>
-
         </div>
-
     </div>
->>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
 
 </div>
-
 {% endblock %}
 
-<<<<<<< HEAD
-=======
 {% block extra_js %}
-<script
-    src="{{ url_for('static', filename='js/settings.js') }}"
-></script>
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
 {% endblock %}
->>>>>>> 1632a449e582734c5b192a5872deae5fb80db283

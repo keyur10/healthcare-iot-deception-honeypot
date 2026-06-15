@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 css
 .ioc-container{
 
@@ -19,14 +19,12 @@ css
     gap:25px;
 
     margin-bottom:35px;
-=======
+
+}
+
 /* ==================================================
    IOC CENTER
 ================================================== */
-
-.ioc-container{
-    padding:25px;
-}
 
 .page-header{
     display:flex;
@@ -319,127 +317,9 @@ css
     .ioc-container{
         padding:15px;
     }
->>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
+
 
     .page-header h1{
         font-size:26px;
     }
-
-<<<<<<< HEAD
-.ioc-card{
-
-    background:#0d1117;
-
-    border:1px solid #1f2937;
-
-    border-radius:15px;
-
-    padding:30px;
-
-    text-align:center;
-
-    transition:.3s;
-
 }
-
-.ioc-card:hover{
-
-    transform:translateY(-5px);
-
-    box-shadow:0 0 20px #00d9ff30;
-
-}
-
-.ioc-card h3{
-
-    color:#b6d3ff;
-
-}
-
-.ioc-card span{
-
-    color:#00d9ff;
-
-    font-size:36px;
-
-    font-weight:bold;
-
-}
-
-.ioc-panel{
-
-    background:#0d1117;
-
-    margin-top:35px;
-
-    padding:25px;
-
-    border-radius:15px;
-
-    border:1px solid #222;
-
-}
-
-.ioc-search{
-
-    width:100%;
-
-    padding:14px;
-
-    background:black;
-
-    color:white;
-
-    border:1px solid #00d9ff;
-
-    border-radius:10px;
-
-}
-
-.ioc-table{
-
-    width:100%;
-
-    border-collapse:separate;
-
-    border-spacing:0 12px;
-
-}
-
-.ioc-table th{
-
-    color:#00d9ff;
-
-    padding:15px;
-
-    text-align:left;
-
-}
-
-.ioc-table td{
-
-    background:#111827;
-
-    padding:15px;
-
-}
-
-.feed p{
-
-    margin:15px 0;
-
-    color:#b6d3ff;
-
-}
-
-=======
-    .ioc-search{
-        flex-direction:column;
-    }
-
-    .ioc-summary{
-        grid-template-columns:1fr;
-    }
-
-}
->>>>>>> 1632a449e582734c5b192a5872deae5fb80db283

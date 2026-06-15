@@ -1,90 +1,134 @@
 {% extends "layouts/base.html" %}
 
 {% block extra_css %}
-<link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/soc_terminal.css') }}"
->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/soc_terminal.css') }}">
+<style>
+    /* Elite SOC Terminal Aesthetic */
+    .soc-terminal-container { padding: 20px; color: #f8fafc; font-family: 'Inter', sans-serif; }
+    
+    /* Header */
+    .soc-header {
+        display: flex; justify-content: space-between; align-items: flex-end;
+        margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 1rem;
+    }
+    .soc-title h1 { margin: 0; font-size: 1.8rem; color: #ffffff; }
+    .soc-title p { color: #94a3b8; margin-top: 0.3rem; margin-bottom: 0; font-size: 0.95rem; }
+    
+    .soc-header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+    .live-indicator {
+        display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;
+        color: #ef4444; font-weight: 700; letter-spacing: 0.1em;
+    }
+    .pulse-dot {
+        width: 8px; height: 8px; background-color: #ef4444; border-radius: 50%;
+        box-shadow: 0 0 10px #ef4444; animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; box-shadow: none; } 100% { opacity: 1; } }
+    .terminal-clock { font-family: monospace; color: #94a3b8; font-size: 1.1rem; }
+
+    /* Layout Grid */
+    .terminal-layout {
+        display: grid; grid-template-columns: 2.5fr 1fr; gap: 1.5rem; align-items: stretch; height: 75vh;
+    }
+
+    /* MAIN TERMINAL WINDOW */
+    .terminal-panel {
+        background: #020617; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+        display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .terminal-topbar {
+        background: #0f172a; padding: 0.75rem 1.2rem; display: flex; align-items: center;
+        border-bottom: 1px solid rgba(255,255,255,0.05); justify-content: space-between;
+    }
+    .terminal-buttons { display: flex; gap: 0.4rem; }
+    .terminal-buttons span { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+    .btn-red { background: #ff5f56; } .btn-yellow { background: #ffbd2e; } .btn-green { background: #27c93f; }
+    .terminal-label { color: #64748b; font-family: monospace; font-size: 0.85rem; letter-spacing: 0.05em; }
+
+    .terminal-output {
+        flex: 1; padding: 1.5rem; overflow-y: auto; font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 0.95rem; line-height: 1.6; color: #e2e8f0;
+    }
+    .terminal-banner { color: #3b82f6; font-weight: bold; line-height: 1.2; text-shadow: 0 0 5px rgba(59,130,246,0.3); }
+    .terminal-line { margin-bottom: 0.3rem; }
+    .terminal-line.success { color: #10b981; }
+    .terminal-line.info { color: #60a5fa; }
+    .terminal-line.warning { color: #f59e0b; }
+    .terminal-line.error { color: #ef4444; }
+
+    .terminal-input-box {
+        display: flex; align-items: center; padding: 1rem 1.5rem; background: rgba(0,0,0,0.3);
+        border-top: 1px solid rgba(255,255,255,0.05); font-family: 'Consolas', 'Courier New', monospace;
+    }
+    .prompt { color: #10b981; font-weight: bold; margin-right: 0.8rem; white-space: nowrap; }
+    #terminalInput {
+        background: transparent; border: none; color: #f8fafc; font-family: inherit; font-size: 1rem;
+        width: 100%; outline: none; caret-color: #10b981;
+    }
+
+    /* SIDEBAR PANELS */
+    .terminal-sidebar { display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; padding-right: 5px; }
+    .terminal-sidebar::-webkit-scrollbar { width: 6px; }
+    .terminal-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+    .terminal-card {
+        background: #1e293b; padding: 1.2rem; border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+    .terminal-card h3 {
+        margin-top: 0; margin-bottom: 1rem; color: #94a3b8; font-size: 0.8rem;
+        text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;
+    }
+    .info-row { display: flex; justify-content: space-between; margin-bottom: 0.6rem; font-size: 0.9rem; color: #cbd5e1; }
+    .info-row strong { color: #f8fafc; }
+    
+    .status-box.online {
+        background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2);
+        padding: 0.5rem; text-align: center; border-radius: 6px; font-weight: 700; letter-spacing: 0.1em; font-size: 0.9rem;
+    }
+
+    /* Command Grid */
+    .command-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; padding: 0; margin: 0; list-style: none; }
+    .command-list li {
+        background: rgba(0,0,0,0.2); padding: 0.4rem; border-radius: 4px; text-align: center;
+        color: #3b82f6; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(59,130,246,0.2); transition: 0.2s;
+    }
+    .command-list li:hover { background: rgba(59,130,246,0.1); color: #60a5fa; cursor: pointer; }
+
+    /* Live Events */
+    .live-events { display: flex; flex-direction: column; gap: 0.4rem; font-family: monospace; font-size: 0.85rem; }
+    .live-events div { color: #cbd5e1; border-left: 2px solid #3b82f6; padding-left: 8px; background: rgba(0,0,0,0.2); padding-top: 4px; padding-bottom: 4px; }
+</style>
 {% endblock %}
 
 {% block content %}
-
 <div class="soc-terminal-container">
 
-    <!-- HEADER -->
-
     <div class="soc-header">
-
         <div class="soc-title">
-
-            <h1>
-                Security Operations Terminal
-            </h1>
-
-            <p>
-                Healthcare IoT Deception Honeypot Network
-            </p>
-
+            <h1>Security Operations Terminal</h1>
+            <p>Healthcare IoT Deception Honeypot Network</p>
         </div>
-
         <div class="soc-header-right">
-
-            <div class="live-indicator">
-
-                <span class="pulse-dot"></span>
-
-                LIVE CONNECTION
-
-            </div>
-
-            <div
-                class="terminal-clock"
-                id="terminalClock"
-            >
-
-                --:--:--
-
-            </div>
-
+            <div class="live-indicator"><span class="pulse-dot"></span> SECURE UPLINK</div>
+            <div class="terminal-clock" id="terminalClock">--:--:--</div>
         </div>
-
     </div>
-
-    <!-- MAIN GRID -->
 
     <div class="terminal-layout">
 
-        <!-- TERMINAL -->
-
         <div class="terminal-panel">
-
             <div class="terminal-topbar">
-
                 <div class="terminal-buttons">
-
                     <span class="btn-red"></span>
-
                     <span class="btn-yellow"></span>
-
                     <span class="btn-green"></span>
-
                 </div>
-
-                <div class="terminal-label">
-
-                    soc@hidhn-terminal
-
-                </div>
-
+                <div class="terminal-label">root@soc-terminal ~ bash</div>
             </div>
 
-            <div
-                id="terminalOutput"
-                class="terminal-output"
-            >
-
+            <div id="terminalOutput" class="terminal-output">
 <pre class="terminal-banner">
-
 ██╗  ██╗██╗██████╗ ██╗  ██╗███╗   ██╗
 ██║  ██║██║██╔══██╗██║  ██║████╗  ██║
 ███████║██║██║  ██║███████║██╔██╗ ██║
@@ -93,257 +137,81 @@
 ╚═╝  ╚═╝╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝
 
 Healthcare IoT Defense Honeypot Network
-Security Operations Center Terminal
+Advanced Threat Operations Interface
 
-Version : 2.0
-Status  : Operational
-
-Type HELP to view commands
-
+Version : 2.0 (Secure Mode)
+Status  : Encrypted Tunnel Established
 </pre>
-
-                <div class="terminal-line success">
-
-                    [SYSTEM] Terminal Initialized
-
-                </div>
-
-                <div class="terminal-line info">
-
-                    [INFO] Connected To Flask Backend
-
-                </div>
-
-                <div class="terminal-line info">
-
-                    [INFO] User: {{ username }}
-
-                </div>
-
+                <div class="terminal-line success">[SYSTEM] Core Daemon Initialized</div>
+                <div class="terminal-line info">[INFO] Connected To Flask Intel Backend</div>
+                <div class="terminal-line warning">[AUTH] User verified: {{ username }}</div>
+                <br>
+                <div class="terminal-line" style="color: #94a3b8;">Type <span style="color: #3b82f6;">help</span> to view available system commands.</div>
             </div>
 
             <div class="terminal-input-box">
-
-                <span class="prompt">
-
-                    soc@hidhn:~$
-
-                </span>
-
-                <input
-                    type="text"
-                    id="terminalInput"
-                    autocomplete="off"
-                    placeholder="Enter Command..."
-                >
-
+                <span class="prompt">soc@hidhn:~$</span>
+                <input type="text" id="terminalInput" autocomplete="off" placeholder="_" autofocus>
             </div>
-
         </div>
-
-        <!-- SIDEBAR -->
 
         <div class="terminal-sidebar">
 
             <div class="terminal-card">
-
-                <h3>
-                    User Session
-                </h3>
-
-                <div class="info-row">
-
-                    <span>User</span>
-
-                    <strong>
-                        {{ username }}
-                    </strong>
-
-                </div>
-
-                <div class="info-row">
-
-                    <span>Role</span>
-
-                    <strong>
-                        {{ role }}
-                    </strong>
-
-                </div>
-
+                <h3>System Status</h3>
+                <div class="status-box online">OPERATIONAL</div>
             </div>
 
             <div class="terminal-card">
-
-                <h3>
-                    SOC Status
-                </h3>
-
-                <div class="status-box online">
-
-                    OPERATIONAL
-
-                </div>
-
+                <h3>Session Identity</h3>
+                <div class="info-row"><span>User</span><strong>{{ username }}</strong></div>
+                <div class="info-row"><span>Clearance</span><strong style="color: #f59e0b;">{{ role }}</strong></div>
             </div>
 
             <div class="terminal-card">
+                <h3>Network Telemetry</h3>
+                <div class="info-row"><span>Active Decoys</span><strong id="honeypotCount" style="color: #10b981;">{{ honeypots|length if honeypots else 0 }}</strong></div>
+                <div class="info-row"><span>Threat Events</span><strong id="attackCount" style="color: #ef4444;">{{ total_attacks if total_attacks else 0 }}</strong></div>
+                <div class="info-row"><span>Connected Analysts</span><strong id="userCount" style="color: #3b82f6;">{{ total_users if total_users else 1 }}</strong></div>
+            </div>
 
-                <h3>
-                    Quick Commands
-                </h3>
-
+            <div class="terminal-card">
+                <h3>Command Reference</h3>
                 <ul class="command-list">
-
                     <li>help</li>
-
                     <li>status</li>
-
                     <li>users</li>
-
                     <li>devices</li>
-
                     <li>attacks</li>
-
                     <li>alerts</li>
-
-                    <li>honeypots</li>
-
                     <li>ioc</li>
-
                     <li>mitre</li>
-
-                    <li>geo</li>
-
-                    <li>logs</li>
-
                     <li>clear</li>
-
+                    <li style="color: #ef4444; border-color: rgba(239,68,68,0.2);">reboot</li>
                 </ul>
-
-            </div>
-            <div class="terminal-card">
-
-                <h3>
-                    Live Statistics
-                </h3>
-
-                <div class="info-row">
-
-                    <span>Honeypots</span>
-
-                    <strong id="honeypotCount">
-
-                        {{ honeypots|length if honeypots else 0 }}
-
-                    </strong>
-
-                </div>
-
-                <div class="info-row">
-
-                    <span>Attacks</span>
-
-                    <strong id="attackCount">
-
-                        {{ total_attacks if total_attacks else 0 }}
-
-                    </strong>
-
-                </div>
-
-                <div class="info-row">
-
-                    <span>Users</span>
-
-                    <strong id="userCount">
-
-                        {{ total_users if total_users else 0 }}
-
-                    </strong>
-
-                </div>
-
             </div>
 
             <div class="terminal-card">
-
-                <h3>
-                    Recent Events
-                </h3>
-
-                <div
-                    id="liveEvents"
-                    class="live-events"
-                >
-
-                    <div>
-                        [INFO] SOC Started
-                    </div>
-
-                    <div>
-                        [INFO] Honeypot Online
-                    </div>
-
-                    <div>
-                        [INFO] Monitoring Active
-                    </div>
-
+                <h3>System Log</h3>
+                <div id="liveEvents" class="live-events">
+                    <div>[SYS] Handshake Complete</div>
+                    <div>[SYS] Key Exchange OK</div>
+                    <div>[NET] Port 22 Sniffing Active</div>
                 </div>
-
-            </div>
-
-            <div class="terminal-card">
-
-                <h3>
-                    Terminal Help
-                </h3>
-
-                <div class="help-box">
-
-                    HELP<br>
-                    USERS<br>
-                    DEVICES<br>
-                    ATTACKS<br>
-                    ALERTS<br>
-                    HONEYPOTS<br>
-                    STATUS<br>
-                    IOC<br>
-                    MITRE<br>
-                    GEO<br>
-                    LOGS<br>
-                    CLEAR
-
-                </div>
-
             </div>
 
         </div>
 
     </div>
-
 </div>
-
 {% endblock %}
 
 {% block extra_js %}
-
 <script>
-
 window.TERMINAL_CONFIG = {
-
-    username:
-        "{{ username }}",
-
-    role:
-        "{{ role }}"
-
+    username: "{{ username }}",
+    role: "{{ role }}"
 };
-
 </script>
-
-<script
-    src="{{ url_for('static', filename='js/soc_terminal.js') }}"
-></script>
-
+<script src="{{ url_for('static', filename='js/soc_terminal.js') }}"></script>
 {% endblock %}

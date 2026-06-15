@@ -12,8 +12,23 @@ from flask import (
     request,
     url_for,
 )
-DEVICES_FILE = "data/devices.json"
+from reportlab.pdfgen import canvas
 
+from core.storage import (
+    ensure_data_files,
+    load_users,
+    save_users,
+    load_attacks,
+    save_attacks,
+    load_honeypots,
+    save_honeypots,
+    load_settings,
+    save_settings,
+    load_audit_logs,
+    save_audit_logs
+)
+
+DEVICES_FILE = "data/devices.json"
 
 def load_devices():
 
@@ -97,19 +112,6 @@ from core.auth import (
     get_all_users,
 )
 
-from core.storage import (
-    ensure_data_files,
-    load_users,
-    save_users,
-    load_attacks,
-    save_attacks,
-    load_honeypots,
-    save_honeypots,
-    load_settings,
-    save_settings,
-    load_audit_logs
-)
-
 from core.attack_manager import (
     create_attack,
 )
@@ -118,14 +120,17 @@ import shutil
 from datetime import datetime
 import csv
 from flask import make_response
-from openpyxl import Workbook
 from flask import send_file
 import tempfile
-from reportlab.pdfgen import canvas
 import requests
 import json
 from flask import send_file
 import ipaddress
+
+try:
+    from openpyxl import Workbook
+except ImportError:
+    Workbook = None
 
 
 # ==================================================
@@ -417,8 +422,7 @@ def threat_hunt_api():
 
     query = request.json.get(
         "query",
-        ""
-    ).lower()
+          "" ).lower()
 
     attacks = load_attacks()
 
@@ -738,31 +742,13 @@ def geolocation():
 
         project_name=PROJECT_NAME
     )
+# ==================================================
+# IOC 
+# ==================================================
 @app.route("/ioc")
 def ioc():
 
-    if not is_authenticated():
-
-        return redirect(url_for("login"))
-
-<<<<<<< HEAD
-    return render_template(
-
-        "dashboard/ioc.html",
-
-        username=current_user(),
-
-        role=current_role(),
-
-        project_name=PROJECT_NAME,
-
-    )
-# ==================================================
-# HONEYPOTS
-# ==================================================
-=======
     attacks = load_attacks()
->>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
 
     iocs = []
 
@@ -779,22 +765,13 @@ def ioc():
                     attack.get("ip"),
 
                 "risk":
-                    attack.get(
-                        "risk",
-                        "Low"
-                    ),
+                    attack.get("risk", "High"),
 
                 "source":
-                    attack.get(
-                        "attack_type",
-                        "Honeypot"
-                    ),
+                    "Network Traffic",
 
                 "time":
-                    attack.get(
-                        "time",
-                        "N/A"
-                    )
+                    attack.get("time", "N/A")
             })
 
         if attack.get("username"):
@@ -805,9 +782,7 @@ def ioc():
                     "Username",
 
                 "value":
-                    attack.get(
-                        "username"
-                    ),
+                    attack.get("username"),
 
                 "risk":
                     "Medium",
@@ -979,6 +954,7 @@ def whois_lookup():
     return redirect(
         url_for("dashboard")
     )
+
 @app.route("/honeypots")
 def honeypots():
 
@@ -1310,40 +1286,7 @@ def add_device():
         devices
     )
 
-<<<<<<< HEAD
-# ==================================================
-# SETTINGS
-# ==================================================
 
-@app.route("/settings")
-def settings():
-
-    if not is_authenticated():
-
-        return redirect(
-            url_for("login")
-        )
-
-    return render_template(
-
-        "dashboard/settings.html",
-
-        username=current_user(),
-
-        role=current_role(),
-
-        project_name=PROJECT_NAME,
-
-=======
-    flash(
-        "Device Added",
-        "success"
->>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
-    )
-
-    return redirect(
-        url_for("devices")
-    )
 @app.route(
     "/delete-device/<int:device_id>"
 )
@@ -1374,149 +1317,57 @@ def delete_device(
     return redirect(
         url_for("devices")
     )
-@app.route("/mitre")
-def mitre():
 
-    if not is_authenticated():
 
-        return redirect(
-            url_for("login")
-        )
-
-    attacks = load_attacks()
-
-    mitre_data = []
-
-    risk_counts = {
-
-        "Critical": 0,
-        "High": 0,
-        "Medium": 0,
-        "Low": 0
-
-    }
-
-<<<<<<< HEAD
 # ==================================================
 # DASHBOARD API STATS
 # ==================================================
 
 @app.route("/api/stats")
 def api_stats():
-
     if not is_authenticated():
-
-        return {
-            "error": "Unauthorized"
-        }, 401
-
-    attacks = get_attack_logs()
+        return {"error": "Unauthorized"}, 401
+    attacks = load_attacks()
 
     stats = {
-
         "active_honeypots": 24,
-
         "live_attacks": len(attacks),
-
         "ioc_count": 309,
-
         "devices": 98,
-
         "mitre": 37,
-
         "critical": 5,
-
         "high": 12,
-
         "medium": 18,
-
         "low": 26
-
     }
 
     return stats
 
-=======
-    for attack in attacks:
->>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
 
-        attack_type = attack.get(
-            "attack_type",
-            ""
-        ).lower()
-
-        technique = "Unknown"
-
-        if "brute" in attack_type:
-
-            technique = "T1110 - Brute Force"
-
-        elif "scan" in attack_type:
-
-            technique = "T1595 - Active Scanning"
-
-        elif "mqtt" in attack_type:
-
-            technique = "T1046 - Network Service Discovery"
-
-        elif "exploit" in attack_type:
-
-            technique = "T1190 - Exploit Public Facing Application"
-
-        elif "telnet" in attack_type:
-
-            technique = "T1021 - Remote Services"
-
-        risk = attack.get(
-            "risk",
-            "Low"
-        )
-
-        if risk in risk_counts:
-
-            risk_counts[risk] += 1
-
-        mitre_data.append({
-
-            "time":
-                attack.get(
-                    "time",
-                    "N/A"
-                ),
-
-            "source_ip":
-                attack.get(
-                    "ip",
-                    "N/A"
-                ),
-
-            "technique":
-                technique,
-
-            "target":
-                attack.get(
-                    "target",
-                    "Healthcare Device"
-                ),
-
-            "risk":
-                risk
-        })
-
+# ==================================================
+# MITRE API
+# ==================================================
+@app.route('/mitre')
+def mitre():
+    user_role = current_role()
+    user_permissions = get_current_permissions()
+    username = current_user()
+    
+    risk_counts = {"Critical": 0, "High": 0, "Medium": 0, "Low": 0}
+    
     return render_template(
-
-        "dashboard/mitre.html",
-
-        mitre_data=mitre_data[::-1],
-
+        'dashboard/mitre.html', 
+        role=user_role, 
+        permissions=user_permissions,
+        username=username,
         risk_counts=risk_counts,
-
-        username=current_user(),
-
-        role=current_role(),
-
-        project_name=PROJECT_NAME
+        mitre_data=[], # We will send an empty list for now
+        initial_access=0,
+        discovery=0,
+        execution=0,
+        persistence=0
     )
+
 @app.route("/api/mitre")
 def api_mitre():
 
@@ -1527,40 +1378,20 @@ def api_mitre():
     for attack in attacks:
 
         mitre_data.append({
-
-            "time":
-                attack.get(
-                    "time",
-                    "N/A"
-                ),
-
-            "source_ip":
-                attack.get(
-                    "ip",
-                    "N/A"
-                ),
-
-            "attack_type":
-                attack.get(
-                    "attack_type",
-                    "Unknown"
-                ),
-
-            "risk":
-                attack.get(
-                    "risk",
-                    "Low"
-                )
+            "time": attack.get("time", "N/A"),
+            "source_ip": attack.get("ip", "N/A"),
+            "attack_type": attack.get("attack_type", "Unknown"),
+            "risk": attack.get("risk", "Low")
         })
 
     return {
-
-        "count":
-            len(mitre_data),
-
-        "events":
-            mitre_data[-20:]
+        "count": len(mitre_data),
+        "events": mitre_data[-20:]
     }
+
+#================================================== 
+# SETTINGS
+# ==================================================
 @app.route("/settings")
 def settings():
 
@@ -2237,6 +2068,7 @@ def create_backup():
     return redirect(
         url_for("settings")
     )
+
 @app.route("/reports")
 def reports():
 
@@ -2282,6 +2114,27 @@ def reports():
 
         project_name=PROJECT_NAME
     )
+
+@app.route("/audit-logs")
+def audit_logs_page():
+    if not is_authenticated():
+        return redirect(url_for("login"))
+    
+    if current_role() != "Administrator":
+        flash("Access Denied: Admins Only", "danger")
+        return redirect(url_for("dashboard"))
+
+    logs = load_audit_logs()
+
+    return render_template(
+        "dashboard/audit_logs.html",
+        logs=logs,
+        username=current_user(),
+        role=current_role(),
+        permissions=get_current_permissions(),
+        project_name=PROJECT_NAME
+    )
+
 @app.route("/export/csv")
 def export_csv():
 

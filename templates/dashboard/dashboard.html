@@ -1,492 +1,152 @@
 {% extends "layouts/base.html" %}
 
 {% block extra_css %}
-<link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/dashboard.css') }}"
->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 {% endblock %}
 
 {% block content %}
-
 <div class="dashboard-container">
 
-    <!-- HEADER -->
-
-        <div class="dashboard-header"
-style="
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-margin-bottom:35px;
-">
-
-    <!-- Dashboard Title -->
-
-        <div>
-            <h1>Healthcare IoT Deception Honeypot Network</h1>
-            <p>Security Operations Center Dashboard</p>
+    <div class="dashboard-row">
+        
+        <div class="dashboard-panel">
+            <h2>Recent Attacks</h2>
+            <table class="attack-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Source IP</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Threat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attack in attacks %}
+                    <tr>
+                        <td>{{ attack.time }}</td>
+                        <td>{{ attack.ip }}</td>
+                        <td>{{ attack.username }}</td>
+                        <td>{{ attack.password }}</td>
+                        <td style="color:red;">HIGH</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-
-        <!-- Status -->
-
-        <div class="dashboard-status">
-
-            <span class="status-dot"></span>
-
-            System Operational
-
-        </div>
-
-    </div>
-
-    <!-- LIVE STATISTICS -->
-
-<div class="stats-grid">
-
-    <div class="stat-card clickable-card"
-        onclick="window.location='{{ url_for('honeypots') }}'">
-        <h3>Active Honeypots</h3>
-        <span>{{ active_honeypots }}</span>
-        <small>View & Manage Honeypots</small>
-    </div>
-
-    <div class="stat-card clickable-card"
-        onclick="window.location='/attack-logs'">
-        <h3>Live Attacks</h3>
-        <span>12</span>
-        <small>Investigate Attacks</small>
-    </div>
-
-    <div class="stat-card clickable-card"
-        onclick="window.location='/ioc'">
-        <h3>IOC Center</h3>
-        <span>309</span>
-        <small>Indicators of Compromise</small>
-    </div>
-
-    <div class="stat-card clickable-card"
-        onclick="window.location='{{ url_for('user_management') }}'">
-        <h3>SOC Users</h3>
-        <span>{{ total_users }}</span>
-        <small>User Management</small>
-    </div>
-
-    <div class="stat-card clickable-card"
-        onclick="window.location='/threat-hunting'">
-        <h3>Threat Hunting</h3>
-        <span>🎯</span>
-        <small>Investigate Suspicious Activity</small>
-    </div>
-
-</div>
-
-<div class="dashboard-row">
-
-    <div class="dashboard-panel">
-        <h2>Recent Attacks</h2>
-
-        <table class="attack-table">
-
-<thead>
-
-<tr>
-
-<th>Time</th>
-<th>Source IP</th>
-<th>Username</th>
-<th>Password</th>
-<th>Threat</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-{% for attack in attacks %}
-
-<tr>
-
-<td>{{ attack.time }}</td>
-
-<td>{{ attack.ip }}</td>
-
-<td>{{ attack.username }}</td>
-
-<td>{{ attack.password }}</td>
-
-<td style="color:red;">HIGH</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-    </div> 
-
-    <div class="dashboard-panel">
-
-    <h2>WHOIS Lookup</h2>
-
-    <form
-        action="/whois"
-        method="POST"
-        class="whois-form"
-    >
-
-        <input
-            type="text"
-            name="ip"
-            placeholder="Enter IP Address..."
-            required
-        >
-
-        <button type="submit">
-
-            Lookup
-
-        </button>
-
-    </form>
-
-        {% if whois_result %}
-
-    <div class="whois-result">
-
-        <div>
-
-            <strong>IP:</strong>
-
-            {{ whois_result.ip }}
-
-        </div>
-
-        <div>
-
-            <strong>Country:</strong>
-
-            {{ whois_result.country }}
-
-        </div>
-
-        <div>
-
-            <strong>ASN:</strong>
-
-            {{ whois_result.asn }}
-
-        </div>
-
-        <div>
-
-            <strong>Provider:</strong>
-
-            {{ whois_result.provider }}
-
-        </div>
-
-        <div>
-
-            <strong>City:</strong>
-
-            {{ whois_result.city }}
-
-        </div>
-
-    </div>
-
-    {% endif %}
-
-    </div>
 
         <div class="dashboard-panel">
+            <h2>WHOIS Lookup</h2>
+            <form action="/whois" method="POST" class="whois-form">
+                <input type="text" name="ip" placeholder="Enter IP Address..." required>
+                <button type="submit">Lookup</button>
+            </form>
 
-            <h2>
-                Top Attacker IPs
-            </h2>
+            {% if whois_result %}
+            <div class="whois-result">
+                <div><strong>IP:</strong> {{ whois_result.ip }}</div>
+                <div><strong>Country:</strong> {{ whois_result.country }}</div>
+                <div><strong>ASN:</strong> {{ whois_result.asn }}</div>
+                <div><strong>Provider:</strong> {{ whois_result.provider }}</div>
+                <div><strong>City:</strong> {{ whois_result.city }}</div>
+            </div>
+            {% endif %}
+        </div>
 
+        <div class="dashboard-panel">
+            <h2>Top Attacker IPs</h2>
             <div class="feed-box">
-
                 {% if attacks %}
-
                     {% for attack in attacks[:10] %}
-
                     <div class="attacker-item">
-
-                        <strong>
-
-                            {{ attack.get('ip','N/A') }}
-
-                        </strong>
-
-                        <small>
-
-                            {{ attack.get('attack_type','Unknown') }}
-
-                        </small>
-
+                        <strong>{{ attack.get('ip', 'N/A') }}</strong>
+                        <small>{{ attack.get('attack_type', 'Unknown') }}</small>
                     </div>
-
                     {% endfor %}
-
                 {% else %}
-
-                    <div>
-
-                        No Attack Sources Found
-
-                    </div>
-
+                    <div>No Attack Sources Found</div>
                 {% endif %}
-
             </div>
-
         </div>
 
-    </div>
-
-</div>
-
-    <!-- ATTACK STATISTICS -->
-
-<div class="dashboard-row">
-
-<div class="dashboard-panel">
-
-<h2>Attack Statistics</h2>
-
-<div class="quick-grid">
-
-<div class="quick-card">
-
-<h3>Total Events</h3>
-
-<p>{{ total_attacks }}</p>
-
-</div>
-
-<div class="quick-card">
-
-    <h3>Critical Events</h3>
-
-    <p>{{ critical_attacks }}</p>
-
-</div>
-
-<div class="quick-card">
-
-    <h3>Active Honeypots</h3>
-
-    <p>{{ active_honeypots }}</p>
-
-</div>
-
-<div class="quick-card">
-
-    <h3>Connected Devices</h3>
-
-    <p>{{ connected_devices }}</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-    <!-- HONEYPOT HEALTH -->
-
-    <div class="dashboard-row">
-
-<div class="dashboard-panel">
-
-        <h2>
-            Honeypot Health Status
-        </h2>
-
-        <div class="quick-grid">
-
-            <div class="quick-card">
-
-                <h3>
-                    SSH Honeypot
-                </h3>
-
-                <p class="status-online">
-
-                    Running
-
-                </p>
-
+    </div> <div class="dashboard-row">
+        <div class="dashboard-panel">
+            <h2>Attack Statistics</h2>
+            <div class="quick-grid">
+                <div class="quick-card">
+                    <h3>Total Events</h3>
+                    <p>{{ total_attacks }}</p>
+                </div>
+                <div class="quick-card">
+                    <h3>Critical Events</h3>
+                    <p>{{ critical_attacks }}</p>
+                </div>
+                <div class="quick-card">
+                    <h3>Active Honeypots</h3>
+                    <p>{{ active_honeypots }}</p>
+                </div>
+                <div class="quick-card">
+                    <h3>Connected Devices</h3>
+                    <p>{{ connected_devices }}</p>
+                </div>
             </div>
-
-            <div class="quick-card">
-
-                <h3>
-                    MQTT Honeypot
-                </h3>
-
-                <p class="status-online">
-
-                    Running
-
-                </p>
-
-            </div>
-
-            <div class="quick-card">
-
-                <h3>
-                    HTTP Honeypot
-                </h3>
-
-                <p class="status-online">
-
-                    Running
-
-                </p>
-
-            </div>
-
-            <div class="quick-card">
-
-                <h3>
-                    Modbus Honeypot
-                </h3>
-
-                <p class="status-online">
-
-                    Running
-
-                </p>
-
-            </div>
-
         </div>
-
-    </div>
-
-    <!-- TOP ATTACK TYPES -->
-
-   <div class="dashboard-row">
-
-<div class="dashboard-panel">
-
-        <h2>
-            Most Targeted Services
-        </h2>
-
-        <div class="quick-grid">
-
-            <div class="quick-card">
-
-                <h3>
-                    SSH
-                </h3>
-
-                <p>
-
-                    Brute Force Attempts
-
-                </p>
-
+    </div> <div class="dashboard-row">
+        <div class="dashboard-panel">
+            <h2>Honeypot Health Status</h2>
+            <div class="quick-grid">
+                <div class="quick-card">
+                    <h3>SSH Honeypot</h3>
+                    <p class="status-online">Running</p>
+                </div>
+                <div class="quick-card">
+                    <h3>MQTT Honeypot</h3>
+                    <p class="status-online">Running</p>
+                </div>
+                <div class="quick-card">
+                    <h3>HTTP Honeypot</h3>
+                    <p class="status-online">Running</p>
+                </div>
+                <div class="quick-card">
+                    <h3>Modbus Honeypot</h3>
+                    <p class="status-online">Running</p>
+                </div>
             </div>
-
-            <div class="quick-card">
-
-                <h3>
-                    MQTT
-                </h3>
-
-                <p>
-
-                    IoT Reconnaissance
-
-                </p>
-
-            </div>
-
-            <div class="quick-card">
-
-                <h3>
-                    HTTP
-                </h3>
-
-                <p>
-
-                    Web Exploitation
-
-                </p>
-
-            </div>
-
-            <div class="quick-card">
-
-                <h3>
-                    Modbus
-                </h3>
-
-                <p>
-
-                    ICS Attacks
-
-                </p>
-
-            </div>
-
-            </div>
-
         </div>
-
-    <!-- LIVE SOC ACTIVITY -->
-
-<div class="dashboard-row">
-
-    <div class="dashboard-panel">
-
-        <h2>
-            SOC Activity Stream
-        </h2>
-
-        <div
-            class="feed-box"
-            id="socActivity"
-        >
-
-            <div>
-                [SYSTEM] Dashboard Initialized
+    </div> <div class="dashboard-row">
+        <div class="dashboard-panel">
+            <h2>Most Targeted Services</h2>
+            <div class="quick-grid">
+                <div class="quick-card">
+                    <h3>SSH</h3>
+                    <p>Brute Force Attempts</p>
+                </div>
+                <div class="quick-card">
+                    <h3>MQTT</h3>
+                    <p>IoT Reconnaissance</p>
+                </div>
+                <div class="quick-card">
+                    <h3>HTTP</h3>
+                    <p>Web Exploitation</p>
+                </div>
+                <div class="quick-card">
+                    <h3>Modbus</h3>
+                    <p>ICS Attacks</p>
+                </div>
             </div>
-
-            <div>
-                [INFO] Threat Monitoring Active
-            </div>
-
-            <div>
-                [INFO] Honeypots Online
-            </div>
-
-            <div>
-                [INFO] IOC Feed Connected
-            </div>
-
         </div>
-
-    </div> <!-- dashboard-panel -->
-
-</div> <!-- dashboard-row -->
-
-</div> <!-- dashboard-container -->
-
-{% endblock %}
+    </div> <div class="dashboard-row">
+        <div class="dashboard-panel">
+            <h2>SOC Activity Stream</h2>
+            <div class="feed-box" id="socActivity">
+                <div>[SYSTEM] Dashboard Initialized</div>
+                <div>[INFO] Threat Monitoring Active</div>
+                <div>[INFO] Honeypots Online</div>
+                <div>[INFO] IOC Feed Connected</div>
+            </div>
+        </div>
+    </div> </div> {% endblock %}
 
 {% block extra_js %}
-
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-
 {% endblock %}

@@ -1,40 +1,40 @@
 [
     {
         "id": "ATT-001",
-        "time": "04:10",
-        "source_ip": "185.45.23.11",
+        "time": "2026-06-15 04:10:00",
+        "ip": "185.45.23.11",
         "country": "Russia",
-        "device": "Ventilator-01",
+        "target": "Ventilator-01",
         "attack_type": "Brute Force",
         "risk": "Critical",
         "status": "Open"
     },
     {
         "id": "ATT-002",
-        "time": "04:12",
-        "source_ip": "91.22.55.18",
+        "time": "2026-06-15 04:12:00",
+        "ip": "91.22.55.18",
         "country": "China",
-        "device": "ECG-02",
+        "target": "ECG-02",
         "attack_type": "MQTT Probe",
         "risk": "High",
         "status": "Investigating"
     },
     {
         "id": "ATT-003",
-        "time": "04:15",
-        "source_ip": "102.17.44.10",
+        "time": "2026-06-15 04:15:00",
+        "ip": "102.17.44.10",
         "country": "Iran",
-        "device": "Patient Monitor",
+        "target": "Patient Monitor",
         "attack_type": "Exploit Attempt",
         "risk": "Medium",
         "status": "Open"
     },
     {
-        "id": "ATT-4",
-        "time": "15:53:40",
-        "source_ip": "185.45.23.11",
+        "id": "ATT-004",
+        "time": "2026-06-15 15:53:40",
+        "ip": "185.45.23.11",
         "country": "Russia",
-        "device": "Ventilator-01",
+        "target": "Ventilator-01",
         "attack_type": "Brute Force",
         "risk": "Critical",
         "status": "Open"

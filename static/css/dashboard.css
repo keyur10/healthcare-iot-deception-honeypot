@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 css
 /* ===========================
    Dashboard Container
@@ -41,7 +41,8 @@ css
     color:#ffffff;
 
     font-size:32px;
-=======
+    font-weight:700;
+}
 /* ==================================================
    DASHBOARD CONTAINER
 ================================================== */
@@ -91,7 +92,6 @@ css
 /* ==================================================
    STATS CARDS
 ================================================== */
->>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
 
 .stats-grid{
     display:grid;
@@ -101,7 +101,7 @@ css
     margin-bottom:25px;
 }
 
-<<<<<<< HEAD
+
 .dashboard-header p{
 
     color:#8fa6c9;
@@ -434,8 +434,8 @@ css
 
     color:white;
 
-    font-size:15px;
-=======
+    font-size:15px; 
+
 .stat-card{
     background:#071321;
     border:1px solid rgba(0,212,255,.15);
@@ -476,6 +476,7 @@ css
     color:#ff5252;
 }
 
+}
 /* ==================================================
    PANELS
 ================================================== */
@@ -728,6 +729,5 @@ css
     .quick-grid{
         grid-template-columns:1fr;
     }
->>>>>>> 1632a449e582734c5b192a5872deae5fb80db283
 
 }
