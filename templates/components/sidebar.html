@@ -253,8 +253,8 @@
 
                 {% if role == "Administrator" or permissions.mitre %}
                 <li>
-                    <a href="{{ url_for('mitre') }}"
-                       class="{% if request.endpoint == 'mitre' %}active{% endif %}">
+                    <a href="{{ url_for('mitre_page') }}"
+                       class="{% if request.endpoint == 'mitre_page' %}active{% endif %}">
                         <i class="fa-solid fa-network-wired"></i>
                         <span>MITRE ATT&CK</span>
                     </a>

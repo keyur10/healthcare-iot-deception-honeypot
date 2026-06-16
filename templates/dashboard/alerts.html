@@ -11,8 +11,6 @@
 
 <div class="alerts-container">
 
-    <!-- HEADER -->
-
     <div class="page-header">
 
         <div>
@@ -36,8 +34,6 @@
         </div>
 
     </div>
-
-    <!-- SUMMARY -->
 
     <div class="alert-summary-grid">
 
@@ -91,8 +87,6 @@
 
     </div>
 
-    <!-- SOC OVERVIEW -->
-
     <div class="alerts-panel">
 
         <h2>
@@ -123,7 +117,7 @@
 
                 <span>
 
-                    {{ incidents|length }}
+                    {{ open_incidents_count | default(0) }}
 
                 </span>
 
@@ -160,8 +154,6 @@
         </div>
 
     </div>
-
-    <!-- LIVE ALERTS -->
 
     <div class="alerts-panel">
 
@@ -265,8 +257,6 @@
 
     </div>
 
-    <!-- RESPONSE ACTIONS -->
-
     <div class="alerts-panel">
 
         <h2>
@@ -332,11 +322,7 @@
         {% endif %}
 
     </div>
-    <!-- ALERT DETAILS + THREAT FEED -->
-
     <div class="alerts-bottom-grid">
-
-        <!-- ALERT DETAILS -->
 
         <div class="alerts-panel">
 
@@ -418,8 +404,6 @@
 
         </div>
 
-        <!-- THREAT FEED -->
-
         <div class="alerts-panel">
 
             <h2>
@@ -464,8 +448,6 @@
         </div>
 
     </div>
-
-    <!-- ANALYST TIMELINE -->
 
     <div class="alerts-panel">
 
@@ -517,8 +499,6 @@
 
     </div>
 
-    <!-- ACTIVE ATTACK SOURCES -->
-
     <div class="alerts-panel">
 
         <h2>
@@ -568,8 +548,6 @@
         </div>
 
     </div>
-
-    <!-- RECENT INCIDENTS -->
 
     <div class="alerts-panel">
 
@@ -658,8 +636,6 @@
         </table>
 
     </div>
-
-    <!-- SESSION INFORMATION -->
 
     <div class="alerts-panel">
 

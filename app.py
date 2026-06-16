@@ -1,145 +1,78 @@
 # ==================================================
 # IMPORTS
 # ==================================================
-
 from __future__ import annotations
 
-from flask import (
-    Flask,
-    flash,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
-from reportlab.pdfgen import canvas
-
-from core.storage import (
-    ensure_data_files,
-    load_users,
-    save_users,
-    load_attacks,
-    save_attacks,
-    load_honeypots,
-    save_honeypots,
-    load_settings,
-    save_settings,
-    load_audit_logs,
-    save_audit_logs
-)
-
-DEVICES_FILE = "data/devices.json"
-
-def load_devices():
-
-    if not os.path.exists(
-        DEVICES_FILE
-    ):
-
-        return []
-
-    with open(
-        DEVICES_FILE,
-        "r"
-    ) as file:
-
-        return json.load(
-            file
-        )
+# 1. Standard Library
 import os
 import json
-
-from flask import (
-    Flask,
-    render_template,
-    request,
-    redirect,
-    url_for,
-    flash,
-    session
-)
-def load_json(path):
-
-    if not os.path.exists(path):
-        return []
-
-    with open(path, "r") as f:
-        return json.load(f)
-
-def save_json(path, data):
-
-    with open(path, "w") as f:
-        json.dump(data, f, indent=4)
-
-def save_devices(
-    devices
-):
-
-    with open(
-        DEVICES_FILE,
-        "w"
-    ) as file:
-
-        json.dump(
-            devices,
-            file,
-            indent=4
-        )
-
-from ipwhois import IPWhois
-
-from core.config import (
-    APP,
-    SECRET_KEY,
-    PROJECT_NAME,
-)
-
-from core.helpers import (
-    configure_logging,
-)
-
-from core.audit import (
-    log_event,
-)
-
-from core.auth import (
-    login_user,
-    logout_user,
-    is_authenticated,
-    current_user,
-    current_role,
-    has_permission,
-    get_all_users,
-)
-
-from core.attack_manager import (
-    create_attack,
-)
-
 import shutil
-from datetime import datetime
 import csv
-from flask import make_response
-from flask import send_file
 import tempfile
-import requests
-import json
-from flask import send_file
 import ipaddress
+from datetime import datetime
+from typing import Any
+
+# 2. Third-Party
+import requests
+from flask import (
+    Flask, flash, redirect, render_template, 
+    request, url_for, session, make_response, send_file
+)
+from reportlab.pdfgen import canvas
+from ipwhois import IPWhois
 
 try:
     from openpyxl import Workbook
 except ImportError:
     Workbook = None
 
+# 3. Local Core Modules
+from core.storage import (
+    ensure_data_files, load_users, save_users,
+    load_attacks, save_attacks, load_honeypots,
+    save_honeypots, load_settings, save_settings,
+    load_audit_logs, save_audit_logs
+)
+from core.config import APP, SECRET_KEY, PROJECT_NAME
+from core.helpers import configure_logging
+from core.audit import log_event
+from core.auth import (
+    login_user, logout_user, is_authenticated,
+    current_user, current_role, has_permission, get_all_users
+)
+from core.attack_manager import create_attack
+
+# ==================================================
+# UTILITIES & CONSTANTS
+# ==================================================
+DEVICES_FILE = "data/devices.json"
+
+def load_devices():
+    if not os.path.exists(DEVICES_FILE):
+        return []
+    with open(DEVICES_FILE, "r") as file:
+        return json.load(file)
+
+def save_devices(devices):
+    with open(DEVICES_FILE, "w") as file:
+        json.dump(devices, file, indent=4)
+
+def load_json(path):
+    if not os.path.exists(path):
+        return []
+    with open(path, "r") as f:
+        return json.load(f)
+
+def save_json(path, data):
+    with open(path, "w") as f:
+        json.dump(data, f, indent=4)
 
 # ==================================================
 # APP
 # ==================================================
-
 app = Flask(__name__)
-
-app.config["SECRET_KEY"] = SECRET_KEY
+app.config["SECRET_KEY"] = SECRET_KEY 
 
 # ==================================================
 # STARTUP
@@ -467,99 +400,43 @@ def threat_hunt_api():
     }
 @app.route("/alerts")
 def alerts():
-
     if not is_authenticated():
-
-        return redirect(
-            url_for("login")
-        )
+        return redirect(url_for("login"))
 
     attacks = load_attacks()
-
     alerts = []
 
     for i, attack in enumerate(attacks):
-
         alerts.append({
-
             "id": i + 1,
-
-            "time":
-                attack.get(
-                    "time",
-                    "N/A"
-                ),
-
-            "severity":
-                attack.get(
-                    "risk",
-                    "Low"
-                ),
-
-            "source_ip":
-                attack.get(
-                    "ip",
-                    "N/A"
-                ),
-
-            "target_device":
-                attack.get(
-                    "target",
-                    "Healthcare IoT Device"
-                ),
-
-            "alert_type":
-                attack.get(
-                    "attack_type",
-                    "Unknown"
-                ),
-
-            "status":
-                "Open"
+            "time": attack.get("time", "N/A"),
+            "severity": attack.get("risk", "Low"),
+            "source_ip": attack.get("ip", "N/A"),
+            "target_device": attack.get("target", "Healthcare IoT Device"),
+            "alert_type": attack.get("attack_type", "Unknown"),
+            "status": "Open"  
         })
 
-    critical_count = len([
-        x for x in alerts
-        if x["severity"] == "Critical"
-    ])
+    # Count Severities
+    critical_count = len([x for x in alerts if x["severity"] == "Critical"])
+    high_count = len([x for x in alerts if x["severity"] == "High"])
+    medium_count = len([x for x in alerts if x["severity"] == "Medium"])
+    low_count = len([x for x in alerts if x["severity"] == "Low"])
 
-    high_count = len([
-        x for x in alerts
-        if x["severity"] == "High"
-    ])
-
-    medium_count = len([
-        x for x in alerts
-        if x["severity"] == "Medium"
-    ])
-
-    low_count = len([
-        x for x in alerts
-        if x["severity"] == "Low"
-    ])
+    open_incidents_count = len(alerts)
 
     return render_template(
-
         "dashboard/alerts.html",
-
-        alerts=alerts[::-1],
-
-        incidents=[],
-
+        alerts=alerts[::-1],  
+        incidents=[],         
         threat_feed=[],
-
         critical_count=critical_count,
-
         high_count=high_count,
-
         medium_count=medium_count,
-
         low_count=low_count,
-
+        open_incidents_count=open_incidents_count,
         username=current_user(),
-
         role=current_role(),
-
         project_name=PROJECT_NAME
     )
 @app.route("/api/alerts")
@@ -1347,47 +1224,65 @@ def api_stats():
 # ==================================================
 # MITRE API
 # ==================================================
-@app.route('/mitre')
-def mitre():
-    user_role = current_role()
-    user_permissions = get_current_permissions()
-    username = current_user()
-    
-    risk_counts = {"Critical": 0, "High": 0, "Medium": 0, "Low": 0}
-    
-    return render_template(
-        'dashboard/mitre.html', 
-        role=user_role, 
-        permissions=user_permissions,
-        username=username,
-        risk_counts=risk_counts,
-        mitre_data=[], # We will send an empty list for now
-        initial_access=0,
-        discovery=0,
-        execution=0,
-        persistence=0
-    )
+@app.route("/mitre")
+def mitre_page():
+    # 1. Security Check
+    if not is_authenticated():
+        return redirect(url_for("login"))
 
-@app.route("/api/mitre")
-def api_mitre():
-
+    # 2. Load the real attack data from your JSON file
     attacks = load_attacks()
 
+    # 3. Setup counters for the HTML to use
+    risk_counts = {"Critical": 0, "High": 0, "Medium": 0, "Low": 0}
+    tactics = {"initial_access": 0, "discovery": 0, "execution": 0, "persistence": 0}
     mitre_data = []
 
+    # 4. Analyze the attacks and do the math
     for attack in attacks:
+        # Tally the risks
+        severity = attack.get("severity", "Low")
+        if severity in risk_counts:
+            risk_counts[severity] += 1
+        else:
+            risk_counts["Low"] += 1
 
+        # Logic to map Honeypot attacks to MITRE Tactics
+        port = str(attack.get("port", ""))
+        technique = "T1190" # Default Fallback
+        
+        if port in ["22", "2222"]: # SSH Brute Force
+            tactics["initial_access"] += 1
+            technique = "T1110 (Brute Force)"
+        elif port in ["80", "443", "8080"]: # Web exploits
+            tactics["execution"] += 1
+            technique = "T1190 (Exploit Public App)"
+        else: # Other scans
+            tactics["discovery"] += 1
+            technique = "T1046 (Network Service Discovery)"
+
+        # Format the data for the frontend table
         mitre_data.append({
-            "time": attack.get("time", "N/A"),
-            "source_ip": attack.get("ip", "N/A"),
-            "attack_type": attack.get("attack_type", "Unknown"),
-            "risk": attack.get("risk", "Low")
+            "time": attack.get("timestamp", "Unknown"),
+            "source_ip": attack.get("ip", attack.get("source_ip", "Unknown")),
+            "technique": technique,
+            "target": attack.get("honeypot", "Unknown Node"),
+            "risk": severity
         })
 
-    return {
-        "count": len(mitre_data),
-        "events": mitre_data[-20:]
-    }
+    # 5. Pass EVERYTHING to the HTML (Notice how this is outside the loop!)
+    return render_template(
+        "dashboard/mitre.html",
+        mitre_data=mitre_data,
+        risk_counts=risk_counts,
+        initial_access=tactics["initial_access"],
+        discovery=tactics["discovery"],
+        execution=tactics["execution"],
+        persistence=tactics["persistence"],
+        username=current_user(),
+        role=current_role(),
+        project_name=PROJECT_NAME
+    )
 
 #================================================== 
 # SETTINGS
@@ -2289,12 +2184,24 @@ def export_pdf():
     )
 @app.route("/attack-logs")
 def attack_logs():
-
+    
     attacks = load_attacks()
+
+    total_attacks = len(attacks)
+    
+    critical_threats = 0
+    for attack in attacks:
+        
+        threat_level = attack.get("severity", attack.get("risk", ""))
+        
+        if threat_level.strip().upper() == "CRITICAL":
+            critical_threats += 1
 
     return render_template(
         "dashboard/attack_logs.html",
         attacks=attacks,
+        total_attacks=total_attacks,
+        critical_threats=critical_threats,  
         username=current_user(),
         role=current_role(),
         permissions=get_current_permissions(),
