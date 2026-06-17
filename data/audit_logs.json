@@ -1915,5 +1915,32 @@
         "severity": "INFO",
         "message": "User logged in",
         "metadata": {}
+    },
+    {
+        "id": "33a636d5-3445-47f7-94fb-a19b03fa2e5f",
+        "timestamp": "2026-06-17T11:59:20.359833+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "c3ae5d93-7761-4b9b-8bb2-e5fdacc93b53",
+        "timestamp": "2026-06-17T11:59:23.319803+00:00",
+        "event_type": "SYSTEM",
+        "user": "system",
+        "severity": "INFO",
+        "message": "Application started",
+        "metadata": {}
+    },
+    {
+        "id": "0ab5000f-70ec-4d6b-9696-f0802edd1e7b",
+        "timestamp": "2026-06-17T11:59:49.714748+00:00",
+        "event_type": "LOGIN",
+        "user": "admin",
+        "severity": "INFO",
+        "message": "User logged in",
+        "metadata": {}
     }
 ]
